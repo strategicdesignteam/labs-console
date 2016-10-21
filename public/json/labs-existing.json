@@ -1,0 +1,149 @@
+{
+  "engagement": {
+    "id": "1",
+    "application_topologies": [
+      {
+        "name": "Pied Piper",
+        "description": "A Middle-Out Compression Solution Making Data Storage Problems Smaller.",
+        "promotion_process": {
+          "stages": [
+            {
+              "stage_name": "dev",
+              "display_name": "Dev",
+              "user_to_role": [
+                {
+                  "user": {
+                    "userid": "1",
+                    "user_name": "Sid"
+                  },
+                  "roles": [
+                    {
+                      "name": "admin"
+                    }
+                  ]
+                },
+                {
+                  "user": {
+                    "userid": "2",
+                    "user_name": "Cyril"
+                  },
+                  "roles": [
+                    {
+                      "name": "admin"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "stage_name": "uat",
+              "display_name": "UAT",
+              "user_to_role": [
+                {
+                  "user": {
+                    "userid": "1",
+                    "user_name": "Sid"
+                  },
+                  "roles": [
+                    {
+                      "name": "admin"
+                    }
+                  ]
+                },
+                {
+                  "user": {
+                    "userid": "2",
+                    "user_name": "Cyril"
+                  },
+                  "roles": [
+                    {
+                      "name": "view"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "stage_name": "staging",
+              "display_name": "Staging",
+              "user_to_role": [
+                {
+                  "user": {
+                    "userid": "1",
+                    "user_name": "Sid"
+                  },
+                  "roles": [
+                    {
+                      "name": "admin"
+                    }
+                  ]
+                },
+                {
+                  "user": {
+                    "userid": "2",
+                    "user_name": "Cyril"
+                  },
+                  "roles": [
+                    {
+                      "name": "view"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "projects": [
+          {
+            "name": "pied-piper-compression",
+            "apps": [
+              {
+                "name": "UI",
+                "scm_url": "https://github.com/acme/UI.git",
+                "base_image": "openshift/httpd:latest"
+              },
+              {
+                "name": "REST-API",
+                "scm_url": "https://github.com/acme/REST_API.git",
+                "base_image": "openshift/spring-cloud:latest"
+              },
+              {
+                "name": "Decision-Server",
+                "scm_url": "https://github.com/acme/Decision-Server.git",
+                "base_image": "openshift/brms:latest"
+              },
+              {
+                "name": "DB",
+                "base_image": "openshift/postgresql:9.4"
+              }
+            ]
+          },
+          {
+            "name": "pied-piper-cloud-storage",
+            "apps": [
+              {
+                "name": "UI",
+                "scm_url": "https://github.com/acme/UI.git",
+                "base_image": "openshift/httpd:latest"
+              },
+              {
+                "name": "REST-API",
+                "scm_url": "https://github.com/acme/REST_API.git",
+                "base_image": "openshift/spring-cloud:latest"
+              },
+              {
+                "name": "Decision-Server",
+                "scm_url": "https://github.com/acme/Decision-Server.git",
+                "base_image": "openshift/brms:latest"
+              },
+              {
+                "name": "DB",
+                "base_image": "openshift/postgresql:9.4"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

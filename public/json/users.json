@@ -1,0 +1,44 @@
+[
+  {
+    "username": "erlich.bachman",
+    "email": "erlich@aviato.com",
+    "firstname": "Erlich",
+    "lastname": "Bachman"
+  },
+  {
+    "username": "gavin.belson",
+    "email": "gavin@hooli.com",
+    "firstname": "Gavin",
+    "lastname": "Belson"
+  },
+  {
+    "username": "richard.hendriks",
+    "email": "richard@piedpiper.com",
+    "firstname": "Richard",
+    "lastname": "Hendriks"
+  },
+  {
+    "username": "dinesh.chugtai",
+    "email": "dinesh@piedpiper.com",
+    "firstname": "Dinesh",
+    "lastname": "Chugtai"
+  },
+  {
+    "username": "bertram.gilfoyle",
+    "email": "gilfoyle@piedpiper.com",
+    "firstname": "Bertram",
+    "lastname": "Gilfoyle"
+  },
+  {
+    "username": "jared.dunn",
+    "email": "jared@piedpiper.com",
+    "firstname": "Jared",
+    "lastname": "Dunn"
+  },
+  {
+    "username": "laurie.bream",
+    "email": "laurie@raviga.com",
+    "firstname": "Laurie",
+    "lastname": "Bream"
+  }
+]

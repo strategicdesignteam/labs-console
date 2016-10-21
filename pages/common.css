@@ -1,0 +1,15 @@
+@import './variables.css';
+
+.float_right {
+  display:inline-block;
+  float: right;
+}
+
+.spacing {
+  padding: 10px;
+  margin: 10px;
+}
+
+.padding_right {
+  padding-right: 15px;
+}
