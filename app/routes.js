@@ -38,7 +38,7 @@ module.exports = function(app) {
   // frontend routes =========================================================
   // route to handle all react requests
   app.get('*', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile('index.html', {root: './public'});
   });
 
 };
