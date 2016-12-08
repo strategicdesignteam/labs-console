@@ -1,0 +1,168 @@
+{
+  "_id": 20,
+  "datetime_modified": "2016-12-08T21:19:41.651Z",
+  "datetime_created": "2016-12-08T20:35:00.446Z",
+  "description": "a short description",
+  "name": "labs-topology",
+  "version": 16,
+  "promotion_process": [
+    {
+      "_id": 215,
+      "name": "dev",
+      "application_promoters": [],
+      "project_role_bindings": [
+        {
+          "user": {
+            "first_name": "",
+            "last_name": "",
+            "user_name": "user1",
+            "password": "",
+            "email": ""
+          },
+          "role": "admin"
+        },
+        {
+          "user": {
+            "first_name": "",
+            "last_name": "",
+            "user_name": "user2",
+            "password": "",
+            "email": ""
+          },
+          "role": "view"
+        }
+      ]
+    },
+    {
+      "_id": 216,
+      "name": "uat",
+      "application_promoters": [],
+      "project_role_bindings": [
+        {
+          "user": {
+            "first_name": "",
+            "last_name": "",
+            "user_name": "user1",
+            "password": "",
+            "email": ""
+          },
+          "role": "admin"
+        },
+        {
+          "user": {
+            "first_name": "",
+            "last_name": "",
+            "user_name": "user2",
+            "password": "",
+            "email": ""
+          },
+          "role": "view"
+        }
+      ]
+    },
+    {
+      "_id": 217,
+      "name": "production",
+      "application_promoters": [],
+      "project_role_bindings": [
+        {
+          "user": {
+            "first_name": "",
+            "last_name": "",
+            "user_name": "user1",
+            "password": "",
+            "email": ""
+          },
+          "role": "admin"
+        },
+        {
+          "user": {
+            "first_name": "",
+            "last_name": "",
+            "user_name": "user2",
+            "password": "",
+            "email": ""
+          },
+          "role": "view"
+        }
+      ]
+    }
+  ],
+  "project_templates": [
+    {
+      "_id": 237,
+      "name": "pipeline",
+      "display_name": "Pipeline",
+      "type": "OpenShift",
+      "persistent_volume_claim_templates": [
+        {
+          "name": "{project_name}-{stage}-env",
+          "access_modes": [
+            "ReadOnlyMany"
+          ],
+          "storage": 1,
+          "selector": {
+            "match_labels_templates": {
+              "pvc": "{project_name}-{stage}-env"
+            }
+          }
+        }
+      ],
+      "apps": [
+        {
+          "name": "jenkins",
+          "scm_url": "https://github.com/rht-labs/openshift-jenkins-s2i-config.git",
+          "scm_ref": "master",
+          "base_image": "openshift/jenkins",
+          "build_tool": "s2i",
+          "environment_variables_templates": {
+            "JENKINS_OPTS": "--httpPort=-1 --httpsPort=8443 --httpsCertificate=/etc/{project_name}-{stage}-env/certs/jenkins/jenkins.crt --httpsPrivateKey=/etc/{project_name}-{stage}-env/certs/jenkins/jenkins.key",
+            "JENKINS_PASSWORD": "password",
+            "JAVA_OPTS": "-Djavax.net.ssl.trustStore=/etc/{project_name}-{stage}-env/certs/java/cacerts -Djavax.net.ssl.trustStorePassword=changeit",
+            "LDAP_SERVER": "ldaps://idm.example.com:636",
+            "LDAP_ROOT_DN": "dc=example,dc=com",
+            "LDAP_USER_SEARCH_BASE": "",
+            "LDAP_USER_SEARCH": "(&(uid={0})(memberOf=cn={stage}-users,cn=groups,cn=accounts,dc=example,dc=com))",
+            "LDAP_GROUP_SEARCH_BASE": "",
+            "LDAP_MANAGER_DN": "uid=binduser,cn=users,cn=accounts,dc=example,dc=com",
+            "LDAP_ACCESS": "bindpassword",
+            "INHIBIT_INFER_ROOT_DN": true
+          },
+          "routes": [
+            {
+              "route_type": "passthrough",
+              "hostname": "{app_name}.{stage}.example.com",
+              "port": "8443",
+              "service": {
+                "ports": [
+                  {
+                    "port": 8443,
+                    "protocol": "TCP",
+                    "target_port": 8443
+                  },
+                  {
+                    "port": 50000,
+                    "protocol": "TCP",
+                    "target_port": 50000
+                  }
+                ]
+              }
+            }
+          ],
+          "pvc_association_templates": [
+            {
+              "name_template": "{project_name}-{stage}-env",
+              "mount_path": "/etc/{project_name}-{stage}-env",
+              "claim_type": {
+                "kind": "claim",
+                "name_template": "{project_name}-{stage}-env"
+              }
+            }
+          ]
+        }
+      ],
+      "id": "237"
+    }
+  ],
+  "id": "20"
+}

@@ -32,7 +32,7 @@ class CreateStageForm extends React.Component {
     let application_promoters = [];
 
     users.forEach(function(user){
-      let u = new User(user.id);
+      let u = new User(user.id, user.first_name, user.last_name, user.user_name, user.password, user.email);
       if(user.role){
         project_role_bindings.push({user: u, role: user.role});
       }

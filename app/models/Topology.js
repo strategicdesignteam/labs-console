@@ -10,6 +10,7 @@ var Builds = require('./Build');
  */
 var ProjectSchema = new Schema({
   name: {type: String, required: true},
+  display_name: {type: String},
   type: {type: String },
   apps: { type : Array , "default" : [] },
   persistent_volume_claim_templates: { type : Array , "default" : [] }
@@ -72,7 +73,8 @@ var TopologySchema = new Schema({
     name: {type: String, required: true},
     description: {type: String},
     project_templates: [ProjectSchema],
-    promotion_process: [StageSchema]
+    promotion_process: [StageSchema],
+    engagement_id: {type: Number}
   },
   {
     //http://mongoosejs.com/docs/guide.html#timestamps

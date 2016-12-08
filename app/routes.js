@@ -1,7 +1,6 @@
 var BuildService = require('./controllers/BuildService');
 var TopologyService = require('./controllers/TopologyService');
 var UserService = require('./controllers/UserService');
-var ImageStreamService = require('./controllers/ImageStreamService');
 
 module.exports = function(app) {
 
@@ -28,12 +27,6 @@ module.exports = function(app) {
   app.put('/topologies/:id', TopologyService.updateTopology);
   app.delete('/topologies/:id', TopologyService.deleteTopology);
 
-  //imageStreams
-  app.post('/imageStreams', ImageStreamService.addImageStream);
-  app.get('/imageStreams', ImageStreamService.imageStreamsGET);
-  app.get('/imageStreams/:id', ImageStreamService.imageStreamsIdGET);
-  app.put('/imageStreams/:id', ImageStreamService.updateImageStream);
-  app.delete('/imageStreams/:id', ImageStreamService.deleteImageStream);
 
   // frontend routes =========================================================
   // route to handle all react requests

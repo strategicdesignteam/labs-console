@@ -1,0 +1,330 @@
+{
+  "openshift_clusters": [
+    {
+      "openshift_resources": {
+        "projects": [
+          {
+            "name": "labs-api-dev",
+            "display_name": "Labs API - DEV",
+            "environment_type": "build",
+            "apps": [
+              {
+                "name": "automation-api-db",
+                "base_image": "openshift/postgresql",
+                "environment_variables": {
+                  "POSTGRESQL_USER": "apidbuser",
+                  "POSTGRESQL_PASSWORD": "apidbpassword",
+                  "POSTGRESQL_DATABASE": "automation_api_dev"
+                },
+                "pvc_associations": [
+                  {
+                    "name": "automation-api-db-volume-1",
+                    "mount_path": "/var/lib/pgsql/data",
+                    "claim_type": {
+                      "kind": "claim",
+                      "name": "automation-api-db-dev"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "automation-api",
+                "scm_url": "https://github.com/rht-labs/automation-api.git",
+                "scm_ref": "master",
+                "build_tool": "mvn-3",
+                "build_application_commands": [
+                  "mvn clean install"
+                ],
+                "labels": {
+                  "provider": "fabric8"
+                },
+                "environment_variables": {
+                  "POSTGRESQL_USER": "apidbuser",
+                  "POSTGRESQL_PASSWORD": "apidbpassword",
+                  "POSTGRESQL_DATABASE": "automation_api_dev",
+                  "POSTGRESQL_SVC": "automation-api-db.labs-api-dev.svc.cluster.local"
+                },
+                "routes": [
+                  {
+                    "route_type": "default",
+                    "hostname": "automation-api.dev.example.com"
+                  }
+                ]
+              }
+            ],
+            "persistent_volume_claims": [
+              {
+                "name": "automation-api-db-dev",
+                "access_modes": [
+                  "ReadWriteOnce"
+                ],
+                "storage": 5,
+                "selector": {
+                  "match_labels": {
+                    "pvc": "automation-api-db-dev"
+                  }
+                }
+              }
+            ],
+            "group_to_role": [
+              {
+                "group": {
+                  "name": "system:serviceaccounts"
+                },
+                "roles": [
+                  {
+                    "name": "view"
+                  }
+                ]
+              }
+            ],
+            "user_to_role": [
+              {
+                "user": {
+                  "user_name": "user1"
+                },
+                "roles": [
+                  {
+                    "name": "admin"
+                  }
+                ]
+              },
+              {
+                "user": {
+                  "user_name": "user2"
+                },
+                "roles": [
+                  {
+                    "name": "view"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "labs-api-uat",
+            "display_name": "Labs API - UAT",
+            "environment_type": "promotion",
+            "apps": [
+              {
+                "name": "automation-api-db",
+                "base_image": "openshift/postgresql",
+                "environment_variables": {
+                  "POSTGRESQL_USER": "apidbuser",
+                  "POSTGRESQL_PASSWORD": "apidbpassword",
+                  "POSTGRESQL_DATABASE": "automation_api_uat"
+                },
+                "pvc_associations": [
+                  {
+                    "name": "automation-api-db-volume-1",
+                    "mount_path": "/var/lib/pgsql/data",
+                    "claim_type": {
+                      "kind": "claim",
+                      "name": "automation-api-db-uat"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "automation-api",
+                "base_image": "automation-api",
+                "environment_variables": {
+                  "POSTGRESQL_USER": "apidbuser",
+                  "POSTGRESQL_PASSWORD": "apidbpassword",
+                  "POSTGRESQL_DATABASE": "automation_api_uat",
+                  "POSTGRESQL_SVC": "automation-api-db.labs-api-uat.svc.cluster.local"
+                },
+                "routes": [
+                  {
+                    "route_type": "default",
+                    "hostname": "automation-api.uat.example.com"
+                  }
+                ]
+              }
+            ],
+            "persistent_volume_claims": [
+              {
+                "name": "automation-api-db-uat",
+                "access_modes": [
+                  "ReadWriteOnce"
+                ],
+                "storage": 5,
+                "selector": {
+                  "match_labels": {
+                    "pvc": "automation-api-db-uat"
+                  }
+                }
+              }
+            ],
+            "group_to_role": [
+              {
+                "group": {
+                  "name": "system:serviceaccounts"
+                },
+                "roles": [
+                  {
+                    "name": "view"
+                  }
+                ]
+              }
+            ],
+            "user_to_role": [
+              {
+                "user": {
+                  "user_name": "user1"
+                },
+                "roles": [
+                  {
+                    "name": "admin"
+                  }
+                ]
+              },
+              {
+                "user": {
+                  "user_name": "user2"
+                },
+                "roles": [
+                  {
+                    "name": "view"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "labs-api-production",
+            "display_name": "Labs API - PRODUCTION",
+            "environment_type": "promotion",
+            "apps": [
+              {
+                "name": "automation-api-db",
+                "base_image": "openshift/postgresql",
+                "environment_variables": {
+                  "POSTGRESQL_USER": "apidbuser",
+                  "POSTGRESQL_PASSWORD": "apidbpassword",
+                  "POSTGRESQL_DATABASE": "automation_api_production"
+                },
+                "pvc_associations": [
+                  {
+                    "name": "automation-api-db-volume-1",
+                    "mount_path": "/var/lib/pgsql/data",
+                    "claim_type": {
+                      "kind": "claim",
+                      "name": "automation-api-db-production"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "automation-api",
+                "base_image": "automation-api",
+                "environment_variables": {
+                  "POSTGRESQL_USER": "apidbuser",
+                  "POSTGRESQL_PASSWORD": "apidbpassword",
+                  "POSTGRESQL_DATABASE": "automation_api_production",
+                  "POSTGRESQL_SVC": "automation-api-db.labs-api-production.svc.cluster.local"
+                },
+                "routes": [
+                  {
+                    "route_type": "default",
+                    "hostname": "automation-api.example.com"
+                  }
+                ]
+              }
+            ],
+            "persistent_volume_claims": [
+              {
+                "name": "automation-api-db-production",
+                "access_modes": [
+                  "ReadWriteOnce"
+                ],
+                "storage": 5,
+                "selector": {
+                  "match_labels": {
+                    "pvc": "automation-api-db-production"
+                  }
+                }
+              }
+            ],
+            "group_to_role": [
+              {
+                "group": {
+                  "name": "system:serviceaccounts"
+                },
+                "roles": [
+                  {
+                    "name": "view"
+                  }
+                ]
+              }
+            ],
+            "user_to_role": [
+              {
+                "user": {
+                  "user_name": "user1"
+                },
+                "roles": [
+                  {
+                    "name": "admin"
+                  }
+                ]
+              },
+              {
+                "user": {
+                  "user_name": "user2"
+                },
+                "roles": [
+                  {
+                    "name": "view"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "openshift_host_env": "",
+      "persistent_volumes": [
+        {
+          "name": "automation-api-db-dev",
+          "capacity": 5,
+          "access_modes": [
+            "ReadWriteOnce"
+          ],
+          "nfs_path": "/delivery_env/dev/api_db",
+          "nfs_server": "nfs.example.com",
+          "reclaim_policy": "Retain",
+          "labels": {
+            "pvc": "automation-api-db-dev"
+          }
+        },
+        {
+          "name": "automation-api-db-uat",
+          "capacity": 5,
+          "access_modes": [
+            "ReadWriteOnce"
+          ],
+          "nfs_path": "/delivery_env/uat/api_db",
+          "nfs_server": "nfs.example.com",
+          "reclaim_policy": "Retain",
+          "labels": {
+            "pvc": "automation-api-db-uat"
+          }
+        },
+        {
+          "name": "automation-api-db-production",
+          "capacity": 5,
+          "access_modes": [
+            "ReadWriteOnce"
+          ],
+          "nfs_path": "/delivery_env/production/api_db",
+          "nfs_server": "nfs.example.com",
+          "reclaim_policy": "Retain",
+          "labels": {
+            "pvc": "automation-api-db-production"
+          }
+        }
+      ]
+    }
+  ]
+}

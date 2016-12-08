@@ -80,9 +80,10 @@ class TableSelectionView extends React.Component {
                       <select value={item.role} className="selectpicker form-control"
                               onChange={(e) => { this.handleChange(e,i,'role')}}>
                         <option></option>
-                        <option>Admin</option>
-                        <option>User</option>
-                        <option>Viewer</option>
+                        <option>admin</option>
+                        <option>basic-user</option>
+                        <option>view</option>
+                        <option>edit</option>
                       </select>
                     </td>
                   } else if (col.field === 'promotion'){

@@ -77,6 +77,9 @@
       if (data.hasOwnProperty('name')) {
         obj['name'] = ApiClient.convertToType(data['name'], 'String');
       }
+      if (data.hasOwnProperty('display_name')) {
+        obj['display_name'] = ApiClient.convertToType(data['display_name'], 'String');
+      }
       if (data.hasOwnProperty('type')) {
         obj['type'] = ApiClient.convertToType(data['type'], 'String');
       }
@@ -98,6 +101,10 @@
    * @member {String} name
    */
   exports.prototype['name'] = undefined;
+  /**
+   * @member {String} display_name
+   */
+  exports.prototype['display_name'] = undefined;
   /**
    * @member {module:model/ProjectTemplate.TypeEnum} type
    */

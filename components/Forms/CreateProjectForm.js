@@ -101,10 +101,14 @@ class CreateProjectForm extends React.Component {
         <EmptyState title={ Object.keys(this.props.value).length === 0 ? 'Create Project' : 'Edit Project'} class="text-left">
           <form role="form">
             <div className="form-group">
-              <label  htmlFor="input1" className="required-pf">Project name</label>
+              <label htmlFor="input1" className="required-pf">Project name</label>
               <input type="text" className="form-control" id="input1" required="" placeholder="project-name"
                      value={this.state.newProject.name}
                      onChange={(e) => { this.handleChange(e,'name')}}/>
+              <label htmlFor="input2" className="required-pf">Display name</label>
+              <input type="text" className="form-control" id="input2" required="" placeholder="display-name"
+                     value={this.state.newProject.display_name}
+                     onChange={(e) => { this.handleChange(e,'display_name')}}/>
             </div>
             <div className="form-group">
               <label className="required-pf">Project type</label>

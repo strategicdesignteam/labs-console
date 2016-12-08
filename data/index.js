@@ -25,9 +25,9 @@
 (function(factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('./ApiClient'), require('./model/ApplicationTemplate'), require('./model/ApplicationTopology'), require('./model/Body'), require('./model/Build'), require('./model/ClaimType'), require('./model/ErrorModel'), require('./model/ImageStream'), require('./model/LabelSelectorTemplate'), require('./model/PVCAssociationTemplate'), require('./model/PersistentVolumeClaimTemplate'), require('./model/Port'), require('./model/ProjectTemplate'), require('./model/RoleBinding'), require('./model/Route'), require('./model/Service'), require('./model/Stage'), require('./model/User'), require('./api/BuildApi'), require('./api/ImageStreamApi'), require('./api/TopologyApi'), require('./api/UserApi'));
+    module.exports = factory(require('./ApiClient'), require('./model/ApplicationTemplate'), require('./model/ApplicationTopology'), require('./model/Body'), require('./model/Build'), require('./model/ClaimType'), require('./model/ErrorModel'), require('./model/LabelSelectorTemplate'), require('./model/PVCAssociationTemplate'), require('./model/PersistentVolumeClaimTemplate'), require('./model/Port'), require('./model/ProjectTemplate'), require('./model/RoleBinding'), require('./model/Route'), require('./model/Service'), require('./model/Stage'), require('./model/User'), require('./api/BuildApi'), require('./api/TopologyApi'), require('./api/UserApi'));
   }
-}(function(ApiClient, ApplicationTemplate, ApplicationTopology, Body, Build, ClaimType, ErrorModel, ImageStream, LabelSelectorTemplate, PVCAssociationTemplate, PersistentVolumeClaimTemplate, Port, ProjectTemplate, RoleBinding, Route, Service, Stage, User, BuildApi, ImageStreamApi, TopologyApi, UserApi) {
+}(function(ApiClient, ApplicationTemplate, ApplicationTopology, Body, Build, ClaimType, ErrorModel, LabelSelectorTemplate, PVCAssociationTemplate, PersistentVolumeClaimTemplate, Port, ProjectTemplate, RoleBinding, Route, Service, Stage, User, BuildApi, TopologyApi, UserApi) {
   'use strict';
 
   /**
@@ -98,11 +98,6 @@
      */
     ErrorModel: ErrorModel,
     /**
-     * The ImageStream model constructor.
-     * @property {module:model/ImageStream}
-     */
-    ImageStream: ImageStream,
-    /**
      * The LabelSelectorTemplate model constructor.
      * @property {module:model/LabelSelectorTemplate}
      */
@@ -157,11 +152,6 @@
      * @property {module:api/BuildApi}
      */
     BuildApi: BuildApi,
-    /**
-     * The ImageStreamApi service constructor.
-     * @property {module:api/ImageStreamApi}
-     */
-    ImageStreamApi: ImageStreamApi,
     /**
      * The TopologyApi service constructor.
      * @property {module:api/TopologyApi}

@@ -2,6 +2,7 @@
 var Build = require('../models/Build');
 var Topology = require('../models/Topology');
 var common = require('../common/common');
+var automation = require('../automation/automation');
 
 exports.addBuild = function(args, res, next) {
   /**
@@ -15,15 +16,22 @@ exports.addBuild = function(args, res, next) {
     if(err) { return common.handleError(res, err); }
     if(!topology) { return res.send(404); }
 
-    newBuild.topology_version = topology.version;
-    newBuild.status = 'started';
-    newBuild.ansible_tower_link  = 'http://ansible.com'; //default this for now
-    newBuild.number_of_projects = topology.project_templates.length;
-    newBuild.number_of_stages = topology.promotion_process.length;
+    //call the Automation API - if successful, create a new Build entry, if not, ignore and return
+    automation.createAutomation(topology).then((data) => {
+      //create Build
+      newBuild.topology_version = topology.version;
+      newBuild.status = 'started';
+      newBuild.ansible_tower_link  = 'http://ansible.com'; //default this for now
+      newBuild.number_of_projects = topology.project_templates.length;
+      newBuild.number_of_stages = topology.promotion_process.length;
 
-    newBuild.save(function(err, build) {
-      if (err) return common.handleError(res, err);
-      res.json({ build: build });
+      newBuild.save(function(err, build) {
+        if (err) return common.handleError(res, err);
+        res.json({ build: build });
+      });
+    }).catch((err) => {
+      //error creating the automation
+      return common.handleError(res, err);
     });
   });
 

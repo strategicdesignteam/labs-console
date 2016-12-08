@@ -1,0 +1,160 @@
+{
+  "_id": 20,
+  "datetime_modified": "2016-12-08T21:19:41.651Z",
+  "datetime_created": "2016-12-08T20:35:00.446Z",
+  "description": "a short description",
+  "name": "labs-topology",
+  "version": 16,
+  "promotion_process": [
+    {
+      "_id": 215,
+      "name": "dev",
+      "application_promoters": [],
+      "project_role_bindings": [
+        {
+          "user": {
+            "first_name": "",
+            "last_name": "",
+            "user_name": "user1",
+            "password": "",
+            "email": ""
+          },
+          "role": "admin"
+        },
+        {
+          "user": {
+            "first_name": "",
+            "last_name": "",
+            "user_name": "user2",
+            "password": "",
+            "email": ""
+          },
+          "role": "view"
+        }
+      ]
+    },
+    {
+      "_id": 216,
+      "name": "uat",
+      "application_promoters": [],
+      "project_role_bindings": [
+        {
+          "user": {
+            "first_name": "",
+            "last_name": "",
+            "user_name": "user1",
+            "password": "",
+            "email": ""
+          },
+          "role": "admin"
+        },
+        {
+          "user": {
+            "first_name": "",
+            "last_name": "",
+            "user_name": "user2",
+            "password": "",
+            "email": ""
+          },
+          "role": "view"
+        }
+      ]
+    },
+    {
+      "_id": 217,
+      "name": "production",
+      "application_promoters": [],
+      "project_role_bindings": [
+        {
+          "user": {
+            "first_name": "",
+            "last_name": "",
+            "user_name": "user1",
+            "password": "",
+            "email": ""
+          },
+          "role": "admin"
+        },
+        {
+          "user": {
+            "first_name": "",
+            "last_name": "",
+            "user_name": "user2",
+            "password": "",
+            "email": ""
+          },
+          "role": "view"
+        }
+      ]
+    }
+  ],
+  "project_templates": [
+    {
+      "_id": 237,
+      "name": "labs-api",
+      "display_name": "Labs API",
+      "type": "OpenShift",
+      "persistent_volume_claim_templates": [
+        {
+          "name": "automation-api-db-{stage}",
+          "access_modes": [
+            "ReadWriteOnce"
+          ],
+          "storage": 5,
+          "selector": {
+            "match_labels_templates": {
+              "pvc": "automation-api-db-{stage}"
+            }
+          }
+        }
+      ],
+      "apps": [
+        {
+          "name": "automation-api-db",
+          "base_image": "openshift/postgresql",
+          "environment_variables_templates": {
+            "POSTGRESQL_USER": "apidbuser",
+            "POSTGRESQL_PASSWORD": "apidbpassword",
+            "POSTGRESQL_DATABASE": "automation_api_{stage}"
+          },
+          "pvc_association_templates": [
+            {
+              "name_template": "automation-api-db-volume-1",
+              "mount_path": "/var/lib/pgsql/data",
+              "claim_type": {
+                "kind": "claim",
+                "name_template": "automation-api-db-{stage}"
+              }
+            }
+          ]
+        },
+        {
+          "name": "automation-api",
+          "scm_url": "https://github.com/rht-labs/automation-api.git",
+          "scm_ref": "master",
+          "build_tool": "mvn-3",
+          "build_application_commands": [
+            "mvn clean install"
+          ],
+          "labels": {
+            "provider": "fabric8"
+          },
+          "environment_variables_templates": {
+            "POSTGRESQL_USER": "apidbuser",
+            "POSTGRESQL_PASSWORD": "apidbpassword",
+            "POSTGRESQL_DATABASE": "automation_api_{stage}",
+            "POSTGRESQL_SVC": "automation-api-db.labs-api-{stage}.svc.cluster.local"
+          },
+          "routes": [
+            {
+              "route_type": "default",
+              "hostname": "automation-api.{stage}.example.com"
+            }
+          ]
+        }
+      ],
+      "id": "237"
+    }
+  ],
+  "id": "20"
+}

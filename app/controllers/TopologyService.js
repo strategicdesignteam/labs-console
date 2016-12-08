@@ -69,6 +69,7 @@ exports.updateTopology = function(args, res, next) {
       topology.description = args.body.description || '';
       topology.project_templates = args.body.project_templates || [];
       topology.promotion_process = args.body.promotion_process || [];
+      topology.engagement_id = args.body.engagement_id || "";
 
       topology.save(function(err) {
         if (err) return common.handleError(res, err);

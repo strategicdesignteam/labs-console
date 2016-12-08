@@ -1,0 +1,98 @@
+{
+  "openshift_clusters": [
+    {
+      "openshift_resources": {
+        "projects": [
+          {
+            "name": "labs-console-dev",
+            "display_name": "Labs Console - DEV",
+            "environment_type": "build",
+            "apps": [
+              {
+                "base_image": "openshift/mongodb:3.2",
+                "name": "labs-console-mongodb",
+                "environment_variables": {
+                  "MONGODB_USER": "user",
+                  "MONGODB_PASSWORD": "password",
+                  "MONGODB_DATABASE": "consoledatabase",
+                  "MONGODB_ADMIN_PASSWORD": "admin_password"
+                }
+              }
+            ],
+            "user_to_role": [
+              {
+                "user": {
+                  "user_name": "jim.whitehurst@redhat.com"
+                },
+                "roles": [
+                  {
+                    "name": "view"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "labs-console-uat",
+            "display_name": "Labs Console - UAT",
+            "environment_type": "promotion",
+            "apps": [
+              {
+                "base_image": "openshift/mongodb:3.2",
+                "name": "labs-console-mongodb",
+                "environment_variables": {
+                  "MONGODB_USER": "user",
+                  "MONGODB_PASSWORD": "password",
+                  "MONGODB_DATABASE": "consoledatabase",
+                  "MONGODB_ADMIN_PASSWORD": "admin_password"
+                }
+              }
+            ],
+            "user_to_role": [
+              {
+                "user": {
+                  "user_name": "jim.whitehurst@redhat.com"
+                },
+                "roles": [
+                  {
+                    "name": "view"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "labs-console-delivery",
+            "display_name": "Labs Console - DELIVERY",
+            "environment_type": "promotion",
+            "apps": [
+              {
+                "base_image": "openshift/mongodb:3.2",
+                "name": "labs-console-mongodb",
+                "environment_variables": {
+                  "MONGODB_USER": "user",
+                  "MONGODB_PASSWORD": "password",
+                  "MONGODB_DATABASE": "consoledatabase",
+                  "MONGODB_ADMIN_PASSWORD": "admin_password"
+                }
+              }
+            ],
+            "user_to_role": [
+              {
+                "user": {
+                  "user_name": "jim.whitehurst@redhat.com"
+                },
+                "roles": [
+                  {
+                    "name": "view"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "openshift_host_env": ""
+    }
+  ]
+}

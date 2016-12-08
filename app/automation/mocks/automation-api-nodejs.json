@@ -1,0 +1,113 @@
+{
+  "openshift_clusters": [
+    {
+      "openshift_resources": {
+        "projects": [
+          {
+            "name": "labs-console-dev",
+            "display_name": "Labs Console - DEV",
+            "environment_type": "build",
+            "apps": [
+              {
+                "base_image": "openshift/nodejs:4",
+                "build_application_commands": [
+                  "npm install",
+                  "npm run test"
+                ],
+                "build_tool": "node-4",
+                "scm_url": "https://github.com/rht-labs/labs-console",
+                "name": "labs-console-nodejs",
+                "routes": [
+                  {
+                    "route_type": "default",
+                    "hostname": "labs-console.dev.apps.c2.core.rht-labs.com"
+                  }
+                ],
+                "environment_variables": {
+                  "OPENSHIFT_MONGODB_DB_URL": "mongodb://user:password@labs-console-mongodb.labs-console-dev.svc.cluster.local/consoledatabase"
+                }
+              }
+            ],
+            "user_to_role": [
+              {
+                "user": {
+                  "user_name": "jim.whitehurst@redhat.com"
+                },
+                "roles": [
+                  {
+                    "name": "view"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "labs-console-uat",
+            "display_name": "Labs Console - UAT",
+            "environment_type": "promotion",
+            "apps": [
+              {
+                "base_image": "labs-console-nodejs",
+                "name": "labs-console-nodejs",
+                "routes": [
+                  {
+                    "route_type": "default",
+                    "hostname": "labs-console.uat.apps.c2.core.rht-labs.com"
+                  }
+                ],
+                "environment_variables": {
+                  "OPENSHIFT_MONGODB_DB_URL": "mongodb://user:password@labs-console-mongodb.labs-console-uat.svc.cluster.local/consoledatabase"
+                }
+              }
+            ],
+            "user_to_role": [
+              {
+                "user": {
+                  "user_name": "jim.whitehurst@redhat.com"
+                },
+                "roles": [
+                  {
+                    "name": "view"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "labs-console-delivery",
+            "display_name": "Labs Console - DELIVERY",
+            "environment_type": "promotion",
+            "apps": [
+              {
+                "base_image": "labs-console-nodejs",
+                "name": "labs-console-nodejs",
+                "routes": [
+                  {
+                    "route_type": "default",
+                    "hostname": "labs-console.delivery.apps.c2.core.rht-labs.com"
+                  }
+                ],
+                "environment_variables": {
+                  "OPENSHIFT_MONGODB_DB_URL": "mongodb://user:password@labs-console-mongodb.labs-console-delivery.svc.cluster.local/consoledatabase"
+                }
+              }
+            ],
+            "user_to_role": [
+              {
+                "user": {
+                  "user_name": "jim.whitehurst@redhat.com"
+                },
+                "roles": [
+                  {
+                    "name": "view"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "openshift_host_env": ""
+    }
+  ]
+}
