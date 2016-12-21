@@ -55,16 +55,14 @@ class ProjectCardView extends React.Component {
                       <span className="fa fa-ellipsis-v"></span>
                     </button>
                     <ul className="dropdown-menu dropdown-menu-right" aria-labelledby="dropupKebabRight2">
-                      <li><a href="#">Action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Something else here</a></li>
+                      <li><a href="#" onClick={(e) => {this.props.handleProjectEdit(e, i);}}>View Project</a></li>
                       <li role="separator" className="divider"></li>
-                      <li><a href="#">Separated link</a></li>
+                      <li><a href="#">Delete</a></li>
                     </ul>
                   </div>
                 </div>
 
-                <h2 className="card-pf-title text-center">
+                <h2 className="card-pf-title text-center blue-text">
                   {project.name}
                 </h2>
                 <div className="card-pf-top-element text-center">

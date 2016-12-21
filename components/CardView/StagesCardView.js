@@ -45,7 +45,7 @@ class StagesCardView extends React.Component {
     return (
       <div className="row row-cards-pf">
         {this.props.stages.map((stage,i) =>
-          <div className="col-xs-12 col-sm-3 col-md-2" key={i}>
+          <div className="col-xs-12 col-sm-4 col-md-3 col-lg-2" key={i}>
             <div className="card-pf card-pf-accented card-pf-view-xs stage-cards" data-key={i}>
               <div className="card-pf-body">
                 
@@ -55,23 +55,21 @@ class StagesCardView extends React.Component {
                       <span className="fa fa-ellipsis-v"></span>
                     </button>
                     <ul className="dropdown-menu dropdown-menu-right" aria-labelledby="dropupKebabRight2">
-                      <li><a href="#">Action</a></li>
-                      <li><a href="#">Another action</a></li>
-                      <li><a href="#">Something else here</a></li>
+                      <li><a href="#" onClick={(e) => {this.props.handleStageEdit(e, i);}}>View Stage</a></li>
                       <li role="separator" className="divider"></li>
-                      <li><a href="#">Separated link</a></li>
+                      <li><a href="#">Delete</a></li>
                     </ul>
                   </div>
 
-                  <h2 className="card-pf-title">
-                    <span className="pficon pficon-cluster"></span> { stage.name }
+                  <h2 className="card-pf-title text-center blue-text">
+                     { stage.name }
                   </h2>
 
                   <ul className="list-unstyled">
                     <li><span className="pficon pficon-users"></span>  &nbsp; {stage.project_role_bindings.length }
                       &nbsp; { stage.project_role_bindings.length == 1 ? 'user' : 'users' }
                     </li>
-                    <li><span className="pficon pficon-flag"></span>  &nbsp; {stage.application_promoters.length }
+                    <li><span className="fa fa-bullhorn"></span>  &nbsp; {stage.application_promoters.length }
                       &nbsp; { stage.application_promoters.length == 1 ? 'promoter' : 'promoters' }
                     </li>
                   </ul>

@@ -12,6 +12,7 @@ class ErrorPage extends React.Component {
   componentDidMount() {
     document.title = this.props.error && this.props.error.status === 404 ?
       'Page Not Found' : 'Error';
+    document.body.style.backgroundColor = constants.bg_white;
   }
 
   goBack = event => {

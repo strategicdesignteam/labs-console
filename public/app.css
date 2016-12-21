@@ -1,6 +1,12 @@
 /**
  Patternfly css extensions
 */
+body.white-bg {
+  background-color: #ffffff;
+}
+body.grey-bg {
+  background-color: #f5f5f5;
+}
 .navbar-pf-vertical .navbar-brand {
   padding: 11px 0 0;
 }
@@ -36,12 +42,38 @@ hr {
   border-top: 1px solid #ececec;
 }
 
+/** list-view icon overrides **/
 .list-view-pf-left .pficon.list-view-pf-icon-sm {
   border: 2px solid transparent;
 }
 
 .list-view-pf-left .pficon.list-view-pf-icon-info {
   background-color: #f5f5f5;
+}
+
+/** list-view dd / dt overrides **/
+@media (min-width: 768px) {
+  .list-group-item-container .dl-horizontal dt {
+  width: 130px;
+  }
+  .list-group-item-container .dl-horizontal dd {
+  margin-left: 150px;
+  }
+}
+
+/** list-view expansion blue to grey override **/
+.list-view-pf .list-group-item.list-view-pf-expand-active:first-child {
+  border: #bbbbbb 1px solid;
+}
+.list-view-pf .list-group-item.list-view-pf-expand-active {
+  border: #bbbbbb 1px solid;
+}
+.list-group-item-container {
+  border-top: #bbbbbb 1px solid;
+}
+
+.blue-text {
+  color: #0088ce;
 }
 
 /** why is pf setting display none?? **/

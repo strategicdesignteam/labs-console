@@ -14,6 +14,7 @@ class HomePage extends React.Component {
 
   componentDidMount() {
     document.title = constants.app_title;
+    document.body.style.backgroundColor = constants.bg_white;
   }
 
   componentWillMount() {
@@ -68,7 +69,7 @@ class HomePage extends React.Component {
                                        value={{}}/>;
           } else {
             let content = [];
-            content.push(<div className="page-header" key="-1">
+            content.push(<div className="page-header" key="page-header">
                 <h2> Application Topologies
                   <div className={c.float_right}>
                     <button type="submit" className="btn btn-primary"
@@ -82,10 +83,10 @@ class HomePage extends React.Component {
               content.push(<TopologyListView topologies={ this.state.topologies }
                                              handleTopologyClick={this.handleTopologyClick.bind(this)}
                                              handleDeleteTopology={this.handleDeleteTopology.bind(this)}
-                                             key="-2"/>);
+                                             key="topology-list-view"/>);
             } else {
-              content.push(<h4 key="-3">No topologies exist.</h4>);
-              content.push(<p key="-4">Hit the create button to construct a new application topology.</p>);
+              content.push(<h4 key="none-exist">No topologies exist.</h4>);
+              content.push(<p key="hit-create">Hit the create button to construct a new application topology.</p>);
             }
             return content;
           }

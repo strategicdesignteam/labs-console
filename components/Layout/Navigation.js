@@ -50,7 +50,7 @@ class Navigation extends React.Component {
           <li className={"list-group-item" + (location.pathname == '/users' ? ' active' : '')}>
             <Link to="/users">
               <span className="fa fa-users" data-toggle="tooltip" title="Users"></span>
-              <span className="list-group-item-value">Users</span>
+              <span className="list-group-item-value">Users & Groups</span>
             </Link>
 
           </li>

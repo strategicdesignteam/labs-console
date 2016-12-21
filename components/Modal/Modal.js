@@ -17,6 +17,7 @@ class Modal extends React.Component {
   }
 
   handleClose = (event) => {
+    this.setState({active: value});
     this.props.handleClose(event);
   };
 

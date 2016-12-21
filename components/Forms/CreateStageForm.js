@@ -142,8 +142,9 @@ class CreateStageForm extends React.Component {
 
     if(this.state.createStageView) {
       return (
-        <EmptyState title="Define Promotion Stage" class="text-left">
           <form role="form">
+            <h2>Define Promotion Stage</h2>
+            <hr/>
             <div className="form-group">
               <label  htmlFor="input1">Stage Name</label>
               <input type="text" className="form-control" id="input1" required="" placeholder="stage-name"
@@ -159,7 +160,7 @@ class CreateStageForm extends React.Component {
                 if(this.state.users.length){
                   return [
                     <div className={cx(c.float_right)}>
-                      <button type="submit" className="btn btn-success" onClick={this.handleCreateUser}>Create</button>
+                      <button type="submit" className="btn btn-default" onClick={this.handleCreateUser}>Create</button>
                     </div>,
                     <br/>,
                     <br/>,
@@ -169,17 +170,16 @@ class CreateStageForm extends React.Component {
                                         handleRowClick={this.handleRowClick}/>
                   ]
                 } else {
-                  return <div className="text-center">
-                    <br/>
-                    <br/>
-                    <h4>No users exist for the topology.</h4>
-                    <p>You must have at least one user defined to build your topology onto a stage.</p>
-                    <button type="submit" className="btn btn-success" onClick={this.handleCreateUser}>Create User</button>
-                  </div>
+                  return <EmptyState hideTitle={true}>
+                    <div className="text-center">
+                      <h4>No users exist for the topology.</h4>
+                      <p>You must have at least one user defined to build your topology onto a stage.</p>
+                      <button type="submit" className="btn btn-default" onClick={this.handleCreateUser}>Create User</button>
+                    </div>
+                  </EmptyState>
                 }
               })()}
             </div>
-            <br/>
             <br/>
             <div className="form-group text-center">
               <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
@@ -187,7 +187,6 @@ class CreateStageForm extends React.Component {
               <button type="submit" className="btn btn-default" onClick={this.handleCancel}>Cancel</button>
             </div>
           </form>
-        </EmptyState>
       )
     } else if (this.state.createUserView){
       return (

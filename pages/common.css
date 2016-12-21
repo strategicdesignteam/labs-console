@@ -13,3 +13,16 @@
 .padding_right {
   padding-right: 15px;
 }
+
+.slate_gray {
+  color:#9c9c9c;
+}
+
+.space_inputs {
+  margin: 5px 0;
+}
+
+.dot {
+  margin: 0 5px;
+  font-weight: 600;
+}

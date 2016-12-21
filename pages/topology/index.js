@@ -11,6 +11,7 @@ import labsApi from '../../data/index';
 import selectors from '../../data/selectors';
 import constants from '../../core/constants';
 import c from '../common.css'
+import cx from 'classnames';
 
 class TopologyPage extends React.Component {
 
@@ -109,6 +110,12 @@ class TopologyPage extends React.Component {
   };
 
   render() {
+    if(this.state.homeView){
+      document.body.style.backgroundColor = constants.bg_grey;
+    } else {
+      document.body.style.backgroundColor = constants.bg_white;
+    }
+
     return (
       <Layout className="container-fluid container-pf-nav-pf-vertical" nav= { true }>
         {(() => {
@@ -122,16 +129,16 @@ class TopologyPage extends React.Component {
                     <Link to="/home">Back to Topologies</Link>
                   </li>
                   <li className="active"> <strong>Topology:</strong>
-                    &nbsp; { this.state.topology.name } <b><i className="text-muted">{' v' + this.state.topology.version }</i></b>
+                    &nbsp; { this.state.topology.name }
                   </li>
                   <div className={c.float_right}>
-                    <button type="submit" className="btn btn-danger" onClick={this.handleBuild} disabled={!this.state.projects.length || !this.state.stages.length}>Build</button>
+                    <button type="submit" className="btn btn-primary" onClick={this.handleBuild} disabled={!this.state.projects.length || !this.state.stages.length}>Build</button>
                   </div>
                 </ol>
               </div>);
 
             content.push(
-              <h3 key="topologies-build-stages"> Build Stages
+              <h3 key="topologies-build-stages"> Promotion Stages
                 <span className={c.float_right}>
                   <button type="submit" className="btn btn-default" onClick={this.handleDefine}>Define</button>
                 </span>
@@ -153,9 +160,9 @@ class TopologyPage extends React.Component {
 
             content.push(<hr key="topologies-hr"/>);
             content.push(
-              <h3 key="topologies-projects"> Projects
+              <h3 key="topologies-projects"> Project Templates
                 <div className={c.float_right}>
-                  <button type="submit" className="btn btn-primary" onClick={this.handleCreateProject}>Create</button>
+                  <button type="submit" className="btn btn-default" onClick={this.handleCreateProject}>Create</button>
                 </div>
               </h3>);
 
@@ -192,18 +199,18 @@ class TopologyPage extends React.Component {
                           handleClose={this.cancelStart.bind(this)}
                           key="builds-modal">
               <div className="text-center">
-                <h3>Build Application Topology</h3>
-                <div className={c.spacing}>
+                <div className={cx(c.spacing, c.slate_gray)}>
                   <i className="fa fa-rocket fa-3x"></i>
                 </div>
-                <div className={c.spacing}>
+                <h3>Build Application Topology</h3>
+                <div className={c.spacing} >
                   <strong>Topology:</strong> {this.state.topology.name}
                 </div>
                 <p>Are you sure?</p>
                 <div className={c.spacing}>
                   <button className="btn btn-default btn-lg" onClick={this.cancelStart}>No</button>
                   &nbsp;
-                  <button className="btn btn-success btn-lg" onClick={this.startBuild}>Yes</button>
+                  <button className="btn btn-primary btn-lg" onClick={this.startBuild}>Yes</button>
                 </div>
               </div>
             </Modal>

@@ -12,6 +12,7 @@ class BuildsPage extends React.Component {
 
   componentDidMount() {
     document.title = constants.app_title;
+    document.body.style.backgroundColor = constants.bg_white;
   }
 
   componentWillMount() {
@@ -69,11 +70,7 @@ class BuildsPage extends React.Component {
         {(() => {
           let content = [];
           content.push(<div className="page-header" key="builds-page-header">
-              <h2> Builds
-                <div className={c.float_right}>
-                  <button type="submit" className="btn btn-info" onClick={this.handleRefresh}>Refresh</button>
-                </div>
-              </h2>
+              <h2> Builds </h2>
             </div>
           );
 

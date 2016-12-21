@@ -12,6 +12,7 @@ class WelcomePage extends React.Component {
 
   componentDidMount() {
     document.title = constants.app_title;
+    document.body.style.backgroundColor = constants.bg_white;
   }
 
   handleCreate = (event) => {

@@ -98,20 +98,24 @@ class CreateProjectForm extends React.Component {
   render() {
     if(this.state.createProjectView) {
       return (
-        <EmptyState title={ Object.keys(this.props.value).length === 0 ? 'Create Project' : 'Edit Project'} class="text-left">
+
           <form role="form">
+            <h2>{Object.keys(this.props.value).length === 0 ? 'Create Project Template' : 'Edit Project Template'}</h2>
+            <hr/>
             <div className="form-group">
-              <label htmlFor="input1" className="required-pf">Project name</label>
+              <label htmlFor="input1" className="required-pf">Project Name</label>
               <input type="text" className="form-control" id="input1" required="" placeholder="project-name"
                      value={this.state.newProject.name}
                      onChange={(e) => { this.handleChange(e,'name')}}/>
-              <label htmlFor="input2" className="required-pf">Display name</label>
-              <input type="text" className="form-control" id="input2" required="" placeholder="display-name"
+            </div>
+            <div className="form-group">
+              <label htmlFor="input2" className="required-pf">Display Name</label>
+              <input type="text" className="form-control" id="input2" required="" placeholder="Display Name"
                      value={this.state.newProject.display_name}
                      onChange={(e) => { this.handleChange(e,'display_name')}}/>
             </div>
             <div className="form-group">
-              <label className="required-pf">Project type</label>
+              <label className="required-pf">Project Type</label>
               <br/>
               <select value={this.state.newProject.type} className="selectpicker form-control"
                       onChange={(e) => { this.handleChange(e,'type')}}>
@@ -129,36 +133,34 @@ class CreateProjectForm extends React.Component {
               <label>
                 Applications
               </label>
+
               {(() => {
                 if(this.state.newProject.apps.length){
                   return [
                     <div className={cx(c.float_right, c.padding_right)} key="create-button">
-                      <button type="submit" className="btn btn-success" onClick={this.handleCreateApp}>Create</button>
+                      <button type="submit" className="btn btn-default" onClick={this.handleCreateApp}>Create</button>
                     </div>,
                     <AppsListView apps={this.state.newProject.apps}
                                        handleAppClick={this.handleAppClick.bind(this)}
                                        handleDelete={this.handleDelete.bind(this)} key="app-list-view"/>
                   ]
                 } else {
-                  return <div className="text-center">
-                    <br/>
-                    <br/>
-                    <h4>Project contains no apps.</h4>
-                    <p>A project must contain at least one app. Add one or more apps for the project to continue.</p>
-                    <button type="submit" className="btn btn-success" onClick={this.handleCreateApp}>Create App</button>
-                  </div>
+                  return <EmptyState hideTitle={true}>
+                    <div className="text-center">
+                      <h4>Project contains no apps.</h4>
+                      <p>A project must contain at least one app. Add one or more apps for the project to continue.</p>
+                      <button type="submit" className="btn btn-default" onClick={this.handleCreateApp}>Create App</button>
+                    </div>
+                  </EmptyState>
                 }
               })()}
             </div>
-            <br/>
-            <br/>
             <div className="form-group text-center">
               <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>Save</button>
               &nbsp;&nbsp;
               <button type="submit" className="btn btn-default" onClick={this.handleCancel}>Cancel</button>
             </div>
           </form>
-        </EmptyState>
       )
     } else if (this.state.createAppView){
       return (

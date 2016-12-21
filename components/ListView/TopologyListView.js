@@ -42,16 +42,13 @@ class TopologyListView extends React.Component {
 
             <div className="list-view-pf-actions">
               {/*<button className="btn btn-danger" disabled={!topology.isBuildable}>Build</button>*/}
-              <button className="btn btn-danger" onClick={(e) => {this.props.handleDeleteTopology(e, topology.id)}}>Delete</button>
+              <button className="btn btn-default" onClick={(e) => {this.props.handleDeleteTopology(e, topology.id)}}>Delete</button>
             </div>
 
             <div className="list-view-pf-main-info">
-              <div className="list-view-pf-left">
-                <span className="fa fa-plane list-view-pf-icon-sm"></span>
-              </div>
               <div className="list-view-pf-body">
                 <div className="list-view-pf-description">
-                  <div className="list-group-item-heading">
+                  <div className="list-group-item-heading blue-text">
                     { topology.name }
                   </div>
                   <div className="list-group-item-text">

@@ -41,7 +41,7 @@ class AppListView extends React.Component {
           <div className="list-group-item app-group-item" key={i} data-id={i}>
 
             <div className="list-view-pf-actions">
-              <button className="btn btn-danger" onClick={(e) => {this.props.handleDelete(e, i)}}>Delete</button>
+              <button className="btn btn-default" onClick={(e) => {this.props.handleDelete(e, i)}}>Delete</button>
             </div>
 
             <div className="list-view-pf-main-info">
@@ -50,7 +50,7 @@ class AppListView extends React.Component {
               </div>
               <div className="list-view-pf-body">
                 <div className="list-view-pf-description">
-                  <div className="list-group-item-heading">
+                  <div className="list-group-item-heading blue-text">
                     { app.name }
                   </div>
                   <div className="list-group-item-text">

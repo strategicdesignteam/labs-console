@@ -31,8 +31,9 @@ class CreateUserForm extends React.Component {
 
   render() {
     return (
-      <EmptyState title={ Object.keys(this.props.value).length === 0 ? 'Create User' : 'Edit User'}>
         <form className="form-horizontal" role="form">
+          <h2>{Object.keys(this.props.value).length === 0 ? 'Create User' : 'Edit User'}</h2>
+          <hr/>
           <div className="form-group">
             <label htmlFor="firstname" className="col-sm-2 control-label required-pf">First Name</label>
             <div className="col-sm-10">
@@ -81,13 +82,12 @@ class CreateUserForm extends React.Component {
                         onChange={(e) => { this.handleChange(e,'ssh_public_key')}}/>
             </div>
           </div>
-          <div className="form-group">
+          <div className="form-group text-center">
             <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>Save</button>
             &nbsp;&nbsp;
             <button type="submit" className="btn btn-default" onClick={this.handleCancel}>Cancel</button>
           </div>
         </form>
-      </EmptyState>
     )
   }
 }
