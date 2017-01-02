@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import EmptyState from '../EmptyState/EmptyState';
+import labsApi from '../../data/index';
 
 class CreateUserForm extends React.Component {
 
@@ -12,7 +12,24 @@ class CreateUserForm extends React.Component {
   };
 
   handleSubmit = (event) => {
-    this.props.handleSubmit(event, this.state.newUser);
+    let userApi = new labsApi.UserApi();
+    let user = new labsApi.User();
+    Object.assign(user, this.state.newUser);
+    if(user.id){
+      //edit mode
+      userApi.updateUser(user.id, {'body': user}, (e) => {
+        //todo: display an error
+        if (e) console.error(e);
+        this.props.handleSubmit(event, user);
+      });
+    } else {
+      //create mode
+      userApi.addUser({'body': user}, (e) => {
+        //todo: display an error
+        if (e) console.error(e);
+        this.props.handleSubmit(event, user);
+      });
+    }
   };
 
   handleCancel = (event) => {

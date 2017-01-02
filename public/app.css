@@ -76,6 +76,18 @@ hr {
   color: #0088ce;
 }
 
+/* pf-tabs */
+ul.nav.nav-tabs {
+  margin-bottom: 20px;
+}
+
+/* pf-toolbar overrides */
+@media (min-width: 768px){
+  .toolbar-pf-actions .toolbar-pf-filter {
+    width: 33%;
+  }
+}
+
 /** why is pf setting display none?? **/
 select.selectpicker {
   display: block !important;
@@ -85,4 +97,110 @@ select.selectpicker {
 .card-pf-body .dropdown-kebab-pf .btn-link {
   padding-top: 0;
   margin-top: -2px;
+}
+
+/** Dual Pane Selector CSS **/
+.dual-pane-selector {
+  width: 100%;
+  padding: 20px 0;
+}
+
+.dual-pane-selector-list-container {
+  display: inline-block;
+  width: calc(50% - 32px);
+  vertical-align: top;
+}
+
+.dual-pane-selector-label {
+  width: 225px;
+}
+.dual-pane-selector-label .dual-pane-selector-label-left {
+  float: right;
+  margin-right: 5px;
+}
+.dual-pane-selector-label .dual-pane-selector-label-right {
+  float: left;
+  margin-left: 5px;
+}
+
+.dual-pane-selector-list.dual-pane-selector-list-left {
+  float: right;
+  margin-right: 5px;
+}
+.dual-pane-selector-list.dual-pane-selector-list-right {
+  float: left;
+  margin-left: 5px;
+}
+.dual-pane-selector-list .dual-pane-selector-items-container {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  height: 200px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 225px;
+}
+.dual-pane-selector-list .dual-pane-selector-item {
+  cursor: pointer;
+  padding: 0 10px;
+  width: 100%;
+}
+.dual-pane-selector-list .dual-pane-selector-item .dual-pane-selector-item-select-indicator {
+  display: inline-block;
+  font-size: 12px;
+  margin-left: 10px;
+  vertical-align: middle;
+  visibility: hidden;
+}
+.dual-pane-selector-list .dual-pane-selector-item.selected {
+  background-color: #3397db;
+  color: #fff;
+}
+.dual-pane-selector-list .dual-pane-selector-item.selected .dual-pane-selector-item-select-indicator {
+  visibility: visible;
+}
+.dual-pane-selector-list .dual-pane-selector-item:hover {
+  background-color: #d4edfa;
+  color: #030303;
+}
+.dual-pane-selector-list .dual-pane-selector-item-container {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: calc(100% - 26px);
+}
+
+.dual-pane-selector-button-container {
+  display: inline-block;
+  padding: 0 10px;
+  width: 40px;
+}
+.dual-pane-selector-button-container .btn-link {
+  font-size: 24px;
+  text-decoration: none;
+}
+.dual-pane-selector-button-container .btn-link:hover {
+  text-decoration: none;
+}
+.dual-pane-selector-button-container .btn-link:focus {
+  outline: none;
+}
+.dual-pane-selector-button-container .dual-pane-selector-select-button-container {
+  height: 125px;
+  position: relative;
+}
+.dual-pane-selector-button-container .dual-pane-selector-select-button-container.dual-pane-selector-select-button-container-top .btn-link {
+  bottom: 10px;
+  position: absolute;
+}
+.dual-pane-selector-button-container .dual-pane-selector-select-button-container.dual-pane-selector-select-button-container-bottom .btn-link {
+  position: absolute;
+  top: 10px;
+}
+
+.dual-pane-selector-count-text {
+  /*border: 1px solid rgba(0, 0, 0, 0.3);
+  border-top-width: 0; */
+  padding-left: 5px;
+  min-height: 20px;
 }
