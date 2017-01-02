@@ -4,9 +4,10 @@ import TableView from '../../components/TableView/TableView';
 import ToolbarView from '../../components/Toolbar/ToolbarView';
 import CreateUserForm from '../../components/Forms/CreateUserForm';
 import CreateGroupForm from '../../components/Forms/CreateGroupForm';
+import Tabs from '../../components/Tabs/Tabs'
+import Tab from '../../components/Tabs/Tab';
 import labsApi from '../../data/index';
 import constants from '../../core/constants';
-import c from '../common.css'
 
 class UsersPage extends React.Component {
 
@@ -37,17 +38,6 @@ class UsersPage extends React.Component {
     this.getGroups();
   }
 
-  componentDidUpdate() {
-    if(this.refs.pfTabs){
-      //track our active tab based on what the last state was (once user has navigated to create/edit screens)
-      this.refs.pfTabs.setActiveTab(this.state.activeTab);
-      //keeps our state in sync
-      this.refs.pfTabs.addEventListener('tabChanged', (e) =>{
-        this.setState({activeTab: e.detail});
-      });
-    }
-  }
-
   getUsers() {
     let userApi = new labsApi.UserApi();
     userApi.usersGet((error, users, res) => {
@@ -73,6 +63,12 @@ class UsersPage extends React.Component {
     });
 
     this.setState({groups: groups, groupsJoined: groupsJoined});
+  }
+
+  handleTabChanged(e){
+    if(this.state.activeTab != e.detail){
+      this.setState({activeTab: e.detail});
+    }
   }
 
   /**
@@ -274,14 +270,14 @@ class UsersPage extends React.Component {
             return [
               pageHeader,
               <br key="users-page-br"/>,
-              <pf-tabs key="pf-tabs" ref="pfTabs">
-                <pf-tab tabTitle="Users" key="users-tab">
+              <Tabs key="pf-tabs" ref="pfTabs" tabChanged={this.handleTabChanged.bind(this)}>
+                <Tab tabTitle="Users" active={this.state.activeTab == 'Users'}>
                   {userTab}
-                </pf-tab>
-                <pf-tab tabTitle="Groups" key="groups-tab">
+                </Tab>
+                <Tab tabTitle="Groups" active={this.state.activeTab == 'Groups'}>
                   {groupTab}
-                </pf-tab>
-              </pf-tabs>
+                </Tab>
+              </Tabs>
             ];
           }
         })()}
