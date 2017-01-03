@@ -12,6 +12,7 @@ class CreateUserForm extends React.Component {
   };
 
   handleSubmit = (event) => {
+    event.preventDefault();
     let userApi = new labsApi.UserApi();
     let user = new labsApi.User();
     Object.assign(user, this.state.newUser);

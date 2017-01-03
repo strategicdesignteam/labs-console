@@ -83,7 +83,6 @@ class UsersPage extends React.Component {
   };
 
   handleCreateUserSubmit = (event, u) => {
-    event.preventDefault();
     this.getUsers();
     this.setState({createUserView: false, activeTab: 'Users', usersFilterText: ''});
   };
@@ -123,7 +122,6 @@ class UsersPage extends React.Component {
   };
 
   handleCreateGroupSubmit = (event, u) => {
-    event.preventDefault();
     this.getGroups();
     this.setState({createGroupView: false, activeTab: 'Groups', groupsFilterText: ''});
   };

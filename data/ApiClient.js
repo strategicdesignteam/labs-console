@@ -55,9 +55,9 @@
      * @default https://localhost
      */
     if(window.location.host.indexOf('localhost') > -1){
-      this.basePath = 'http://localhost:8080'; //point at a local node service running on :8080 if local
+      this.basePath = 'http://localhost:8080/api'; //point at a local node service running on :8080 if local
     } else {
-      this.basePath = window.location.protocol + '//' + window.location.host;
+      this.basePath = window.location.protocol + '//' + window.location.host + '/api';
     }
 
     /**

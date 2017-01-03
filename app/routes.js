@@ -9,23 +9,23 @@ module.exports = function(app) {
   // authentication routes here
 
   //builds routes
-  app.post('/builds', BuildService.addBuild);
-  app.get('/builds', BuildService.buildsGET);
-  app.get('/builds/:id', BuildService.buildsIdGET);
+  app.post('/api/builds', BuildService.addBuild);
+  app.get('/api/builds', BuildService.buildsGET);
+  app.get('/api/builds/:id', BuildService.buildsIdGET);
 
   //users routes
-  app.post('/users', UserService.addUser);
-  app.get('/users', UserService.usersGET);
-  app.get('/users/:id', UserService.usersIdGET);
-  app.put('/users/:id', UserService.updateUser);
-  app.delete('/users/:id', UserService.deleteUser);
+  app.post('/api/users', UserService.addUser);
+  app.get('/api/users', UserService.usersGET);
+  app.get('/api/users/:id', UserService.usersIdGET);
+  app.put('/api/users/:id', UserService.updateUser);
+  app.delete('/api/users/:id', UserService.deleteUser);
 
   //topologies routes
-  app.post('/topologies', TopologyService.addTopology);
-  app.get('/topologies', TopologyService.topologiesGET);
-  app.get('/topologies/:id', TopologyService.topologiesIdGET);
-  app.put('/topologies/:id', TopologyService.updateTopology);
-  app.delete('/topologies/:id', TopologyService.deleteTopology);
+  app.post('/api/topologies', TopologyService.addTopology);
+  app.get('/api/topologies', TopologyService.topologiesGET);
+  app.get('/api/topologies/:id', TopologyService.topologiesIdGET);
+  app.put('/api/topologies/:id', TopologyService.updateTopology);
+  app.delete('/api/topologies/:id', TopologyService.deleteTopology);
 
 
   // frontend routes =========================================================
