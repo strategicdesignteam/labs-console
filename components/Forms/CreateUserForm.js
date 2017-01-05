@@ -95,7 +95,7 @@ class CreateUserForm extends React.Component {
           <div className="form-group">
             <label htmlFor="sshkey" className="col-sm-2 control-label">SSH Public Key</label>
             <div className="col-sm-10">
-              <textarea className="form-control" id="sshkey" placeholder="paste your ssh key here..." rows="2"
+              <textarea className="form-control" id="sshkey" placeholder="paste your ssh key here..." rows="6"
                         value={this.state.newUser.ssh_public_key}
                         onChange={(e) => { this.handleChange(e,'ssh_public_key')}}/>
             </div>
