@@ -53,12 +53,19 @@ $ cd labs-console
 $ npm install                   # Install project dependencies listed in package.json
 ```
 
-**Step 2**. Launch the node.js backend (ensure you have an instance of Mongo running first, guide for Mac OSX [here](http://treehouse.github.io/installation-guides/mac/mongo-mac.html)):
+**Step 2**. Launch Mongodb locally. You can do this with Docker via:
+ ```
+ docker run --rm --detach -p 27017:27017 -P -e MONGODB_USER=mongo -e MONGODB_PASSWORD=mongo -e MONGODB_DATABASE=mongo -e MONGODB_ADMIN_PASSWORD=mongo openshift/mongodb-24-centos7
+ export MONGO_URL=mongodb://mongo:mongo@localhost:27017/mongo
+ npm start
+ ```
+
+**Step 3**. Launch the node.js backend (ensure you have an instance of Mongo running first, guide for Mac OSX [here](http://treehouse.github.io/installation-guides/mac/mongo-mac.html)):
 ```shell
 $ node server.js
 ```
 
-**Step 3**. Compile and launch the UI:
+**Step 4**. Compile and launch the UI:
 
 ```shell
 $ node run
