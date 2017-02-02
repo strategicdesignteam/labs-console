@@ -6,12 +6,18 @@ var express = require('express'),
   cors = require('cors'),
   bodyParser = require('body-parser'),
   methodOverride = require('method-override'),
-  autoIncrement = require('mongoose-auto-increment');
+  autoIncrement = require('mongoose-auto-increment'),
+  Keycloak = require('keycloak-connect'),
+  session = require('express-session');
+ 
+var memoryStore = new session.MemoryStore();
+var keycloak = new Keycloak({ store: memoryStore });
 
 Object.assign=require('object-assign');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(keycloak.middleware());
 app.use(cors());
 app.use(morgan('combined'));
 
@@ -70,7 +76,7 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(express.static(__dirname + '/public'));
 
 // routes ==================================================
-require('./app/routes')(app); // pass our application into our routes
+require('./app/routes')(app, keycloak);
 
 // error handling
 app.use(function(err, req, res, next){

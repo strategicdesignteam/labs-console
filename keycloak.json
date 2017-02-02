@@ -1,0 +1,8 @@
+{
+  "realm": "rht-labs",
+  "realm-public-key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiemx06QgwSvjjjSbDwNP5kWuUJkiQNwNGzi+mzwszTsTfizJLTpZxdAXc66PzX6ym3Muhle3BUmYhU9uYwfPGRXhCSVAxoBvH54li868HUtGIyODFhMpfBxuy2XZpOd5HGbxEzWt0OzwF2S13e6xyAXJeOhaRDF4ghpEtvvqYMz0dYELP/vrEmwoHVu6tkUdenE1VKHmbYLeScFpi5TVSrF77mG7u3pEe/AVmtD5AoVFGgIlWx30pK1D4tskA4MxLMTBCpEQnko8Jssn6C/jdnfHrx7ZLUPXoB3mYXGiPkHc/uNxl/r+QsrVRVPrPyVWgSbGJ3OSoiVXsKTEO/cyUwIDAQAB",
+  "auth-server-url": "https://secure-sso-acme-infra.apps.acme.e2e.bos.redhat.com/auth",
+  "ssl-required": "external",
+  "resource": "labs-console",
+  "public-client": true
+}
