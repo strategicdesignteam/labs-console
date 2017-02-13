@@ -5,6 +5,7 @@ import ProjectCardView from '../../components/CardView/ProjectCardView';
 import StagesCardView from '../../components/CardView/StagesCardView';
 import CreateProjectForm from '../../components/Forms/CreateProjectForm';
 import CreateStageForm from '../../components/Forms/CreateStageForm';
+import FileDownload from '../../core/fileDownload';
 import Modal from '../../components/Modal/Modal';
 import history from '../../core/history';
 import labsApi from '../../data/index';
@@ -85,6 +86,17 @@ class TopologyPage extends React.Component {
     this.setState({startBuildModal: true});
   };
 
+  handleDownload = (event, index) => {
+    event.preventDefault();
+    let buildApi = new labsApi.BuildApi();
+    buildApi.downloadEngagement(this.state.topology.id, (e, data, res) => {
+      if(e) console.log(e);
+
+      //for now, we will download the JSON to the user's browser
+      FileDownload.saveJson(data.engagement);
+    });
+  };
+
   cancelStart = (event) => {
     event.preventDefault();
     this.hideStartBuildModal();
@@ -100,7 +112,7 @@ class TopologyPage extends React.Component {
     let buildApi = new labsApi.BuildApi();
     buildApi.addBuild({body: {topologyId : this.state.topology.id}}, (e, data, res) => {
       if(e) console.log(e);
-      //todo: stop build spinner here...
+
       this.hideStartBuildModal();
       setTimeout(() => {
         history.push('/builds');
@@ -132,6 +144,8 @@ class TopologyPage extends React.Component {
                     &nbsp; { this.state.topology.name }
                   </li>
                   <div className={c.float_right}>
+                    <button type="submit" className="btn btn-default" onClick={this.handleDownload} disabled={!this.state.projects.length || !this.state.stages.length}>Download JSON</button>
+                    &nbsp;&nbsp;
                     <button type="submit" className="btn btn-primary" onClick={this.handleBuild} disabled={!this.state.projects.length || !this.state.stages.length}>Build</button>
                   </div>
                 </ol>

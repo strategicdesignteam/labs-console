@@ -65,3 +65,20 @@ exports.buildsIdGET = function(args, res, next) {
     });
 };
 
+exports.downloadEngagement = function(args, res, next) {
+  /**
+   * Temporary method to manually construct engagement JSON and download it to client
+   */
+  Topology.findById(args.params.id, function (err, topology) {
+    if(err) { return common.handleError(res, err); }
+    if(!topology) { return res.send(404); }
+
+    //call the Automation API - if successful, create a new Build entry, if not, ignore and return
+    automation.createAutomation(topology).then((data) => {
+      res.json({ engagement: data.engagement });
+    }).catch((err) => {
+      //error creating the automation
+      return common.handleError(res, err);
+    });
+  });
+};

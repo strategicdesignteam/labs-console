@@ -13,6 +13,8 @@ module.exports = function(app) {
   app.get('/api/builds', BuildService.buildsGET);
   app.get('/api/builds/:id', BuildService.buildsIdGET);
 
+  app.get('/api/downloadEngagement/:id', BuildService.downloadEngagement);
+
   //users routes
   app.post('/api/users', UserService.addUser);
   app.get('/api/users', UserService.usersGET);
@@ -26,7 +28,6 @@ module.exports = function(app) {
   app.get('/api/topologies/:id', TopologyService.topologiesIdGET);
   app.put('/api/topologies/:id', TopologyService.updateTopology);
   app.delete('/api/topologies/:id', TopologyService.deleteTopology);
-
 
   // frontend routes =========================================================
   // route to handle all react requests

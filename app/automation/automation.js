@@ -30,7 +30,7 @@ module.exports.createAutomation = function(topology){
           if(err) reject(err);
 
           //response was successful
-          resolve(topology);
+          resolve({topology: topology, engagement: data});
         });
       } else {
         engagementApi.addEngagement({body: engagement}, (err, data, res) => {
@@ -43,7 +43,7 @@ module.exports.createAutomation = function(topology){
             topology.engagement_id = parseInt(e[e.length - 1]);
             topology.save(function(err, topology) {
               if(err) reject(err);
-              resolve(topology);
+              resolve({topology: topology, engagement: data});
             });
           } else {
             //this shouldn't happen, reject for missing location
@@ -53,7 +53,7 @@ module.exports.createAutomation = function(topology){
       }
     } else {
       //this labs-console instance does not have automations enabled, just return the topology without it
-      resolve(topology);
+      resolve({topology: topology, engagement: engagement});
     }
   });
 };

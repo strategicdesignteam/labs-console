@@ -95,6 +95,9 @@
       if (data.hasOwnProperty('status')) {
         obj['status'] = ApiClient.convertToType(data['status'], 'String');
       }
+      if (data.hasOwnProperty('engagement')) {
+        obj['engagement'] = data['engagement'];
+      }
     }
     return obj;
   }
@@ -131,7 +134,10 @@
    * @member {String} status
    */
   exports.prototype['status'] = undefined;
-
+  /**
+   * @member {Object} engagement
+   */
+  exports.prototype['engagement'] = undefined;
 
 
   return exports;

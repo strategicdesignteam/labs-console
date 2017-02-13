@@ -85,7 +85,7 @@
       var authNames = [];
       var contentTypes = ['application/json'];
       var accepts = ['application/json'];
-      var returnType = null;
+      var returnType = Object;
 
       return this.apiClient.callApi(
         '/builds', 'POST',
@@ -172,6 +172,51 @@
 
       return this.apiClient.callApi(
         '/builds/{id}', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the downloadEngagement operation.
+     * @callback module:api/BuildApi~downloadEngagementCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Build} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Gets a &#x60;Build&#x60; object by ID. 
+     * @param {Integer} id Topology ID
+     * @param {module:api/BuildApi~downloadEngagementCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:Object}
+     */
+    this.downloadEngagement = function(id, callback) {
+      var postBody = null;
+
+      // verify the required parameter 'id' is set
+      if (id == undefined || id == null) {
+        throw "Missing the required parameter 'id' when calling downloadEngagement";
+      }
+
+
+      var pathParams = {
+        'id': id
+      };
+      var queryParams = {
+      };
+      var headerParams = {
+      };
+      var formParams = {
+      };
+
+      var authNames = [];
+      var contentTypes = [];
+      var accepts = [];
+      var returnType = Object;
+
+      return this.apiClient.callApi(
+        '/downloadEngagement/{id}', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, callback
       );
