@@ -85,7 +85,7 @@
       var authNames = [];
       var contentTypes = ['application/json'];
       var accepts = ['application/json'];
-      var returnType = null;
+      var returnType = Object;
 
       return this.apiClient.callApi(
         '/builds', 'POST',

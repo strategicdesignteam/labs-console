@@ -27,7 +27,7 @@ exports.addBuild = function(args, res, next) {
 
       newBuild.save(function(err, build) {
         if (err) return common.handleError(res, err);
-        res.json({ build: build });
+        res.json({ build: build, engagement: data.engagement });
       });
     }).catch((err) => {
       //error creating the automation

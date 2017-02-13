@@ -5,6 +5,7 @@ import ProjectCardView from '../../components/CardView/ProjectCardView';
 import StagesCardView from '../../components/CardView/StagesCardView';
 import CreateProjectForm from '../../components/Forms/CreateProjectForm';
 import CreateStageForm from '../../components/Forms/CreateStageForm';
+import FileDownload from '../../core/fileDownload';
 import Modal from '../../components/Modal/Modal';
 import history from '../../core/history';
 import labsApi from '../../data/index';
@@ -100,7 +101,10 @@ class TopologyPage extends React.Component {
     let buildApi = new labsApi.BuildApi();
     buildApi.addBuild({body: {topologyId : this.state.topology.id}}, (e, data, res) => {
       if(e) console.log(e);
-      //todo: stop build spinner here...
+
+      //for now, we will download the JSON to the user's browser
+      FileDownload.saveJson(data.engagement);
+
       this.hideStartBuildModal();
       setTimeout(() => {
         history.push('/builds');
