@@ -57,7 +57,7 @@ class ProjectCardView extends React.Component {
                     <ul className="dropdown-menu dropdown-menu-right" aria-labelledby="dropupKebabRight2">
                       <li><a href="#" onClick={(e) => {this.props.handleProjectEdit(e, i);}}>View Project</a></li>
                       <li role="separator" className="divider"></li>
-                      <li><a href="#">Delete</a></li>
+                      <li><a href="#" onClick={(e) => {this.props.handleProjectDelete(e, i);}}>Delete</a></li>
                     </ul>
                   </div>
                 </div>

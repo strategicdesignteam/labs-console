@@ -42,6 +42,11 @@ hr {
   border-top: 1px solid #ececec;
 }
 
+/* list-view heading override */
+.list-view-pf-description .list-group-item-heading.blue-text {
+  cursor: pointer;
+}
+
 /** list-view icon overrides **/
 .list-view-pf-left .pficon.list-view-pf-icon-sm {
   border: 2px solid transparent;
@@ -97,6 +102,10 @@ select.selectpicker {
 .card-pf-body .dropdown-kebab-pf .btn-link {
   padding-top: 0;
   margin-top: -2px;
+}
+
+.card-pf-body .card-pf-title.blue-text {
+  cursor: pointer;
 }
 
 /** Dual Pane Selector CSS **/

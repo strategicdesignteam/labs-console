@@ -121,6 +121,33 @@ class TopologyPage extends React.Component {
     //todo: start build spinner here...
   };
 
+  handleStageDelete = (event, index) => {
+    let copy = this.state.topology.promotion_process.slice(0);
+    let topology = Object.assign({}, this.state.topology);
+    copy.splice(index,1);
+    topology.promotion_process = copy;
+
+    this.saveTopology(event, topology);
+  }
+
+  handleProjectDelete = (event, index) => {
+    let copy = this.state.topology.project_templates.slice(0);
+    let topology = Object.assign({}, this.state.topology);
+    copy.splice(index,1);
+    topology.project_templates = copy;
+
+    this.saveTopology(event, topology);
+  }
+
+  saveTopology(event, topology) {
+    event.preventDefault();
+    let topologyApi = new labsApi.TopologyApi();
+    topologyApi.updateTopology(topology.id, {'body': topology}, (e) => {
+      if(e) console.log(e); //todo: handle error
+      this.getTopology(); //refresh after update
+    });
+  }
+
   render() {
     if(this.state.homeView){
       document.body.style.backgroundColor = constants.bg_grey;
@@ -163,7 +190,10 @@ class TopologyPage extends React.Component {
             );
 
             if(this.state.stages.length){
-              content.push(<StagesCardView stages={ this.state.stages } handleStageEdit={this.handleStageEdit.bind(this)} key="topologies-stages" />);
+              content.push(<StagesCardView stages={ this.state.stages } 
+                                          handleStageEdit={this.handleStageEdit.bind(this)} 
+                                          handleStageDelete={this.handleStageDelete.bind(this)} 
+                                          key="topologies-stages" />);
             } else if(!this.state.stages.length) {
               content.push(<h4 key="topologies-no-topologies">No stages defined.</h4>);
               content.push(<p key="topologies-no-topologies-message">An application topology can't be built until it contains at least one stage. Create a stage first.</p>)
@@ -186,6 +216,7 @@ class TopologyPage extends React.Component {
             if(this.state.projects.length){
               content.push(<ProjectCardView projects={ this.state.projects }
                                             handleProjectEdit = {this.handleProjectEdit.bind(this)}
+                                            handleProjectDelete={this.handleProjectDelete.bind(this)}
                                             key="topologies-project-card-view"/>);
             } else{
               content.push(<h4 key="topologies-no-projects">No projects exist.</h4>);

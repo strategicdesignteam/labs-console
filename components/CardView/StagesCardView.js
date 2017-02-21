@@ -57,7 +57,7 @@ class StagesCardView extends React.Component {
                     <ul className="dropdown-menu dropdown-menu-right" aria-labelledby="dropupKebabRight2">
                       <li><a href="#" onClick={(e) => {this.props.handleStageEdit(e, i);}}>View Stage</a></li>
                       <li role="separator" className="divider"></li>
-                      <li><a href="#">Delete</a></li>
+                      <li><a href="#" onClick={(e) => {this.props.handleStageDelete(e, i);}}>Delete</a></li>
                     </ul>
                   </div>
 
