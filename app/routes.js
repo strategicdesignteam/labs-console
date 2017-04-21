@@ -1,4 +1,5 @@
 var BuildService = require('./controllers/BuildService');
+var JobsService = require('./controllers/JobsService');
 var TopologyService = require('./controllers/TopologyService');
 var UserService = require('./controllers/UserService');
 
@@ -7,6 +8,10 @@ module.exports = function(app) {
   // server routes ===========================================================
   // handle things like api calls
   // authentication routes here
+
+  //tower jobs routes
+  app.post('/api/jobs', JobsService.addJob);
+  app.get('/api/jobs/:id', JobsService.jobsIdGET);
 
   //builds routes
   app.post('/api/builds', BuildService.addBuild);
