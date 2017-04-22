@@ -1,12 +1,13 @@
 import React, { PropTypes } from 'react';
 import Layout from '../../components/Layout';
 import Link from '../../components/Link';
+import TopologyView from '../../components/CommonViews/TopologyView';
+import ProjectView from '../../components/CommonViews/ProjectView';
 import ProjectCardView from '../../components/CardView/ProjectCardView';
 import StagesCardView from '../../components/CardView/StagesCardView';
 import CreateProjectForm from '../../components/Forms/CreateProjectForm';
 import CreateStageForm from '../../components/Forms/CreateStageForm';
 import FileDownload from '../../core/fileDownload';
-import Modal from '../../components/Modal/Modal';
 import history from '../../core/history';
 import labsApi from '../../data/index';
 import selectors from '../../data/selectors';
@@ -38,59 +39,56 @@ class TopologyPage extends React.Component {
     this.getTopology();
   }
 
-  getTopology(){
+  getTopology() {
     let topologyApi = new labsApi.TopologyApi();
     topologyApi.topologiesIdGet(this.props.route.params.id, (error, topology, res) => {
       selectors.isBuildable([topology]);
-      this.setState({topology: topology});
-      this.setState({projects: topology.project_templates});
-      this.setState({stages: topology.promotion_process});
+      this.setState({ topology: topology });
+      this.setState({ projects: topology.project_templates });
+      this.setState({ stages: topology.promotion_process });
     });
   }
 
   handleCreateProject = (event) => {
-    this.setState({homeView: false, createProjectView: true, newProject: {}});
+    this.setState({ homeView: false, createProjectView: true, newProject: {} });
     event.preventDefault();
   };
 
   handleSubmitProject = (event) => {
     this.getTopology(); //refresh
-    this.setState({homeView: true, createProjectView: false});
+    this.setState({ homeView: true, createProjectView: false });
   };
 
   handleCancelProject = (event) => {
     event.preventDefault();
-    this.setState({homeView: true, createProjectView: false});
+    this.setState({ homeView: true, createProjectView: false });
   };
 
-  handleDefine = (event) =>
-  {
-    this.setState({homeView: false, createStageView: true, newStage: {}});
+  handleDefine = (event) => {
+    this.setState({ homeView: false, createStageView: true, newStage: {} });
     event.preventDefault();
   };
 
-  handleStageEdit = (event, index) =>
-  {
-    this.setState({newStage: this.state.stages[index], homeView: false, createStageView: true});
+  handleStageEdit = (event, index) => {
+    this.setState({ newStage: this.state.stages[index], homeView: false, createStageView: true });
     event.preventDefault();
   };
 
-  handleProjectEdit = (event, index) =>
-  {
-    this.setState({newProject: this.state.projects[index], homeView: false, createProjectView: true});
+  handleProjectEdit = (event, index) => {
+    this.setState({ newProject: this.state.projects[index], homeView: false, createProjectView: true });
     event.preventDefault();
   };
 
   handleBuild = (event, index) => {
     event.preventDefault();
-    this.setState({startBuildModal: true});
+    this.setState({ startBuildModal: true });
   };
 
   handleDownload = (event, index) => {
     event.preventDefault();
     let buildApi = new labsApi.BuildApi();
     buildApi.downloadEngagement(this.state.topology.id, (e, data, res) => {
-      if(e) console.log(e);
+      if (e) console.log(e);
 
       //for now, we will download the JSON to the user's browser
       FileDownload.saveJson(data.engagement);
@@ -101,17 +99,17 @@ class TopologyPage extends React.Component {
     event.preventDefault();
     this.hideStartBuildModal();
   };
-  
-  hideStartBuildModal(){
+
+  hideStartBuildModal() {
     $('#' + this.startBuildModalId).modal('hide');
-    this.setState({startBuildModal: false});
+    this.setState({ startBuildModal: false });
   }
 
   startBuild = (event) => {
     event.preventDefault();
     let buildApi = new labsApi.BuildApi();
-    buildApi.addBuild({body: {topologyId : this.state.topology.id}}, (e, data, res) => {
-      if(e) console.log(e);
+    buildApi.addBuild({ body: { topologyId: this.state.topology.id } }, (e, data, res) => {
+      if (e) console.log(e);
 
       this.hideStartBuildModal();
       setTimeout(() => {
@@ -124,7 +122,7 @@ class TopologyPage extends React.Component {
   handleStageDelete = (event, index) => {
     let copy = this.state.topology.promotion_process.slice(0);
     let topology = Object.assign({}, this.state.topology);
-    copy.splice(index,1);
+    copy.splice(index, 1);
     topology.promotion_process = copy;
 
     this.saveTopology(event, topology);
@@ -133,7 +131,7 @@ class TopologyPage extends React.Component {
   handleProjectDelete = (event, index) => {
     let copy = this.state.topology.project_templates.slice(0);
     let topology = Object.assign({}, this.state.topology);
-    copy.splice(index,1);
+    copy.splice(index, 1);
     topology.project_templates = copy;
 
     this.saveTopology(event, topology);
@@ -142,127 +140,54 @@ class TopologyPage extends React.Component {
   saveTopology(event, topology) {
     event.preventDefault();
     let topologyApi = new labsApi.TopologyApi();
-    topologyApi.updateTopology(topology.id, {'body': topology}, (e) => {
-      if(e) console.log(e); //todo: handle error
+    topologyApi.updateTopology(topology.id, { 'body': topology }, (e) => {
+      if (e) console.log(e); //todo: handle error
       this.getTopology(); //refresh after update
     });
   }
 
   render() {
-    if(this.state.homeView){
+    if (this.state.homeView) {
       document.body.style.backgroundColor = constants.bg_grey;
     } else {
       document.body.style.backgroundColor = constants.bg_white;
     }
 
-    return (
-      <Layout className="container-fluid container-pf-nav-pf-vertical" nav= { true }>
-        {(() => {
-          if(this.state.homeView){
-            let content = [];
-            //Home View Content
-            content.push(
-              <div className="page-header" key="topologies-page-header">
-                <ol className="breadcrumb">
-                  <li>
-                    <Link to="/home">Back to Topologies</Link>
-                  </li>
-                  <li className="active"> <strong>Topology:</strong>
-                    &nbsp; { this.state.topology.name }
-                  </li>
-                  <div className={c.float_right}>
-                    <button type="submit" className="btn btn-default" onClick={this.handleDownload} disabled={!this.state.projects.length || !this.state.stages.length}>Download JSON</button>
-                    &nbsp;&nbsp;
-                    <button type="submit" className="btn btn-primary" onClick={this.handleBuild} disabled={!this.state.projects.length || !this.state.stages.length}>Build</button>
-                  </div>
-                </ol>
-              </div>);
-
-            content.push(
-              <h3 key="topologies-build-stages"> Promotion Stages
-                <span className={c.float_right}>
-                  <button type="submit" className="btn btn-default" onClick={this.handleDefine}>Define</button>
-                </span>
-              </h3>
-            );
-            content.push(
-              <br key="br-stages"/>
-            );
-
-            if(this.state.stages.length){
-              content.push(<StagesCardView stages={ this.state.stages } 
-                                          handleStageEdit={this.handleStageEdit.bind(this)} 
-                                          handleStageDelete={this.handleStageDelete.bind(this)} 
-                                          key="topologies-stages" />);
-            } else if(!this.state.stages.length) {
-              content.push(<h4 key="topologies-no-topologies">No stages defined.</h4>);
-              content.push(<p key="topologies-no-topologies-message">An application topology can't be built until it contains at least one stage. Create a stage first.</p>)
-            } else {
-              content.push(<h4 key="topologies-ready">Ready to build topology.</h4>);
-              content.push(<p key="topologies-ready-message">Hit the build button when ready to build your application topology.</p>)
-            }
-
-            content.push(<hr key="topologies-hr"/>);
-            content.push(
-              <h3 key="topologies-projects"> Project Templates
-                <div className={c.float_right}>
-                  <button type="submit" className="btn btn-default" onClick={this.handleCreateProject}>Create</button>
-                </div>
-              </h3>);
-
-            content.push(
-              <br key="br-projects"/>
-            );
-            if(this.state.projects.length){
-              content.push(<ProjectCardView projects={ this.state.projects }
-                                            handleProjectEdit = {this.handleProjectEdit.bind(this)}
-                                            handleProjectDelete={this.handleProjectDelete.bind(this)}
-                                            key="topologies-project-card-view"/>);
-            } else{
-              content.push(<h4 key="topologies-no-projects">No projects exist.</h4>);
-              content.push(<p key="topologies-no-projects-message">A topology must contain at least one project. Create a project to begin.</p>)
-            }
-            return content;
-          } else if (this.state.createProjectView){
-            //Create Project View Content
-            return <CreateProjectForm handleSubmit={this.handleSubmitProject.bind(this)}
-                                      handleCancel={this.handleCancelProject.bind(this)}
-                                      topology={this.state.topology}
-                                      value={this.state.newProject}/>;
-          } else if (this.state.createStageView){
-            return <CreateStageForm handleSubmit={this.handleSubmitProject.bind(this)}
-                                      handleCancel={this.handleCancelProject.bind(this)}
-                                      topology={this.state.topology}
-                                      value={this.state.newStage}/>
-          }
-
-        })()}
-
-        {(() => {
-          if (this.state.startBuildModal){
-            return <Modal id={this.startBuildModalId}
-                          handleClose={this.cancelStart.bind(this)}
-                          key="builds-modal">
-              <div className="text-center">
-                <div className={cx(c.spacing, c.slate_gray)}>
-                  <i className="fa fa-rocket fa-3x"></i>
-                </div>
-                <h3>Build Application Topology</h3>
-                <div className={c.spacing} >
-                  <strong>Topology:</strong> {this.state.topology.name}
-                </div>
-                <p>Are you sure?</p>
-                <div className={c.spacing}>
-                  <button className="btn btn-default btn-lg" onClick={this.cancelStart}>No</button>
-                  &nbsp;
-                  <button className="btn btn-primary btn-lg" onClick={this.startBuild}>Yes</button>
-                </div>
-              </div>
-            </Modal>
-          }
-        })()}
-      </Layout>
-    );
+    if (this.state.homeView) {
+      return (
+        <TopologyView topology={this.state.topology}
+          handleDownload={this.handleDownload}
+          handleBuild={this.handleBuild}
+          projects={this.state.projects}
+          stages={this.state.stages}
+          handleDefine={this.handleDefine}
+          handleStageEdit={this.handleStageEdit}
+          handleStageDelete={this.handleStageDelete}
+          handleCreateProject={this.handleCreateProject}
+          handleProjectEdit={this.handleProjectEdit}
+          handleProjectDelete={this.handleProjectDelete}
+          startBuildModal={this.state.startBuildModal}
+          startBuildModalId={this.startBuildModalId}
+          cancelStart={this.cancelStart}
+          startBuild={this.startBuild} />
+      )
+    } else if (this.state.createProjectView) {
+      return (
+        <ProjectView topology={this.state.topology}
+          handleSubmit={this.handleSubmitProject}
+          handleCancel={this.handleCancelProject}
+          value={this.state.newProject} />
+      )
+    } else if (this.state.createStageView) {
+      return (
+        <Layout className="container-fluid container-pf-nav-pf-vertical" nav={true}>
+          <CreateStageForm handleSubmit={this.handleSubmitProject}
+            handleCancel={this.handleCancelProject}
+            topology={this.state.topology}
+            value={this.state.newStage} />
+        </Layout>
+      );
+    }
   }
 }
 

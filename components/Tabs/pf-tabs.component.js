@@ -46,7 +46,10 @@ export class PfTabs extends HTMLElement {
    */
   attributeChangedCallback (attrName, oldValue, newValue) {
     if (attrName === 'class') {
-      this.querySelector('ul').className = newValue;
+      let ul = this.querySelector('ul');
+      if (ul) {
+        this.querySelector('ul').className = newValue;
+      }
     }
   }
 
@@ -188,19 +191,23 @@ export class PfTabs extends HTMLElement {
    */
   _makeTabsFromPfTab () {
     let ul = this.querySelector('ul');
-    let pfTabs = this.querySelectorAll('pf-tab');
-    [].forEach.call(pfTabs, function (pfTab, idx) {
-      let tab = this._makeTab(pfTab);
-      ul.appendChild(tab);
-      this.tabMap.set(tab, pfTab);
-      this.panelMap.set(pfTab, tab);
+    if(this.children && this.children.length){
+      let pfTabs = [].slice.call(this.children).filter(
+        (node) => { return node.nodeName === 'PF-TAB'}
+      );
+      [].forEach.call(pfTabs, function (pfTab, idx) {
+        let tab = this._makeTab(pfTab);
+        ul.appendChild(tab);
+        this.tabMap.set(tab, pfTab);
+        this.panelMap.set(pfTab, tab);
 
-      if (idx === 0) {
-        this._makeActive(tab);
-      } else {
-        pfTab.style.display = 'none';
-      }
-    }.bind(this));
+        if (idx === 0) {
+          this._makeActive(tab);
+        } else {
+          pfTab.style.display = 'none';
+        }
+      }.bind(this));      
+    }
   }
 
   /**

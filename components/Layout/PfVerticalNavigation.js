@@ -1,11 +1,11 @@
 // Util: PatternFly Vertical Navigation broken apart and converted to ES6 :)
 // Must have navbar-toggle in navbar-pf-vertical for expand/collapse
 (($ => {
-  $.fn.setupVerticalNavigation = handleItemSelections => {
+  $.fn.setupVerticalNavigation = (handleItemSelections, explicitlyCollapsed) => {
     const navElement = $('.nav-pf-vertical');
     const bodyContentElement = $('.container-pf-nav-pf-vertical');
     const toggleNavBarButton = $('.navbar-toggle');
-    let explicitCollapse = false;
+    let explicitCollapse = explicitlyCollapsed;
     let subDesktop = false;
     const hoverDelay = 500;
     const hideDelay = hoverDelay + 200;
@@ -498,7 +498,7 @@
       bindMenuItemsBehavior(handleItemSelections);
 
       //Set tooltips
-      setTooltips();
+      // setTooltips();
 
       loadFromLocalStorage();
 

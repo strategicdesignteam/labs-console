@@ -1,27 +1,24 @@
 import React from 'react';
 import Link from '../Link';
+import cx from 'classnames'
 import history from '../../core/history';
 import PfBreakpoints from './PfBreakpoints';
 import PfVerticalNavigation from './PfVerticalNavigation';
 
 class Navigation extends React.Component {
 
-  state = { topologyActive: false };
+  state = { topologyTabActive: false, explicitCollapse: false };
 
   componentDidMount() {
     // Initialize the vertical navigation
-    $().setupVerticalNavigation(true);
+    $().setupVerticalNavigation(true, this.props.explicitCollapse);
   }
 
   checkRoutes(location){
     let topologyRoutes = ['/home','/topology'];
-    for(var i =0; i< topologyRoutes.length; i++){
-      if(location.pathname.indexOf(topologyRoutes[i]) > -1){
-        this.setState({topologyActive: true});
-        return;
-      }
-    }
-    this.setState({topologyActive: false});
+    this.setState({
+      topologyTabActive: topologyRoutes.some((route) => {return location.pathname.indexOf(route) > -1})
+    })
   }
 
   componentWillMount(){
@@ -33,9 +30,9 @@ class Navigation extends React.Component {
     let location = history.getCurrentLocation();
 
     return (
-      <div className="nav-pf-vertical">
+      <div className={cx('nav-pf-vertical',{'collapsed': this.props.explicitCollapse})}>
         <ul className="list-group">
-          <li className={"list-group-item" + (this.state.topologyActive ? ' active' : '')}>
+          <li className={"list-group-item" + (this.state.topologyTabActive ? ' active' : '')}>
             <Link to="/home">
               <span className="fa fa-rocket" data-toggle="tooltip" title="Topology"></span>
               <span className="list-group-item-value">Topologies</span>

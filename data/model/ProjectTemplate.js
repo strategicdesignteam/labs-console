@@ -84,7 +84,9 @@
         obj['type'] = ApiClient.convertToType(data['type'], 'String');
       }
       if (data.hasOwnProperty('apps')) {
-        obj['apps'] = ApiClient.convertToType(data['apps'], [ApplicationTemplate]);
+        //I am overriding this to make the ApplicationTemplate more flexible for now...
+        // obj['apps'] = ApiClient.convertToType(data['apps'], [ApplicationTemplate]);
+        obj['apps'] = ApiClient.convertToType(data['apps'], [Object]);
       }
       if (data.hasOwnProperty('persistent_volume_claim_templates')) {
         obj['persistent_volume_claim_templates'] = ApiClient.convertToType(data['persistent_volume_claim_templates'], [PersistentVolumeClaimTemplate]);

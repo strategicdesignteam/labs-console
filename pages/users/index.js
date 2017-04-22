@@ -268,7 +268,7 @@ class UsersPage extends React.Component {
             return [
               pageHeader,
               <br key="users-page-br"/>,
-              <Tabs key="pf-tabs" ref="pfTabs" tabChanged={this.handleTabChanged.bind(this)}>
+              <Tabs key="pf-tabs" ref="pfTabs" tabChanged={this.handleTabChanged.bind(this)} tabsClass='nav nav-tabs user-tabs'>
                 <Tab tabTitle="Users" active={this.state.activeTab == 'Users'}>
                   {userTab}
                 </Tab>

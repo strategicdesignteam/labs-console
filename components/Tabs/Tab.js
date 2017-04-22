@@ -18,7 +18,8 @@ class Tab extends React.Component {
 
   static propTypes = {
     tabTitle: React.PropTypes.string,
-    active: React.PropTypes.bool
+    active: React.PropTypes.bool,
+    tabKey: React.PropTypes.string
   };
 
   componentDidUpdate() {
@@ -36,12 +37,17 @@ class Tab extends React.Component {
   }
 
   render() {
+    const {tabKey} = this.props;
     return (
-    <pf-tab tabTitle={this.props.tabTitle || ""} active={this.props.active || false} key="tab" ref="pfTab">
+    <pf-tab tabTitle={this.props.tabTitle || ""} active={this.props.active || false} key={tabKey} ref="pfTab">
       {this.props.children}
     </pf-tab>
     )
   }
+}
+
+Tab.defaultProps = {
+  tabKey: 'tab'
 }
 
 export default Tab;

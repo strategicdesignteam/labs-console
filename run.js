@@ -7,11 +7,10 @@ var del = require('del');
 var ejs = require('ejs');
 var webpack = require('webpack');
 
-// TODO: Update configuration settings
 var config = {
-  title: 'Patternfly React Starter', // Your website title
-  url: 'https://patternfly-react-starter.firebaseapp.com', // Your website URL
-  project: 'patternfly-react-starter', // Firebase project. See README.md -> How to Deploy
+  title: 'Labs Console', 
+  url: 'https://github.com/rht-labs/labs-console', 
+  project: 'labs-console',
   trackingID: 'UA-XXXXX-Y' };
 
 var tasks = new Map(); // The collection of automation tasks ('clean', 'build', 'publish', etc.)

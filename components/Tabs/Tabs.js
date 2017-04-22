@@ -20,11 +20,13 @@ class Tabs extends React.Component {
   state = {};
 
   static propTypes = {
-    tabChanged: React.PropTypes.func
+    tabsClass: React.PropTypes.string,
+    tabChanged: React.PropTypes.func,
+    tabsKey: React.PropTypes.string
   };
 
-  componentDidUpdate() {
-    this.refs.pfTabs.addEventListener('tabChanged', (e) =>{
+  componentDidMount() {
+    this.refs[this.props.tabsKey].addEventListener('tabChanged', (e) =>{
       if(this.props.tabChanged){
         this.props.tabChanged(e);
       }
@@ -32,12 +34,18 @@ class Tabs extends React.Component {
   }
 
   render() {
+    const {tabsClass, tabsKey} = this.props;
+
     return (
-      <pf-tabs key="pf-tabs" ref="pfTabs">
+      <pf-tabs key={tabsKey} ref={tabsKey} class={tabsClass}>
         {this.props.children}
       </pf-tabs>
     )
   }
+}
+Tabs.defaultProps = {
+  tabsClass: 'nav nav-tabs',
+  tabsKey: 'tabs'
 }
 
 export default Tabs;
