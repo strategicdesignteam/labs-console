@@ -131,11 +131,14 @@ class ProjectCanvasManager extends React.Component {
               <Tab tabTitle={projectTabs[0].title} active={this.state.activeTab === projectTabs[0].title}>
                 <Tabs key='app-tabs' ref='appTabs' tabsClass={'nav nav-tabs nav-tabs-pf'} 
                     tabChanged={this.handleAppDevTabChanged}>
-                  {projectTabs[0].categories.map((category) => {
+                  {projectTabs[0].categories.map((category, i) => {
                     return <Tab tabTitle={category.title} 
-                            active={this.state.activeAppDevTab === category.title} tabKey={category.title}>
+                            active={this.state.activeAppDevTab === category.title} 
+                            tabKey={category.title}
+                            key={'app-tab' + i}>
                         {category.applications.map((app) => {
-                          return <DraggableTopAlignedToolboxItem itemAttributes={app} key={app.name}>
+                          return <DraggableTopAlignedToolboxItem itemAttributes={app} key={app.name} 
+                              canvasSourceItemType={CanvasItemTypes.TOOLBOX_ITEM}>
                             <img src={app.image} />
                             <span> {app.name} </span>
                           </DraggableTopAlignedToolboxItem>
@@ -147,11 +150,14 @@ class ProjectCanvasManager extends React.Component {
               <Tab tabTitle={projectTabs[1].title} active={this.state.activeTab == projectTabs[1].title}>
                 <Tabs key='dev-ops-tabs' ref='devOpsTabs' tabsClass={'nav nav-tabs nav-tabs-pf'} 
                     tabChanged={this.handleDevOpsTabChanged}>
-                  {projectTabs[1].categories.map((category) => {
+                  {projectTabs[1].categories.map((category, i) => {
                    return <Tab tabTitle={category.title} 
-                            active={this.state.activeDevOpsTab === category.title} tabKey={category.title}>
+                            active={this.state.activeDevOpsTab === category.title} 
+                            tabKey={category.title}
+                            key={'dev-ops-tab' + i}>
                         {category.applications.map((app) => {
-                          return <DraggableTopAlignedToolboxItem itemAttributes={app} key={app.name}>
+                          return <DraggableTopAlignedToolboxItem itemAttributes={app} key={app.name}
+                              canvasSourceItemType={CanvasItemTypes.TOOLBOX_ITEM}>
                             <img src={app.image} />
                             <span> {app.name} </span>
                           </DraggableTopAlignedToolboxItem>
@@ -163,11 +169,14 @@ class ProjectCanvasManager extends React.Component {
               <Tab tabTitle={projectTabs[2].title} active={this.state.activeTab == projectTabs[2].title}>
                 <Tabs key='cp-tabs' ref='cpTabs' tabsClass={'nav nav-tabs nav-tabs-pf'} 
                     tabChanged={this.handleContainerPlatformTabChanged}>
-                  {projectTabs[2].categories.map((category) => {
+                  {projectTabs[2].categories.map((category, i) => {
                    return <Tab tabTitle={category.title} 
-                            active={this.state.activeContainerPlatformTab === category.title} tabKey={category.title}>
+                            active={this.state.activeContainerPlatformTab === category.title} 
+                            tabKey={category.title}
+                            key={'cp-tab' + i}>
                         {category.applications.map((app) => {
-                          return <DraggableTopAlignedToolboxItem itemAttributes={app} key={app.name}>
+                          return <DraggableTopAlignedToolboxItem itemAttributes={app} key={app.name}
+                              canvasSourceItemType={CanvasItemTypes.TOOLBOX_ITEM}>
                             <img src={app.image} />
                             <span> {app.name} </span>
                           </DraggableTopAlignedToolboxItem>

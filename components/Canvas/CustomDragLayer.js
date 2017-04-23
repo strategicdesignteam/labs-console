@@ -54,7 +54,7 @@ function collect (monitor) {
  */
 class CustomDragLayer extends Component {
   render () {
-    const { item, itemType, isDragging } = this.props
+    const { canvasClass, item, itemType, isDragging } = this.props
 
     if (!isDragging) {
       return null
@@ -63,7 +63,7 @@ class CustomDragLayer extends Component {
     switch (itemType) {
       case CanvasItemTypes.CANVAS_NODE:
         return (
-          <svg style={layerStyles}>
+          <svg className={canvasClass} style={layerStyles}>
             <g style={getItemStyles(this.props, item.zoomLevel)}>
               <CanvasNode
                 node={item.node}
@@ -82,6 +82,18 @@ class CustomDragLayer extends Component {
               </li>
             </ul>
           </div>
+        )        
+      case CanvasItemTypes.SCROLL_TOOLBOX_ITEM:
+        return (
+          <div className='canvas-editor-toolbox' style={layerStyles}>
+            <div className='canvas-scroll-toolbox drag' style={getItemStyles(this.props)}>
+              <ul className='toolbox-items-list' style={{overflow: 'visible'}}>
+                <li className={item.itemClass} style={getRotateStyles()}>               
+                  {item.children}
+                </li>
+              </ul>
+            </div>
+          </div>
         )
       default:
         return null
@@ -89,6 +101,8 @@ class CustomDragLayer extends Component {
   }
 }
 CustomDragLayer.propTypes = {
+  /** canvas class */
+  canvasClass: PropTypes.string,
   /** the dragged item */
   item: PropTypes.object,
   /** the dragged item type */

@@ -299,6 +299,58 @@ ul.nav.nav-tabs.user-tabs {
   margin-bottom: -6px;
   cursor: pointer;
 }
+.canvas-scroll-toolbox {
+  margin-left: 15px;
+  width: 98%;
+  min-height: 72px;
+  border: 1px solid #d1d1d1;
+  border-bottom: none;
+  overflow-x: scroll;
+}
+.canvas-scroll-toolbox.drag {
+  border: none;
+}
+.canvas-scroll-toolbox .toolbox-items-list {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.canvas-scroll-toolbox .toolbox-items-list .toolbox-item {
+  display:inline-block;
+  height:52px;
+  float: none;
+  min-width: 240px;
+  padding-right: 15px;
+}
+.canvas-scroll-toolbox .toolbox-items-list .toolbox-item .toolbox-item-container {
+  position: relative;
+}
+.canvas-scroll-toolbox .toolbox-items-list .toolbox-item .toolbox-item-container .icon {
+  padding: 0;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+  text-shadow: none;
+  opacity: .6;
+  font-size: 18px;
+  line-height: 1;
+}
+.canvas-scroll-toolbox .toolbox-items-list .toolbox-item .toolbox-item-container .icon:hover {
+  color: #000;
+}
+.canvas-scroll-toolbox .toolbox-items-list .toolbox-item .toolbox-item-container .edit-btn {
+  position: absolute;
+  right: 23px;
+  top: 0px;
+}
+.canvas-scroll-toolbox .toolbox-items-list .toolbox-item .toolbox-item-container .close-btn {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  font-size: 20px;
+}
+.canvas-scroll-toolbox .toolbox-items-list .toolbox-item .toolbox-item-container .close-btn span {
+  top: 0px;
+}
 .canvas-editor-toolbox .tab-title {
   font-size: 14px;
   cursor: pointer;
@@ -382,6 +434,9 @@ ul.nav.nav-tabs.user-tabs {
   border: solid 1px #d1d1d1;
   background-image: url('../img/canvas-dot-grid.png');
   background-repeat: repeat;
+}
+.stage-canvas .node-rect {
+  fill: #fff;
 }
 .read-only {
   background-image: none !important;

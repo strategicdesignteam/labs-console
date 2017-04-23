@@ -13,10 +13,6 @@ import cx from 'classnames';
 
 class ProjectView extends React.Component {
 
-  state = {
-    project: {}
-  };
-
   static propTypes = {
     handleSubmit: React.PropTypes.func,
     handleCancel: React.PropTypes.func,
@@ -28,6 +24,7 @@ class ProjectView extends React.Component {
     super(props)
 
     this.state = {
+      project: {},
       connections: [],
       nodeActions: [],
       selectedNodeIndex: -1

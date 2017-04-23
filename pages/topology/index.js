@@ -147,11 +147,7 @@ class TopologyPage extends React.Component {
   }
 
   render() {
-    if (this.state.homeView) {
-      document.body.style.backgroundColor = constants.bg_grey;
-    } else {
-      document.body.style.backgroundColor = constants.bg_white;
-    }
+    document.body.style.backgroundColor = constants.bg_white;
 
     if (this.state.homeView) {
       return (

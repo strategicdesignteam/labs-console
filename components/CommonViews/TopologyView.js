@@ -2,85 +2,104 @@ import React, { PropTypes } from 'react';
 import Layout from '../Layout';
 import Link from '../Link';
 import Modal from '../Modal/Modal';
-import ProjectCardView from '../CardView/ProjectCardView';
-import StagesCardView from '../CardView/StagesCardView';
+// import ProjectCardView from '../CardView/ProjectCardView';
+// import StagesCardView from '../CardView/StagesCardView';
+import StagesCanvasManager from '../Canvas/StagesCanvasManager';
 import history from '../../core/history';
 import constants from '../../core/constants';
 import c from '../../pages/common.css';
 import cx from 'classnames';
 
 
-const TopologyView = ({topology, handleDownload, handleBuild, projects, stages,
-              handleDefine, handleStageEdit, handleStageDelete, handleCreateProject,
-              handleProjectEdit, handleProjectDelete, startBuildModal, cancelStart, 
-              startBuild, startBuildModalId }) => {
+class TopologyView extends React.Component {
 
-  let content = [];
+  constructor(props) {
+    super(props)
+    this.state = {
 
-  //Home View Content
-  content.push(
-    <div className="page-header" key="topologies-page-header">
-      <ol className="breadcrumb">
-        <li>
-          <Link to="/home">Topologies</Link>
-        </li>
-        <li className="active"> <strong>Topology:</strong>
-          &nbsp; { topology.name }
-        </li>
-        <div className={c.float_right}>
-          <button type="submit" className="btn btn-default" onClick={handleDownload} disabled={!projects.length || !stages.length}>Download JSON</button>
-          &nbsp;&nbsp;
+    }
+  }
+
+  render() {
+
+    const {topology, handleDownload, handleBuild, projects, stages,
+      handleDefine, handleStageEdit, handleStageDelete, handleCreateProject,
+      handleProjectEdit, handleProjectDelete, startBuildModal, cancelStart,
+      startBuild, startBuildModalId} = this.props;
+
+    let content = [];
+
+    //Home View Content
+    content.push(
+      <div className="page-header" key="topologies-page-header">
+        <ol className="breadcrumb">
+          <li>
+            <Link to="/home">Topologies</Link>
+          </li>
+          <li className="active"> <strong>Topology:</strong>
+            &nbsp; {topology.name}
+          </li>
+          <div className={c.float_right}>
+            <button type="submit" className="btn btn-default" onClick={handleCreateProject}>Create Project</button>
+            &nbsp;&nbsp;
           <button type="submit" className="btn btn-primary" onClick={handleBuild} disabled={!projects.length || !stages.length}>Build</button>
-        </div>
-      </ol>
-    </div>);
+          </div>
+        </ol>
+      </div>);
 
-  content.push(
-    <h3 key="topologies-build-stages"> Promotion Stages
-      <span className={c.float_right}>
-        <button type="submit" className="btn btn-default" onClick={handleDefine}>Define</button>
-      </span>
-    </h3>
-  );
-  content.push(
-    <br key="br-stages"/>
-  );
+    //Stages Canvas Manager
+    content.push(<StagesCanvasManager 
+                  projects={projects} 
+                  stages={stages} 
+                  handleProjectEdit={handleProjectEdit}
+                  handleProjectDelete={handleProjectDelete} />);
 
-  if(stages.length){
-    content.push(<StagesCardView stages={ stages } 
-                                handleStageEdit={handleStageEdit} 
-                                handleStageDelete={handleStageDelete} 
-                                key="topologies-stages" />);
-  } else if(!stages.length) {
-    content.push(<h4 key="topologies-no-topologies">No stages defined.</h4>);
-    content.push(<p key="topologies-no-topologies-message">An application topology can't be built until it contains at least one stage. Create a stage first.</p>)
-  } else {
-    content.push(<h4 key="topologies-ready">Ready to build topology.</h4>);
-    content.push(<p key="topologies-ready-message">Hit the build button when ready to build your application topology.</p>)
-  }
+    // content.push(
+    //   <h3 key="topologies-build-stages"> Promotion Stages
+    //     <span className={c.float_right}>
+    //       <button type="submit" className="btn btn-default" onClick={handleDefine}>Define</button>
+    //     </span>
+    //   </h3>
+    // );
+    // content.push(
+    //   <br key="br-stages"/>
+    // );
 
-  content.push(<hr key="topologies-hr"/>);
-  content.push(
-    <h3 key="topologies-projects"> Project Templates
-      <div className={c.float_right}>
-        <button type="submit" className="btn btn-default" onClick={handleCreateProject}>Create</button>
-      </div>
-    </h3>);
+    // if(stages.length){
+    //   content.push(<StagesCardView stages={ stages } 
+    //                               handleStageEdit={handleStageEdit} 
+    //                               handleStageDelete={handleStageDelete} 
+    //                               key="topologies-stages" />);
+    // } else if(!stages.length) {
+    //   content.push(<h4 key="topologies-no-topologies">No stages defined.</h4>);
+    //   content.push(<p key="topologies-no-topologies-message">An application topology can't be built until it contains at least one stage. Create a stage first.</p>)
+    // } else {
+    //   content.push(<h4 key="topologies-ready">Ready to build topology.</h4>);
+    //   content.push(<p key="topologies-ready-message">Hit the build button when ready to build your application topology.</p>)
+    // }
 
-  content.push(
-    <br key="br-projects"/>
-  );
-  if(projects.length){
-    content.push(<ProjectCardView projects={ projects }
-                                  handleProjectEdit = {handleProjectEdit}
-                                  handleProjectDelete={handleProjectDelete}
-                                  key="topologies-project-card-view"/>);
-  } else{
-    content.push(<h4 key="topologies-no-projects">No projects exist.</h4>);
-    content.push(<p key="topologies-no-projects-message">A topology must contain at least one project. Create a project to begin.</p>)
-  }
+    // content.push(<hr key="topologies-hr"/>);
+    // content.push(
+    //   <h3 key="topologies-projects"> Project Templates
+    //     <div className={c.float_right}>
+    //       <button type="submit" className="btn btn-default" onClick={handleCreateProject}>Create</button>
+    //     </div>
+    //   </h3>);
 
-  let modal = <Modal id={startBuildModalId}
+    // content.push(
+    //   <br key="br-projects"/>
+    // );
+    // if(projects.length){
+    //   content.push(<ProjectCardView projects={ projects }
+    //                                 handleProjectEdit = {handleProjectEdit}
+    //                                 handleProjectDelete={handleProjectDelete}
+    //                                 key="topologies-project-card-view"/>);
+    // } else{
+    //   content.push(<h4 key="topologies-no-projects">No projects exist.</h4>);
+    //   content.push(<p key="topologies-no-projects-message">A topology must contain at least one project. Create a project to begin.</p>)
+    // }
+
+    let modal = <Modal id={startBuildModalId}
       handleClose={cancelStart}
       key="builds-modal">
       <div className="text-center">
@@ -100,12 +119,15 @@ const TopologyView = ({topology, handleDownload, handleBuild, projects, stages,
       </div>
     </Modal>
 
-  return (
-    <Layout className="container-fluid container-pf-nav-pf-vertical" nav= { true }>
-      {content}
-      {startBuildModal && modal}
-    </Layout>
-  )
+    return (
+      <Layout className="container-fluid container-pf-nav-pf-vertical" nav={true}>
+        {content}
+        {startBuildModal && modal}
+      </Layout>
+    )
+
+
+  }
 }
 
 export default TopologyView;

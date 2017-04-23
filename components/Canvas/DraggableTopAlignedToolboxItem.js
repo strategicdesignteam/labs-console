@@ -44,6 +44,8 @@ class DraggableTopAlignedToolboxItem extends React.Component {
   }
 }
 DraggableTopAlignedToolboxItem.PropTypes = {
+  /** canvas item types */
+  canvasSourceItemType: PropTypes.string,
   /** the toolbox item class */
   itemClass: PropTypes.string,
   /** attritubes of the toolbox item used in constructing canvas nodes */
@@ -61,4 +63,5 @@ DraggableTopAlignedToolboxItem.defaultProps = {
   itemClass: defaultItemClass,
   itemAttributes: {}
 }
-export default DragSource(CanvasItemTypes.TOOLBOX_ITEM, toolboxItemSource, collect)(DraggableTopAlignedToolboxItem)
+const dragType = (props) => { return props.canvasSourceItemType }
+export default DragSource(dragType, toolboxItemSource, collect)(DraggableTopAlignedToolboxItem)

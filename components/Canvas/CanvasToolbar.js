@@ -4,7 +4,7 @@ import cx from 'classnames'
 /**
  * Canvas Toolbar for Patternfly React
  */
-const CanvasToolbar = ({toolbarClass, toolboxButtonLabel, toolboxClicked, toolboxOpen,
+const CanvasToolbar = ({toolbarClass, toolboxButtonLabel, toolboxButtonClass, toolboxClicked, toolboxOpen,
     duplicateClicked, duplicateDisabled, deleteClicked, deleteDisabled,
     zoomOutClicked, zoomOutDisabled, zoomInClicked, zoomInDisabled}) => {
   const buttonIcon = cx({
@@ -20,7 +20,7 @@ const CanvasToolbar = ({toolbarClass, toolboxButtonLabel, toolboxClicked, toolbo
   }
   return (
     <div className={toolbarClass}>
-      <button className='btn btn-primary' onClick={toolboxClicked}>
+      <button className={toolboxButtonClass} onClick={toolboxClicked}>
         {toolboxButtonLabel} &nbsp;
         <span className={buttonIcon} />
       </button>
@@ -52,6 +52,8 @@ const CanvasToolbar = ({toolbarClass, toolboxButtonLabel, toolboxClicked, toolbo
 CanvasToolbar.propTypes = {
   /** canvas toolbar class  */
   toolbarClass: PropTypes.string,
+  /** toolbox button class */
+  toolboxButtonClass: PropTypes.string,
   /** toolbox button label */
   toolboxButtonLabel: PropTypes.string,
   /** toolbox button clicked */
@@ -77,6 +79,7 @@ CanvasToolbar.propTypes = {
 }
 CanvasToolbar.defaultProps = {
   toolbarClass: 'canvas-editor-toolbar',
+  toolboxButtonClass: 'btn btn-primary',
   toolboxButtonLabel: 'Toolbox',
   toolboxOpen: false,
   duplicateDisabled: false,
