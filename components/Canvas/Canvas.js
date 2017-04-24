@@ -69,6 +69,7 @@ class Canvas extends React.Component {
       nodes,
       connectDropTarget,
       selectNode,
+      nodeButtonClicked,
       addContainerNodeItem,
       removeContainerNodeItem,
       containerNodeItemClicked,
@@ -104,6 +105,7 @@ class Canvas extends React.Component {
                   foreignObjectSupport={this.foreignObjectSupport}
                   zoomLevel={zoomLevel}
                   selectNode={selectNode}
+                  nodeButtonClicked={nodeButtonClicked}
                   addContainerNodeItem={addContainerNodeItem}
                   removeContainerNodeItem={removeContainerNodeItem}
                   containerNodeItemClicked={containerNodeItemClicked}
@@ -145,7 +147,9 @@ Canvas.propTypes = {
   /** React DnD connect drop target */
   connectDropTarget: PropTypes.func.isRequired,
   /** function to select a node */
-  selectNode: PropTypes.func,
+  selectNode: PropTypes.func,  
+  /** node button was clicked */
+  nodeButtonClicked: PropTypes.func,
   /** function to add a container node item */
   addContainerNodeItem: PropTypes.func,
   /** function to remove a container node item */

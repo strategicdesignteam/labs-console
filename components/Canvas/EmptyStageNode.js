@@ -1,0 +1,23 @@
+export const emptyStageNode = {
+  'name': 'Add Promotion Stage',
+  'titleYOffset': 24,
+  'label': 'Add a promotion stage for your topology projects.',
+  'labelYOffset': 180,
+  'labelWidth': 200,
+  'icon': 'pficon pficon pficon-add-circle-o',
+  'iconYOffset': 80,
+  'fontSize': '70px',
+  'iconWidth': 70,
+  'buttonLabel': 'Add Stage',
+  'buttonYOffset': 250,
+  'buttonClass': 'btn btn-primary',
+  'x': 60,
+  'y': 52,
+  'id': 1,
+  'width': 290,
+  'height': 450,
+  'backgroundColor': '#fff',
+  'invalid': false,
+  'selected': false,
+  'containerNode': true
+}

@@ -223,11 +223,18 @@ ul.nav.nav-tabs.user-tabs {
   left: 15px!important;
 }
 
-/** Canvas CSS **/
 .nav.nav-tabs li,
 .nav.nav-tabs li a {
   cursor: pointer;
 }
+
+/** Canvas CSS **/
+.canvas {
+  border: solid 1px #d1d1d1;
+  background-image: url('../img/canvas-dot-grid.png');
+  background-repeat: repeat;
+}
+
 .canvas-editor-container {
   background-color: #fff;
   height: 100%;
@@ -256,7 +263,8 @@ ul.nav.nav-tabs.user-tabs {
   color: #72767b;
   cursor: pointer;
 }
-.canvas-editor-container .canvas-editor-toolbar .pficon {
+.canvas-editor-container .canvas-editor-toolbar .pficon,
+.canvas-editor-container .canvas-editor-toolbar .fa {
   font-size: 20px;
   margin-left: 15px;
   margin-top: -4px;
@@ -323,6 +331,14 @@ ul.nav.nav-tabs.user-tabs {
 }
 .canvas-scroll-toolbox .toolbox-items-list .toolbox-item .toolbox-item-container {
   position: relative;
+}
+.btn-icon {
+  padding: 0;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+  text-shadow: none;
+  line-height: 1;
 }
 .canvas-scroll-toolbox .toolbox-items-list .toolbox-item .toolbox-item-container .icon {
   padding: 0;
@@ -416,6 +432,9 @@ ul.nav.nav-tabs.user-tabs {
   width: 250px;
   min-height: 450px;
 }
+.canvas-editor-toolbox-container .canvas-panel.stages-panel {
+  min-height: 343px;
+}
 .canvas-editor-toolbox-container .canvas-panel .canvas-panel-heading {
   padding: 5px 15px;
   border-bottom: 1.5px solid #d1d1d1;
@@ -430,10 +449,8 @@ ul.nav.nav-tabs.user-tabs {
   overflow: auto;
   width: 98%;
 }
-.canvas {
-  border: solid 1px #d1d1d1;
-  background-image: url('../img/canvas-dot-grid.png');
-  background-repeat: repeat;
+.pficon.pficon.pficon-add-circle-o {
+  color: #9c9c9c;
 }
 .stage-canvas .node-rect {
   fill: #fff;
@@ -451,15 +468,34 @@ ul.nav.nav-tabs.user-tabs {
   display: table;
   font-weight: 600;
   cursor: default;
-}
-.node-label {
-  font-weight: 300;
+  font-size: 15px;
 }
 .node-header p {
   display: table-cell;
   text-align: center;
   vertical-align: middle;
 }
+
+.node-label {
+  font-weight: 400;
+  cursor: default;
+  font-size: 14px;
+}
+.node-label p {
+  text-align: center;
+  margin: auto;
+}
+
+.node-button {
+  font-weight: 400;
+  cursor: default;
+  text-align: center;
+}
+.node-button button {
+  margin: auto;
+  font-size: 14px;
+}
+
 .invalid-node-header {
   fill: #bbb;
   color: #bbb;

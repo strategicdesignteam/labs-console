@@ -5,7 +5,7 @@ import cx from 'classnames'
  * Canvas Toolbar for Patternfly React
  */
 const CanvasToolbar = ({toolbarClass, toolboxButtonLabel, toolboxButtonClass, toolboxClicked, toolboxOpen,
-    duplicateClicked, duplicateDisabled, deleteClicked, deleteDisabled,
+    duplicateClicked, duplicateDisabled, deleteClicked, deleteDisabled, editClicked, editDisabled,
     zoomOutClicked, zoomOutDisabled, zoomInClicked, zoomInDisabled}) => {
   const buttonIcon = cx({
     'fa': true,
@@ -34,6 +34,10 @@ const CanvasToolbar = ({toolbarClass, toolboxButtonLabel, toolboxButtonClass, to
             className={deleteDisabled ? 'disabled' : ''}>
             <span className='pficon pficon-delete' />
           </a>
+          <a onClick={(e) => handleActionClick(e, editClicked, editDisabled)}
+            className={editDisabled ? 'disabled' : ''}>
+            <span className='fa fa-pencil' />
+          </a>          
         </span>
       </span>
       <span className='right-aligned-controls'>
@@ -60,6 +64,10 @@ CanvasToolbar.propTypes = {
   toolboxClicked: PropTypes.func,
   /** toolbox open */
   toolboxOpen: PropTypes.bool,
+  /** edit action clicked */
+  editClicked: PropTypes.func,
+  /** edit action disabled */
+  editDisabled: PropTypes.bool,  
   /** duplicate action clicked */
   duplicateClicked: PropTypes.func,
   /** duplicate action disabled */

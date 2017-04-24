@@ -86,6 +86,34 @@
       if (data.hasOwnProperty('application_promoters')) {
         obj['application_promoters'] = ApiClient.convertToType(data['application_promoters'], [User]);
       }
+      /** added for new stage concepts */
+      if (data.hasOwnProperty('projects')) {
+        obj['projects'] = ApiClient.convertToType(data['projects'], [Object]);
+      }
+      if (data.hasOwnProperty('x')) {
+        obj['x'] = ApiClient.convertToType(data['x'], 'Integer');
+      }
+      if (data.hasOwnProperty('y')) {
+        obj['y'] = ApiClient.convertToType(data['y'], 'Integer');
+      }
+      if (data.hasOwnProperty('invalid')) {
+        obj['invalid'] = ApiClient.convertToType(data['invalid'], 'Boolean');
+      }
+      if (data.hasOwnProperty('selected')) {
+        obj['selected'] = ApiClient.convertToType(data['selected'], 'Boolean');
+      }
+      if (data.hasOwnProperty('containerNode')) {
+        obj['containerNode'] = ApiClient.convertToType(data['containerNode'], 'Boolean');
+      }
+      if (data.hasOwnProperty('containerNodeDropItemTypes')) {
+        obj['containerNodeDropItemTypes'] = ApiClient.convertToType(data['containerNodeDropItemTypes'], ['String']);
+      }   
+      if (data.hasOwnProperty('inputConnectors')) {
+        obj['inputConnectors'] = ApiClient.convertToType(data['inputConnectors'], [Object]);
+      }
+      if (data.hasOwnProperty('validConnectionTypes')) {
+        obj['validConnectionTypes'] = ApiClient.convertToType(data['validConnectionTypes'], [Object]);
+      }
     }
     return obj;
   }

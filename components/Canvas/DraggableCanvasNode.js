@@ -53,6 +53,13 @@ class DraggableCanvasNode extends React.Component {
       //prevent bubble to canvas
       e.stopPropagation()
     }
+    this.nodeButtonClicked = (e, index) => {
+      if(props.nodeButtonClicked) {
+        props.nodeButtonClicked(e, index)
+      }
+      //prevent bubble to canvas
+      e.stopPropagation()
+    } 
   }
   render () {
     const {
@@ -63,6 +70,7 @@ class DraggableCanvasNode extends React.Component {
       foreignObjectSupport,
       selectNode,
       nodeClicked,
+      nodeButtonClicked,
       removeContainerNodeItem,
       containerNodeItemClicked,
       isDragging,
@@ -85,6 +93,7 @@ class DraggableCanvasNode extends React.Component {
           defaultNodeWidth={defaultNodeWidth}
           defaultNodeHeight={defaultNodeHeight}
           foreignObjectSupport={foreignObjectSupport}
+          nodeButtonClicked={nodeButtonClicked}
           removeContainerNodeItem={removeContainerNodeItem}
           containerNodeItemClicked={containerNodeItemClicked} />
       </g>

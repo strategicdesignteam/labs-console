@@ -53,7 +53,16 @@ var StageSchema = new Schema({
   name: {type: String, required: true},
   index: {type: Number },
   project_role_bindings: [RoleBindingSchema],
-  application_promoters: []
+  application_promoters: [],
+  projects: [],
+  x: {type: Number},
+  y: {type: Number},
+  invalid: {type: Boolean},
+  selected: {type: Boolean},
+  containerNode: {type: Boolean},
+  containerNodeDropItemTypes: [String],
+  inputConnectors: [],
+  validConnectionTypes: []
 });
 
 StageSchema.virtual('id').get(function(){

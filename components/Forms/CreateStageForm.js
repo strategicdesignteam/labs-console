@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import EmptyState from '../EmptyState/EmptyState';
 import TableSelectionView from '../TableView/TableSelectionView';
 import CreateUserForm from '../Forms/CreateUserForm'
+import CanvasConstants from '../Canvas/CanvasConstants'
+import CanvasItemTypes from '../Canvas/CanvasItemTypes';
 import labsApi from '../../data/index';
 import Stage from '../../data/model/Stage';
 import User from '../../data/model/User';
@@ -41,19 +43,35 @@ class CreateStageForm extends React.Component {
       }
     });
 
-    let stage = new Stage();
-    stage.name = this.state.newStage.name;
-    stage.project_role_bindings = project_role_bindings;
-    stage.application_promoters = application_promoters;
-
     if(this.state.newStage.id){
       let index = topology.promotion_process.findIndex((s) => {
         return s.id === this.state.newStage.id
       });
       if(index > -1){
-        topology.promotion_process[index] = stage;
+        //edit existing stage and change its properties in the stage form
+        topology.promotion_process[index].name = this.state.newStage.name;
+        topology.promotion_process[index].project_role_bindings = project_role_bindings;
+        topology.promotion_process[index].application_promoters = application_promoters;
       }
     } else {
+      //create new stage and set initial stage attributes for the canvas
+      let stage = new Stage();
+      stage.name = this.state.newStage.name;
+      stage.project_role_bindings = project_role_bindings;
+      stage.application_promoters = application_promoters;      
+      const rows = Math.floor((topology.promotion_process.length) / (CanvasConstants.MAX_STAGES_IN_ROW))
+      stage.index = topology.promotion_process.length;
+      stage.projects = [];
+      stage.x = ((stage.index % CanvasConstants.MAX_STAGES_IN_ROW) * CanvasConstants.STAGE_WIDTH) 
+        + (((stage.index % CanvasConstants.MAX_STAGES_IN_ROW) + 1) * CanvasConstants.STAGE_PADDING_X),
+      stage.y = (rows * CanvasConstants.STAGE_HEIGHT) + ((rows + 1) * CanvasConstants.STAGE_PADDING_Y);
+      stage.invalid = false;
+      stage.selected = false;
+      stage.containerNode = true;
+      stage.containerNodeDropItemTypes = [CanvasItemTypes.SCROLL_TOOLBOX_ITEM];
+      stage.inputConnectors = [];
+      stage.validConnectionTypes = [];
+
       topology.promotion_process.push(stage);
     }
 

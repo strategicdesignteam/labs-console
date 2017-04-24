@@ -27,7 +27,8 @@ class TopologyPage extends React.Component {
     topology: {},
     newProject: {},
     newStage: {},
-    startBuildModal: false
+    startBuildModal: false,
+    loaded: false
   };
 
   componentDidMount() {
@@ -43,9 +44,12 @@ class TopologyPage extends React.Component {
     let topologyApi = new labsApi.TopologyApi();
     topologyApi.topologiesIdGet(this.props.route.params.id, (error, topology, res) => {
       selectors.isBuildable([topology]);
-      this.setState({ topology: topology });
-      this.setState({ projects: topology.project_templates });
-      this.setState({ stages: topology.promotion_process });
+      this.setState({ 
+        topology: topology, 
+        projects: topology.project_templates, 
+        stages: topology.promotion_process, 
+        loaded: true 
+      });
     });
   }
 
@@ -64,7 +68,12 @@ class TopologyPage extends React.Component {
     this.setState({ homeView: true, createProjectView: false });
   };
 
-  handleDefine = (event) => {
+  handleProjectEdit = (event, index) => {
+    this.setState({ newProject: this.state.projects[index], homeView: false, createProjectView: true });
+    event.preventDefault();
+  };  
+
+  handleCreateStage = (event, i) => {
     this.setState({ homeView: false, createStageView: true, newStage: {} });
     event.preventDefault();
   };
@@ -74,10 +83,69 @@ class TopologyPage extends React.Component {
     event.preventDefault();
   };
 
-  handleProjectEdit = (event, index) => {
-    this.setState({ newProject: this.state.projects[index], homeView: false, createProjectView: true });
-    event.preventDefault();
+  handleStageDelete = (event, index) => {
+    let copy = this.state.topology.promotion_process.slice(0);
+    let topology = Object.assign({}, this.state.topology);
+    copy.splice(index, 1);
+    topology.promotion_process = copy;
+
+    this.saveTopology(event, topology);
+  }
+
+  handleStageMoved = (index, x, y) => {
+    let topologyApi = new labsApi.TopologyApi();
+    let topology = Object.assign({}, this.state.topology);
+    topology.promotion_process[index].x = x;
+    topology.promotion_process[index].y = y;
+    topologyApi.updateTopology(topology.id, {'body': topology}, (e) => {
+      if(e) console.log(e); //todo: handle error
+    });    
+  }
+
+  handleAddStage = (stage) => {
+    let topologyApi = new labsApi.TopologyApi();
+    let topology = Object.assign({}, this.state.topology);
+    
+    //delete existing id since we are duplicating this...
+    delete stage.id;
+    topology.promotion_process.push(stage);
+
+    topologyApi.updateTopology(topology.id, {'body': topology}, (e) => {
+      if(e) console.log(e); //todo: handle error
+      this.getTopology(); //refresh after update
+    });     
+  }
+
+  handleAddStageProject = (index, project) => {
+    let topologyApi = new labsApi.TopologyApi();
+    let topology = Object.assign({}, this.state.topology);
+    topology.promotion_process[index].projects = topology.promotion_process[index].projects || [];
+    topology.promotion_process[index].projects.push(project);
+
+    topologyApi.updateTopology(topology.id, {'body': topology}, (e) => {
+      if(e) console.log(e); //todo: handle error
+    });    
+  }
+
+  handleDeleteStageProject = (index, projectIndex) => {
+    let topologyApi = new labsApi.TopologyApi();
+    let topology = Object.assign({}, this.state.topology);
+    topology.promotion_process[index].projects.splice(projectIndex, 1);
+
+    topologyApi.updateTopology(topology.id, {'body': topology}, (e) => {
+      if(e) console.log(e); //todo: handle error
+    });     
+  }
+
+  handleSubmitStage = (event) => {
+    this.getTopology(); //refresh
+    this.setState({ homeView: true, createProjectView: false, createStageView: false });
   };
+
+  handleCancelStage = (event) => {
+    event.preventDefault();
+    this.setState({ homeView: true, createProjectView: false, createStageView: false });
+  };  
 
   handleBuild = (event, index) => {
     event.preventDefault();
@@ -119,15 +187,6 @@ class TopologyPage extends React.Component {
     //todo: start build spinner here...
   };
 
-  handleStageDelete = (event, index) => {
-    let copy = this.state.topology.promotion_process.slice(0);
-    let topology = Object.assign({}, this.state.topology);
-    copy.splice(index, 1);
-    topology.promotion_process = copy;
-
-    this.saveTopology(event, topology);
-  }
-
   handleProjectDelete = (event, index) => {
     let copy = this.state.topology.project_templates.slice(0);
     let topology = Object.assign({}, this.state.topology);
@@ -149,16 +208,20 @@ class TopologyPage extends React.Component {
   render() {
     document.body.style.backgroundColor = constants.bg_white;
 
-    if (this.state.homeView) {
+    if (this.state.homeView && this.state.loaded) {
       return (
         <TopologyView topology={this.state.topology}
           handleDownload={this.handleDownload}
           handleBuild={this.handleBuild}
           projects={this.state.projects}
           stages={this.state.stages}
-          handleDefine={this.handleDefine}
+          handleCreateStage={this.handleCreateStage}
           handleStageEdit={this.handleStageEdit}
           handleStageDelete={this.handleStageDelete}
+          handleStageMoved={this.handleStageMoved}
+          handleAddStage={this.handleAddStage}
+          handleAddStageProject={this.handleAddStageProject}
+          handleDeleteStageProject={this.handleDeleteStageProject}
           handleCreateProject={this.handleCreateProject}
           handleProjectEdit={this.handleProjectEdit}
           handleProjectDelete={this.handleProjectDelete}
@@ -167,22 +230,26 @@ class TopologyPage extends React.Component {
           cancelStart={this.cancelStart}
           startBuild={this.startBuild} />
       )
-    } else if (this.state.createProjectView) {
+    } else if (this.state.createProjectView && this.state.loaded) {
       return (
         <ProjectView topology={this.state.topology}
           handleSubmit={this.handleSubmitProject}
           handleCancel={this.handleCancelProject}
           value={this.state.newProject} />
       )
-    } else if (this.state.createStageView) {
+    } else if (this.state.createStageView && this.state.loaded) {
       return (
         <Layout className="container-fluid container-pf-nav-pf-vertical" nav={true}>
-          <CreateStageForm handleSubmit={this.handleSubmitProject}
-            handleCancel={this.handleCancelProject}
+          <CreateStageForm handleSubmit={this.handleSubmitStage}
+            handleCancel={this.handleCancelStage}
             topology={this.state.topology}
             value={this.state.newStage} />
         </Layout>
       );
+    }
+    else {
+      //todo: show loading
+      return null;
     }
   }
 }

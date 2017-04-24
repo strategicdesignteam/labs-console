@@ -4,8 +4,8 @@ import cx from 'classnames'
 /**
  * Canvas Node for Patternfly React
  */
-const CanvasNode = ({ node, index, defaultNodeWidth, defaultNodeHeight,
-  foreignObjectSupport, removeContainerNodeItem, containerNodeItemClicked }) => {
+const CanvasNode = ({ node, index, defaultNodeWidth, defaultNodeHeight, 
+  foreignObjectSupport, nodeButtonClicked, removeContainerNodeItem, containerNodeItemClicked }) => {
   const nodeWidth = node.width || defaultNodeWidth
   const nodeHeight = node.height || defaultNodeHeight
   const titleHeight = 42
@@ -19,6 +19,16 @@ const CanvasNode = ({ node, index, defaultNodeWidth, defaultNodeHeight,
 
   const itemClicked = (e, i) => {
     containerNodeItemClicked(index, i)
+  }
+
+  const editNodeIconClicked = (e, i) => {
+    e.stopPropagation()
+    editNodeIconClick(e, i)
+  }
+
+  const deleteNodeIconClicked = (e, i) => {
+    e.stopPropagation()
+    deleteNodeIconClick(e, i)
   }
 
   // Node
@@ -71,6 +81,36 @@ const CanvasNode = ({ node, index, defaultNodeWidth, defaultNodeHeight,
     )
   }
 
+  // Node Label
+  if(foreignObjectSupport && node.label){
+    content.push(
+      <foreignObject x='0'
+        y={node.labelYOffset || (nodeHeight - titleHeight + 20)}
+        width={nodeWidth} key='label-text-wrap'>
+        <div className='node-label' style={{ width: nodeWidth }}>
+          <p style={{ width: node.labelWidth || nodeWidth }}>
+            {node.label}
+          </p>
+        </div>
+      </foreignObject>
+    )
+  }
+
+  // Node Button
+  if(foreignObjectSupport && node.buttonLabel){
+    content.push(
+      <foreignObject x='0'
+        y={node.buttonYOffset || (nodeHeight - titleHeight + 20)}
+        width={nodeWidth} key='button-text-wrap'>
+        <div className='node-button' style={{ width: nodeWidth }}>
+          <button className={node.buttonClass} onClick={(e) => nodeButtonClicked(e, index)}>
+            {node.buttonLabel}
+          </button>
+        </div>
+      </foreignObject>
+    )
+  }  
+
   // Node Image
   if (node.image) {
     content.push(
@@ -78,7 +118,7 @@ const CanvasNode = ({ node, index, defaultNodeWidth, defaultNodeHeight,
         href={node.image}
         xlinkHref={node.image}
         x={(nodeWidth / 2) - 40}
-        y='20'
+        y={node.imageYOffset || 20}
         height='80px'
         width='80px'
         key='node-image' />
@@ -91,7 +131,7 @@ const CanvasNode = ({ node, index, defaultNodeWidth, defaultNodeHeight,
     content.push(
       <foreignObject className={cx({ 'node-center-img-icon': true, 'invalid-node-header': node.invalid })}
         x={(nodeWidth - node.iconWidth) / 2}
-        y={(nodeHeight / 2) - 54}
+        y={node.iconYOffset || ((nodeHeight / 2) - 54)}
         height={fontSize}
         width={node.iconWidth}
         key='node-icon-class'>
@@ -112,6 +152,8 @@ const CanvasNode = ({ node, index, defaultNodeWidth, defaultNodeHeight,
       </text>
     )
   }
+
+  
 
   // Sm. Top Left Bundle Icon
   if (node.bundle) {
@@ -252,6 +294,8 @@ CanvasNode.PropTypes = {
   defaultNodeHeight: PropTypes.number,
   /** foriegn object supported */
   foreignObjectSupport: PropTypes.bool,
+  /** node button pressed callback */
+  nodeButtonClicked: PropTypes.func,
   /** function to remove a container node item */
   removeContainerNodeItem: PropTypes.func,
   /** function to handle container node item click */
