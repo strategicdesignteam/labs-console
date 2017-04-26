@@ -75,11 +75,11 @@ class BuildsPage extends React.Component {
           //poll running jobs every 10 sec, once they complete, update them & update state
           let interval = setInterval(() => {
             jobApi.jobsIdGet(build.tower_job_id, (error, job, res) => {
-              if(job.status === 'successful'){
+              if(job.status === 'successful' || job.status === 'failed'){
                 clearInterval(interval);
 
                 build.datetime_completed = job.finished;
-                build.status = 'successful';
+                build.status = job.status;
 
                 buildApi.updateBuild(build.id, {'body': build}, (e) => {
                   //todo: display an error

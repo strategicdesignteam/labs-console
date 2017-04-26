@@ -28,7 +28,10 @@ exports.addBuild = function(args, res, next) {
     newBuild.topology_version = topology.version;
     newBuild.datetime_started = args.body.dateTimeStarted;
     newBuild.status = 'pending';
-    newBuild.ansible_tower_link  = 'https://tower.strategicdesign.io/'; //default this for now
+
+    //set tower link to job workflow id for now
+    newBuild.ansible_tower_link  = 'https://tower.strategicdesign.io/#/workflows/' + 
+      args.body.towerJobId + '#followAnchor';
     newBuild.number_of_projects = topology.project_templates.length;
     newBuild.number_of_stages = topology.promotion_process.length;
     newBuild.tower_job_id = args.body.towerJobId;
