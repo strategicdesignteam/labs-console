@@ -126,7 +126,7 @@ class BuildListView extends React.Component {
                 <dt>Description</dt>
                 <dd>{ build.topology.description }</dd>
                 <dt>Tower Link</dt>
-                <dd><a href={ build.ansible_tower_link }>Tower Job</a></dd>            
+                <dd><a href={ build.ansible_tower_link } target="_blank">Tower Job</a></dd>            
               </dl>
             </div>
             <div className="col-xs-12 col-sm-6 col-md-4">
