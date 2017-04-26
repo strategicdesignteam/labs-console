@@ -23,6 +23,8 @@ class BuildListView extends React.Component {
         return 'pficon pficon-ok list-view-pf-icon-sm list-view-pf-icon-success';
       case 'failed':
         return 'pficon pficon-error-circle-o list-view-pf-icon-sm list-view-pf-icon-danger';
+      case 'canceled':
+        return 'pficon pficon-error-circle-o list-view-pf-icon-sm list-view-pf-icon-danger';        
       case 'running':
         return 'pficon pficon-info list-view-pf-icon-sm list-view-pf-icon-info';        
       case 'pending':
@@ -83,7 +85,7 @@ class BuildListView extends React.Component {
                 <div className="list-group-item-text">
                   {(() => {
                     let content = [];
-                    if(build.status === 'successful' || build.status === 'failed'){
+                    if(build.status === 'successful' || build.status === 'failed' || build.status === 'canceled'){
                       content.push(<strong key="finished">Finished: </strong>);
                       content.push(moment(build.datetime_completed).fromNow());
                     }
@@ -143,7 +145,7 @@ class BuildListView extends React.Component {
               <dl className="dl-horizontal">
                 <dt>Status</dt>
                 <dd className={cx({
-                    'text-danger': build.status === 'failed', 
+                    'text-danger': build.status === 'failed' || build.status === 'canceled', 
                     'text-success': build.status === 'successful'
                   })}>{build.status}</dd>                  
               </dl>

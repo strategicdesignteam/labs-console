@@ -71,11 +71,11 @@ class BuildsPage extends React.Component {
 
     if(builds && builds.length) {
       builds.forEach((build) => {
-        if(build.status === 'pending'){
+        if(build.status === 'pending' || build.status === 'running'){
           //poll running jobs every 10 sec, once they complete, update them & update state
           let interval = setInterval(() => {
             jobApi.jobsIdGet(build.tower_job_id, (error, job, res) => {
-              if(job.status === 'successful' || job.status === 'failed'){
+              if(job.status === 'successful' || job.status === 'failed' || job.status === 'canceled'){
                 clearInterval(interval);
 
                 build.datetime_completed = job.finished;
