@@ -182,7 +182,7 @@ class StagesCanvasManager extends React.Component {
     return (
       <CanvasLayout>
         <CanvasToolbar
-          toolboxButtonLabel='Projects'
+          toolboxButtonLabel='Project Templates'
           toolboxButtonClass='btn btn-default'
           toolboxClicked={this.toggleToolboxOpen}
           toolboxOpen={this.state.toolboxOpen}

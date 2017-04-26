@@ -34,7 +34,7 @@ class TopologyView extends React.Component {
             &nbsp; {topology.name}
           </li>
           <div className={c.float_right}>
-            <button type="submit" className="btn btn-default" onClick={handleCreateProject}>Create Project</button>
+            <button type="submit" className="btn btn-default" onClick={handleCreateProject}>Create Project Template</button>
             &nbsp;&nbsp;
           <button type="submit" className="btn btn-primary" onClick={handleBuild} disabled={!projects.length || !stages.length}>Build</button>
           </div>

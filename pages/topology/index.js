@@ -176,15 +176,23 @@ class TopologyPage extends React.Component {
   startBuild = (event) => {
     event.preventDefault();
     let buildApi = new labsApi.BuildApi();
-    buildApi.addBuild({ body: { topologyId: this.state.topology.id } }, (e, data, res) => {
-      if (e) console.log(e);
+    let jobApi = new labsApi.JobApi();
 
-      this.hideStartBuildModal();
-      setTimeout(() => {
-        history.push('/builds');
-      }, 1000);
+    //call the JobsApi to create the Job in Tower...
+    jobApi.addJob({ body: {}}, (e, data, res) => {
+
+      //link tower job id to the Build object
+      buildApi.addBuild({ body: 
+        { topologyId: this.state.topology.id, towerJobId: data.id, dateTimeStarted: data.created } }, 
+        (e, data, res) => {
+          if (e) console.log(e);
+          this.hideStartBuildModal();
+          setTimeout(() => {
+            history.push('/builds');
+          }, 1000);
+      });     
+
     });
-    //todo: start build spinner here...
   };
 
   handleProjectDelete = (event, index) => {

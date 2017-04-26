@@ -91,7 +91,7 @@ class ProjectCanvasManager extends React.Component {
     return (
       <CanvasLayout>
         <CanvasToolbar
-          toolboxButtonLabel='Toolbox'
+          toolboxButtonLabel='Applications'
           toolboxClicked={this.toggleToolboxOpen}
           toolboxOpen={this.state.toolboxOpen}
           duplicateClicked={duplicateSelected}

@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import BuildCardView from '../CardView/BuildCardView';
 import ListExpansionView from './ListExpansionView';
 import ListExpansionContainer from './ListExpansionContainer';
 import moment from 'moment';
@@ -7,18 +8,22 @@ class BuildListView extends React.Component {
 
   static propTypes = {
     handleBuild: React.PropTypes.func,
-    handleDelete: React.PropTypes.func
+    handleDelete: React.PropTypes.func,
+    builds: React.PropTypes.array
   };
+
+  state = {
+    expandedItem: -1
+  }
 
   getIcon(status){
     switch(status){
-      case 'success':
+      case 'successful':
         return 'pficon pficon-ok list-view-pf-icon-sm list-view-pf-icon-success';
       case 'error':
         return 'pficon pficon-error-circle-o list-view-pf-icon-sm list-view-pf-icon-danger';
-      case 'started':
-        //return 'pficon pficon-info list-view-pf-icon-sm list-view-pf-icon-info';
-        return 'pficon pficon-ok list-view-pf-icon-sm list-view-pf-icon-success';
+      case 'pending':
+        return 'pficon pficon-info list-view-pf-icon-sm list-view-pf-icon-info';
       default:
         return 'pficon pficon-info list-view-pf-icon-sm list-view-pf-icon-info';
     }
@@ -32,34 +37,15 @@ class BuildListView extends React.Component {
     this.props.handleDelete(e, build);
   };
 
-  findRoute (project, stage){
-    //if we find a route for this project, return the route with its {stage} value
-    //otherwise don't show it
-    //temporary logic until we receive these back and persist them from Engagement POST
-    if(project.type === 'OpenShift' && project.apps && project.apps.length){
-      for(let i=0; i < project.apps.length; i++){
-        if(project.apps[i].routes){
-          for(let j=0; j < project.apps[i].routes.length; j++){
-            if(project.apps[i].routes[j].hostname){
-              if(stage.name.toLowerCase() == 'delivery' || stage.name.toLowerCase() == 'production'){
-                return project.apps[i].routes[j].hostname.replace("{stage}.", "");
-              } else {
-                let a = project.apps[i].routes[j].hostname.replace("{stage}", stage.name);
-                return project.apps[i].routes[j].hostname.replace("{stage}", stage.name);
-              }
-            }
-          }
-        }
-      }
-    }
-    return "";
-  };
+  listItemClick = (e, i) => {
+    this.setState({expandedItem: i})
+  }
 
   render() {
     return (
       <ListExpansionView key="list-expansion-view">
         {this.props.builds.map((build,i) =>
-        <div className="list-group-item list-view-pf-stacked list-view-pf-top-align" key={i}>
+        <div className="list-group-item list-view-pf-stacked list-view-pf-top-align" key={i} onClick={(e) => this.listItemClick(e, i)}>
           <div className="list-group-item-header">
             <div className="list-view-pf-expand">
               <span className="fa fa-angle-right"></span>
@@ -94,12 +80,12 @@ class BuildListView extends React.Component {
                 <div className="list-group-item-text">
                   {(() => {
                     let content = [];
-                    if(build.status === 'success' || build.status === 'error'){
+                    if(build.status === 'successful' || build.status === 'error'){
                       content.push(<strong key="finished">Finished: </strong>);
-                      content.push(moment(build.datetime_started).fromNow());
+                      content.push(moment(build.datetime_completed).fromNow());
                     }
-                    else if (build.status === 'started'){
-                      content.push(<strong key="started">Finished: </strong>);
+                    else if (build.status === 'pending'){
+                      content.push(<strong key="started">Started: </strong>);
                       content.push(moment(build.datetime_started).fromNow());
                     }
                     return content;
@@ -117,6 +103,11 @@ class BuildListView extends React.Component {
                   <strong>{ build.number_of_stages }</strong>
                   { build.number_of_stages == 1 ? 'Stage' : 'Stages' }
                 </div>
+                <div className="list-view-pf-additional-info-item">
+                  <span className="fa fa-code-fork"></span>
+                  Version &nbsp; 
+                  <strong>{build.topology_version}</strong>
+                </div>                
               </div>
             </div>
           </div>
@@ -125,38 +116,28 @@ class BuildListView extends React.Component {
         <ListExpansionContainer key="list-item-container">
           <br/>
           <div className="row">
-            <div className="col-xs-12 col-sm-12 col-md-6">
-              <dl className="dl-horizontal">
-                {(() => {
-                  let items = [];
-                  build.topology.promotion_process.map((stage, i) => {
-                    build.topology.project_templates.map((project, j) => {
-                      let route = this.findRoute(project, stage);
-                      if(route){
-                        items.push(<dt key={'stage-dt' + i + j}>{project.name + ' ' + stage.name + ':'}</dt>);
-                        items.push(<dd key={'stage-dd' + i + j}><a href={'http://' + route}> {route} </a></dd>);
-                      }
-                    });
-                  });
-                  return items;
-                })()}
-              </dl>
-            </div>
-            <div className="col-xs-12 col-sm-12 col-md-6">
+            <div className="col-xs-12 col-sm-6 col-md-4">
               <dl className="dl-horizontal">
                 <dt>Description</dt>
                 <dd>{ build.topology.description }</dd>
-                <dt>Version</dt>
-                <dd>{ build.topology_version }</dd>
                 <dt>Tower Link</dt>
                 <dd><a href={ build.ansible_tower_link }>{ build.ansible_tower_link }</a></dd>
+              </dl>
+            </div>
+            <div className="col-xs-12 col-sm-6 col-md-4">
+              <dl className="dl-horizontal">
                 <dt>Started</dt>
                 <dd>{ moment(build.datetime_started).format('MMM Do YYYY, h:mm:ss a') }</dd>
+                {build.status !== 'pending' &&
                 <dt>Finished</dt>
-                <dd>{ moment(build.datetime_started).format('MMM Do YYYY, h:mm:ss a') }</dd>
+                }
+                {build.status !== 'pending' &&
+                <dd>{ moment(build.datetime_completed).format('MMM Do YYYY, h:mm:ss a') }</dd>
+                }
               </dl>
             </div>
           </div>
+          <BuildCardView build={build} deploying={build.status === 'pending'} key={i} item={i} expandedItem={this.state.expandedItem}/>
         </ListExpansionContainer>
       </div>
       )}

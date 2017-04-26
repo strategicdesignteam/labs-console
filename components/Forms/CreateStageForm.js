@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import EmptyState from '../EmptyState/EmptyState';
+import Link from '../Link';
 import TableSelectionView from '../TableView/TableSelectionView';
 import CreateUserForm from '../Forms/CreateUserForm'
 import CanvasConstants from '../Canvas/CanvasConstants'
@@ -161,8 +162,21 @@ class CreateStageForm extends React.Component {
     if(this.state.createStageView) {
       return (
           <form role="form">
-            <h2>Define Promotion Stage</h2>
-            <hr/>
+            <div className="page-header" key="define-stages-page-header">
+              <ol className="breadcrumb">
+                <li>
+                  <Link to="/home">Topologies</Link>
+                </li>
+                <li>
+                  <a href="#" onClick={this.handleCancel}>
+                    {this.props.topology.name}
+                  </a>
+                </li>
+                <li className="active">
+                  Define Promotion Stage
+                </li>                
+              </ol>
+            </div>
             <div className="form-group">
               <label  htmlFor="input1">Stage Name</label>
               <input type="text" className="form-control" id="input1" required="" placeholder="stage-name"
@@ -208,9 +222,32 @@ class CreateStageForm extends React.Component {
       )
     } else if (this.state.createUserView){
       return (
-        <CreateUserForm handleSubmit={this.handleCreateUserSubmit.bind(this)}
-                        handleCancel={this.handleCreateUserCancel.bind(this)}
-                        value={this.state.user}/>
+        <div>
+          <div className="page-header" key="define-stages-page-header">
+            <ol className="breadcrumb">
+              <li>
+                <Link to="/home">Topologies</Link>
+              </li>
+              <li>
+                <a href="#" onClick={this.handleCancel}>
+                  {this.props.topology.name}
+                </a>
+              </li>
+              <li>
+                <a href="#" onClick={this.handleCreateUserCancel}>
+                  Define Promotion Stage
+                </a>
+              </li>              
+              <li className="active">
+                Create User
+              </li>                
+            </ol>
+          </div>        
+          <CreateUserForm handleSubmit={this.handleCreateUserSubmit}
+                          handleCancel={this.handleCreateUserCancel}
+                          value={this.state.user}
+                          hideHeading={true}/>
+        </div>
       )
     }
   }

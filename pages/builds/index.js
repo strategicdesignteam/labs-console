@@ -24,6 +24,7 @@ class BuildsPage extends React.Component {
     let buildApi = new labsApi.BuildApi();
     buildApi.buildsGet((error, builds, res) => {
       this.setState({builds: builds});
+      this.pollRunningBuilds(builds);
     });
   }
 
@@ -63,6 +64,38 @@ class BuildsPage extends React.Component {
     //todo: post a build for state.build and refresh
     this.getBuilds();
   };
+
+  pollRunningBuilds(builds) {
+    let buildApi = new labsApi.BuildApi();
+    let jobApi = new labsApi.JobApi();
+
+    if(builds && builds.length) {
+      builds.forEach((build) => {
+        if(build.status === 'pending'){
+          //poll running jobs every 10 sec, once they complete, update them & update state
+          let interval = setInterval(() => {
+            jobApi.jobsIdGet(build.tower_job_id, (error, job, res) => {
+              if(job.status === 'successful'){
+                clearInterval(interval);
+
+                build.datetime_completed = job.finished;
+                build.status = 'successful';
+
+                buildApi.updateBuild(build.id, {'body': build}, (e) => {
+                  //todo: display an error
+                  if (e) console.error(e);
+                  
+                  //requery builds now to update the status...
+                  this.getBuilds();
+                });
+              }
+            })
+          }, 10000)
+
+        }
+      })
+    }
+  }
 
   render() {
     return (

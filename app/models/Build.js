@@ -9,11 +9,14 @@ var BuildSchema = new Schema({
     number_of_projects: { type: Number, required: true},
     number_of_stages: { type: Number, required: true},
     ansible_tower_link: { type: String},
-    status: {type: String}
+    status: {type: String},
+    tower_job_id: {type: Number},
+    datetime_started: {type: Date},
+    datetime_completed: {type: Date}
   },
   {
     //http://mongoosejs.com/docs/guide.html#timestamps
-    timestamps: { createdAt: 'datetime_started', updatedAt: 'updated_at' },
+    timestamps: { updatedAt: 'updated_at' },
     //http://mongoosejs.com/docs/guide.html#versionKey
     versionKey: 'version'
   }

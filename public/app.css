@@ -270,6 +270,10 @@ ul.nav.nav-tabs.user-tabs {
   margin-top: -4px;
   vertical-align: middle;
 }
+.canvas-editor-container .canvas-editor-toolbar .fa.fa-angle-double-up,
+.canvas-editor-container .canvas-editor-toolbar .fa.fa-angle-double-down {
+  font-size: 14px;
+}
 .canvas-editor-container .canvas-editor-toolbar a.disabled, 
 .canvas-editor-container .canvas-editor-toolbar a:hover.disabled {
   color: #bbb;
@@ -679,3 +683,12 @@ ul.nav.nav-tabs.user-tabs {
   padding-bottom: 12px;
   padding-top: 12px;
 }
+
+/** Build View CSS */
+/*.card-pf-view .card-pf-top-element .pficon.pficon-cluster {
+  font-size: 46px;
+  height: 106px;
+  line-height: 102px;
+  margin: 0 auto;
+  text-align:center;
+}*/

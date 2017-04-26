@@ -8,7 +8,8 @@ class CreateUserForm extends React.Component {
   static propTypes = {
     handleSubmit: React.PropTypes.func,
     handleCancel: React.PropTypes.func,
-    value: React.PropTypes.object
+    value: React.PropTypes.object,
+    hideHeading: React.PropTypes.bool
   };
 
   handleSubmit = (event) => {
@@ -50,8 +51,12 @@ class CreateUserForm extends React.Component {
   render() {
     return (
         <form className="form-horizontal" role="form">
-          <h2>{Object.keys(this.props.value).length === 0 ? 'Create User' : 'Edit User'}</h2>
-          <hr/>
+          {!this.props.hideHeading && 
+            <h2>{Object.keys(this.props.value).length === 0 ? 'Create User' : 'Edit User'}</h2>  
+          }
+          {!this.props.hideHeading && 
+            <hr/>
+          }
           <div className="form-group">
             <label htmlFor="firstname" className="col-sm-2 control-label required-pf">First Name</label>
             <div className="col-sm-10">

@@ -95,6 +95,46 @@
     }
 
     /**
+     * Update an existing build
+     * 
+     * @param {Integer} id Build ID
+     * @param {Object} opts Optional parameters
+     * @param {module:model/Build} opts.body User object that needs to be updated in the store
+     * @param {module:api/BuildApi~updateBuildCallback} callback The callback function, accepting three arguments: error, data, response
+     */
+    this.updateBuild = function(id, opts, callback) {
+      opts = opts || {};
+      var postBody = opts['body'];
+
+      // verify the required parameter 'id' is set
+      if (id == undefined || id == null) {
+        throw "Missing the required parameter 'id' when calling updateBuild";
+      }
+
+
+      var pathParams = {
+        'id': id
+      };
+      var queryParams = {
+      };
+      var headerParams = {
+      };
+      var formParams = {
+      };
+
+      var authNames = [];
+      var contentTypes = ['application/json'];
+      var accepts = ['application/json'];
+      var returnType = null;
+
+      return this.apiClient.callApi(
+        '/builds/{id}', 'PUT',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the buildsGet operation.
      * @callback module:api/BuildApi~buildsGetCallback
      * @param {String} error Error message, if any.

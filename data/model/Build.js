@@ -89,8 +89,14 @@
       if (data.hasOwnProperty('ansible_tower_link')) {
         obj['ansible_tower_link'] = ApiClient.convertToType(data['ansible_tower_link'], 'String');
       }
+      if (data.hasOwnProperty('tower_job_id')) {
+        obj['tower_job_id'] = ApiClient.convertToType(data['tower_job_id'], 'Number');
+      }      
       if (data.hasOwnProperty('datetime_started')) {
         obj['datetime_started'] = ApiClient.convertToType(data['datetime_started'], 'Date');
+      }
+      if (data.hasOwnProperty('datetime_completed')) {
+        obj['datetime_completed'] = ApiClient.convertToType(data['datetime_completed'], 'Date');
       }
       if (data.hasOwnProperty('status')) {
         obj['status'] = ApiClient.convertToType(data['status'], 'String');
@@ -127,9 +133,17 @@
    */
   exports.prototype['ansible_tower_link'] = undefined;
   /**
+   * @member {Integer} tower_job_id
+   */
+  exports.prototype['tower_job_id'] = undefined;  
+  /**
    * @member {Date} datetime_started
    */
   exports.prototype['datetime_started'] = undefined;
+  /**
+   * @member {Date} datetime_completed
+   */
+  exports.prototype['datetime_completed'] = undefined;  
   /**
    * @member {String} status
    */

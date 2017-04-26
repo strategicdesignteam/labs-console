@@ -16,6 +16,7 @@ module.exports = function(app) {
   //builds routes
   app.post('/api/builds', BuildService.addBuild);
   app.get('/api/builds', BuildService.buildsGET);
+  app.put('/api/builds/:id', BuildService.updateBuild);
   app.get('/api/builds/:id', BuildService.buildsIdGET);
 
   app.get('/api/downloadEngagement/:id', BuildService.downloadEngagement);

@@ -25,9 +25,9 @@
 (function(factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('./ApiClient'), require('./model/ApplicationTemplate'), require('./model/ApplicationTopology'), require('./model/Body'), require('./model/Build'), require('./model/ClaimType'), require('./model/ErrorModel'), require('./model/LabelSelectorTemplate'), require('./model/PVCAssociationTemplate'), require('./model/PersistentVolumeClaimTemplate'), require('./model/Port'), require('./model/ProjectTemplate'), require('./model/RoleBinding'), require('./model/Route'), require('./model/Service'), require('./model/Stage'), require('./model/User'), require('./api/BuildApi'), require('./api/TopologyApi'), require('./api/UserApi'));
+    module.exports = factory(require('./ApiClient'), require('./model/ApplicationTemplate'), require('./model/ApplicationTopology'), require('./model/Body'), require('./model/Build'), require('./model/ClaimType'), require('./model/ErrorModel'), require('./model/LabelSelectorTemplate'), require('./model/PVCAssociationTemplate'), require('./model/PersistentVolumeClaimTemplate'), require('./model/Port'), require('./model/ProjectTemplate'), require('./model/RoleBinding'), require('./model/Route'), require('./model/Service'), require('./model/Stage'), require('./model/Job'), require('./model/User'), require('./api/BuildApi'), require('./api/TopologyApi'), require('./api/UserApi'), require('./api/JobApi'));
   }
-}(function(ApiClient, ApplicationTemplate, ApplicationTopology, Body, Build, ClaimType, ErrorModel, LabelSelectorTemplate, PVCAssociationTemplate, PersistentVolumeClaimTemplate, Port, ProjectTemplate, RoleBinding, Route, Service, Stage, User, BuildApi, TopologyApi, UserApi) {
+}(function(ApiClient, ApplicationTemplate, ApplicationTopology, Body, Build, ClaimType, ErrorModel, LabelSelectorTemplate, PVCAssociationTemplate, PersistentVolumeClaimTemplate, Port, ProjectTemplate, RoleBinding, Route, Service, Stage, Job, User, BuildApi, TopologyApi, UserApi, JobApi){
   'use strict';
 
   /**
@@ -161,7 +161,12 @@
      * The UserApi service constructor.
      * @property {module:api/UserApi}
      */
-    UserApi: UserApi
+    UserApi: UserApi,
+    /**
+     * The JobApi service constructor
+     * @property {module: api/JobApi}
+     */
+    JobApi: JobApi
   };
 
   return exports;
