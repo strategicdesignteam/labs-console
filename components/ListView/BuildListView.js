@@ -67,7 +67,7 @@ class BuildListView extends React.Component {
               <ul className="dropdown-menu dropdown-menu-right" aria-labelledby="dropupKebabRight2">
                 <li><a href="#">View Logs</a></li>
                 <li role="separator" className="divider"></li>
-                <li><a onClick={ (e) => this.handleDelete(e, build)}>Delete</a></li>
+                <li><a onClick={ (e) => this.handleDelete(e, build.id)}>Delete</a></li>
               </ul>
             </div>
             <button className="btn btn-default"

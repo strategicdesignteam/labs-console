@@ -91,6 +91,22 @@ exports.buildsIdGET = function(args, res, next) {
     });
 };
 
+exports.deleteBuild = function(args, res, next) {
+  /**
+   * parameters expected in the args:
+  * id (Long)
+  **/
+  Build.findById(args.params.id, function(err, build) {
+    if(err) return res.send(500, err);
+    if(!build) { return res.send(404); }
+    //calling remove explicitly so that 'pre' remove middleware fires
+    build.remove(function(err){
+      if(err) return res.send(500, err);
+      return res.send(200);
+    });
+  });  
+};
+
 exports.downloadEngagement = function(args, res, next) {
   /**
    * Temporary method to manually construct engagement JSON and download it to client

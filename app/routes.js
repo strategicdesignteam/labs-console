@@ -18,6 +18,7 @@ module.exports = function(app) {
   app.get('/api/builds', BuildService.buildsGET);
   app.put('/api/builds/:id', BuildService.updateBuild);
   app.get('/api/builds/:id', BuildService.buildsIdGET);
+  app.delete('/api/builds/:id', BuildService.deleteBuild);
 
   app.get('/api/downloadEngagement/:id', BuildService.downloadEngagement);
 

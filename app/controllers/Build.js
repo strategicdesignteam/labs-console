@@ -10,6 +10,10 @@ module.exports.addBuild = function addBuild (req, res, next) {
   Build.addBuild(req, res, next);
 };
 
+module.exports.deleteBuild = function deleteBuild (req, res, next) {
+  Build.deleteBuild(req.params, res, next);
+};
+
 module.exports.updateBuild = function updateBuild (req, res, next) {
   Build.updateBuild(req, res, next);
 };

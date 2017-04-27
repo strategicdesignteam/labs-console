@@ -33,8 +33,12 @@ class BuildsPage extends React.Component {
     this.setState({startBuildModal: true, build: build});
   };
 
-  handleDelete = (event) => {
+  handleDelete = (event, buildId) => {
     event.preventDefault();
+    let buildApi = new labsApi.BuildApi();
+    buildApi.deleteBuild(buildId, (error, data, res) => {
+      this.getBuilds();
+    });
   };
 
   handleRefresh = (event) => {
@@ -113,8 +117,8 @@ class BuildsPage extends React.Component {
 
           if (this.state.builds.length) {
             content.push(<BuildListView builds={ this.state.builds }
-                                        handleBuild={this.handleBuild.bind(this)}
-                                        handleDelete={this.handleDelete.bind(this)}
+                                        handleBuild={this.handleBuild}
+                                        handleDelete={this.handleDelete}
                                         key="builds-list-view"/>);
           } else {
             content.push(<h4 key="builds-no-builds">No current builds.</h4>);
