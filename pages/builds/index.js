@@ -72,12 +72,12 @@ class BuildsPage extends React.Component {
     if(builds && builds.length) {
       builds.forEach((build) => {
         if(build.status === 'pending' || build.status === 'running'){
-          //poll running jobs every 10 sec, once they complete, update them & update state
-          let interval = setInterval(() => {
+
+          let interval;
+          let checkJobs = () => {
+            clearInterval(interval);
             jobApi.jobsIdGet(build.tower_job_id, (error, job, res) => {
               if(job.status === 'successful' || job.status === 'failed' || job.status === 'canceled'){
-                clearInterval(interval);
-
                 build.datetime_completed = job.finished;
                 build.status = job.status;
 
@@ -88,10 +88,14 @@ class BuildsPage extends React.Component {
                   //requery builds now to update the status...
                   this.getBuilds();
                 });
+              } else {
+                //poll running jobs every 10 sec, once they complete, update them & update state
+                interval = setInterval(checkJobs, 10000);
               }
             })
-          }, 10000)
-
+          }
+          //check immediately first...
+          let timeout = setTimeout(checkJobs, 0);
         }
       })
     }
