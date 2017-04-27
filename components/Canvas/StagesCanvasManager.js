@@ -6,6 +6,7 @@ import update from 'immutability-helper'
 import {deepClone} from '../../core/helpers'
 import {infraImage} from './CanvasHelpers'
 import {emptyStageNode} from './EmptyStageNode'
+import {emptyProjectNode} from './EmptyProjectNode'
 import cx from 'classnames'
 import Canvas from './Canvas'
 import CanvasConstants from './CanvasConstants'
@@ -70,10 +71,6 @@ class StagesCanvasManager extends React.Component {
       clonedStage.x = clonedStage.x + CanvasConstants.DUPLICATE_X_OFFSET
       clonedStage.y = clonedStage.y + CanvasConstants.DUPLICATE_Y_OFFSET
 
-      //again, i am intercepting this at the Stage Manager level to make the UI more responsive immediately
-      // this.setState(update(this.state, {nodes: {$push: [clonedStage]}}))
-
-      //fire off save and hope it works
       this.props.handleAddStage(clonedStage);
     }
     this.deleteSelected = (e) => {
@@ -137,26 +134,36 @@ class StagesCanvasManager extends React.Component {
         this.setState({zoomLevel: level, zoomOutDisabled: level === this.state.minZoom, zoomInDisabled: false})
       }
     }
+    this.nodeButtonClicked = (e, index) => {
+      if(this.state.nodes[index].emptyStageNode){
+        this.props.handleCreateStage(e);
+      }
+      if(this.state.nodes[index].emptyProjectNode){
+        this.props.handleCreateProject(e);
+      }
+    }
   }
 
   componentWillMount(){
-    this.createNodesFromStages(this.props.stages);
+    this.createNodesFromStages(this.props.stages, this.props.projects);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.createNodesFromStages(nextProps.stages);
+    this.createNodesFromStages(nextProps.stages, nextProps.projects);
   }
 
-  createNodesFromStages(stages){
+  createNodesFromStages(stages, projects){
     let additionalNodes = []
-    if(stages.length < CanvasConstants.MAX_STAGES){
+    if(!projects.length){
+      additionalNodes.push(emptyProjectNode);
+    }
+    else if(stages.length < CanvasConstants.MAX_STAGES){
       const rows = Math.floor((stages.length) / (CanvasConstants.MAX_STAGES_IN_ROW))
       let emptyNode = {
         ...emptyStageNode,
         x: ((stages.length % CanvasConstants.MAX_STAGES_IN_ROW) * CanvasConstants.STAGE_WIDTH) 
           + (((stages.length % CanvasConstants.MAX_STAGES_IN_ROW) + 1) * CanvasConstants.STAGE_PADDING_X),
         y: (rows * CanvasConstants.STAGE_HEIGHT) + ((rows + 1) * CanvasConstants.STAGE_PADDING_Y),
-        emptyStageNode: true
       }
       additionalNodes.push(emptyNode);
     }
@@ -228,7 +235,7 @@ class StagesCanvasManager extends React.Component {
           nodes={this.state.nodes}
           moveNode={this.moveNode}
           selectNode={this.selectNode}
-          nodeButtonClicked={handleCreateStage}
+          nodeButtonClicked={this.nodeButtonClicked}
           addContainerNodeItem={this.addContainerNodeItem}
           removeContainerNodeItem={this.removeContainerNodeItem}
           containerNodeItemClicked={this.containerNodeItemClicked}

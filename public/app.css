@@ -242,6 +242,7 @@ ul.nav.nav-tabs.user-tabs {
 }
 .canvas-editor-container .canvas-editor-toolbar {
   padding: 15px;
+  max-width: 1424px;
 }
 .canvas-editor-container .canvas-editor-toolbar button {
   margin-right: 6px;
@@ -284,6 +285,7 @@ ul.nav.nav-tabs.user-tabs {
   height: 100%;
   position: relative;
   width: 100%;
+  max-width: 1424px;
 }
 .canvas-editor-container .canvas-editor-toolbox-container .canvas-editor-toolbox {
   background-color: rgba(255, 255, 255, 0.94);
@@ -314,6 +316,7 @@ ul.nav.nav-tabs.user-tabs {
 .canvas-scroll-toolbox {
   margin-left: 15px;
   width: 98%;
+  max-width: 1396px;
   min-height: 72px;
   border: 1px solid #d1d1d1;
   border-bottom: none;
@@ -514,13 +517,18 @@ ul.nav.nav-tabs.user-tabs {
 .close-icon {
   cursor: pointer;
   color: #626262;
+  fill: #626262;
 }
 .close-icon:hover {
   color: #000;
+  fill: #000;
 }
 .node-rect {
   stroke-width: 2;
   stroke: #bbb;
+}
+.node-rect.dashed {
+  stroke-dasharray: 10 5;
 }
 .invalid-node-rect {
   fill: #d1d1d1;
@@ -683,12 +691,3 @@ ul.nav.nav-tabs.user-tabs {
   padding-bottom: 12px;
   padding-top: 12px;
 }
-
-/** Build View CSS */
-/*.card-pf-view .card-pf-top-element .pficon.pficon-cluster {
-  font-size: 46px;
-  height: 106px;
-  line-height: 102px;
-  margin: 0 auto;
-  text-align:center;
-}*/
