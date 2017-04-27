@@ -1,7 +1,6 @@
 import React from 'react'
 import { DragDropContext } from 'react-dnd'
 import MouseBackEnd from 'react-dnd-mouse-backend'
-import {mockContainerNodes} from './containerNodes'
 import update from 'immutability-helper'
 import {deepClone} from '../../core/helpers'
 import {infraImage} from './CanvasHelpers'
