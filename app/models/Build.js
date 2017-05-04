@@ -6,6 +6,7 @@ var autoIncrement = require('mongoose-auto-increment');
 var BuildSchema = new Schema({
     topology: { type: Number, ref: 'Topology' },
     topology_version: { type: Number, required: true},
+    topology_version_key: {type: Number},
     number_of_projects: { type: Number, required: true},
     number_of_stages: { type: Number, required: true},
     ansible_tower_link: { type: String},

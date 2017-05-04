@@ -32,6 +32,7 @@ class ProjectPanel extends React.Component {
           <br />
           <select value={value.infrastructure} className="selectpicker form-control"
             onChange={(e) => { handleChange(e, 'infrastructure') } }>
+            <option></option>
             {this.props.infrastructures.map((infra, i) => {
               return <option value={infra.id} key={i}>{infra.name}</option>
             })}

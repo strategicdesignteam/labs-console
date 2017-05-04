@@ -67,8 +67,8 @@ class BuildListView extends React.Component {
                 <li><a onClick={ (e) => this.handleDelete(e, build.id)}>Delete</a></li>
               </ul>
             </div>
-            <button className="btn btn-default"
-                    onClick={ (e) => this.handleBuild(e, build) }>Rebuild</button>
+            {/**<button className="btn btn-default"
+                    onClick={ (e) => this.handleBuild(e, build) }>Rebuild</button>**/}
           </div>
           <div className="list-view-pf-main-info">
             <div className="list-view-pf-left">

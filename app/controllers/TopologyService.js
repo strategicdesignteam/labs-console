@@ -12,6 +12,7 @@ exports.addTopology = function(args, res, next) {
   newToplogy.description = args.body.description || '';
   newToplogy.project_templates = args.body.project_templates || [];
   newToplogy.promotion_process = args.body.promotion_process || [];
+  newToplogy.version = 0;
 
   newToplogy.save(function(err, topology) {
     if (err) return common.handleError(res, err);

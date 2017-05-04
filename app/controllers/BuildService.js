@@ -25,22 +25,30 @@ exports.addBuild = function(args, res, next) {
     //   return common.handleError(res, err);
     // });
 
-    //create Build
-    newBuild.topology_version = topology.version;
-    newBuild.datetime_started = args.body.dateTimeStarted;
-    newBuild.status = constants.default.ANSIBLE_JOB_STATUS.PENDING;
-
-    //set tower link to job workflow id for now
-    newBuild.ansible_tower_link  = 'https://tower.strategicdesign.io/#/workflows/' + 
-      args.body.towerJobId + '#followAnchor';
-    newBuild.number_of_projects = topology.project_templates.length;
-    newBuild.number_of_stages = topology.promotion_process.length;
-    newBuild.tower_job_id = args.body.towerJobId;
-
-    newBuild.save(function(err, build) {
+    //increment topology version on each build
+    topology.version += 1;
+    topology.save(function(err, topology) {
       if (err) return common.handleError(res, err);
-      res.json({ build: build });
-    });
+      //create Build
+      newBuild.topology_version = topology.version;
+      console.log(topology);
+      newBuild.topology_version_key = topology.__v;
+      newBuild.datetime_started = args.body.dateTimeStarted;
+      newBuild.status = constants.default.ANSIBLE_JOB_STATUS.PENDING;
+
+      //set tower link to job workflow id for now
+      newBuild.ansible_tower_link  = 'https://tower.strategicdesign.io/#/workflows/' + 
+        args.body.towerJobId + '#followAnchor';
+      newBuild.number_of_projects = topology.project_templates.length;
+      newBuild.number_of_stages = topology.promotion_process.length;
+      newBuild.tower_job_id = args.body.towerJobId;
+
+      newBuild.save(function(err, build) {
+        if (err) return common.handleError(res, err);
+        res.json({ build: build });
+        
+      });      
+    }); 
   });
 };
 
@@ -72,7 +80,7 @@ exports.buildsGET = function(args, res, next) {
   Build.find()
     .populate('topology')
     .limit(20)
-    .sort({ datetime_started: -1 })
+    .sort({ datetime_started: -1, topology_version_key: -1 })
     .exec(function (err, builds) {
       if(err) { return common.handleError(res, err); }
       return res.json(200, builds);
