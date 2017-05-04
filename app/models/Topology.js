@@ -84,13 +84,12 @@ var TopologySchema = new Schema({
     description: {type: String},
     project_templates: [ProjectSchema],
     promotion_process: [StageSchema],
-    engagement_id: {type: Number}
+    engagement_id: {type: Number},
+    version: {type: Number}
   },
   {
     //http://mongoosejs.com/docs/guide.html#timestamps
-    timestamps: { createdAt: 'datetime_created', updatedAt: 'datetime_modified' },
-    //http://mongoosejs.com/docs/guide.html#versionKey
-    versionKey: 'version'
+    timestamps: { createdAt: 'datetime_created', updatedAt: 'datetime_modified' }
   }
 );
 

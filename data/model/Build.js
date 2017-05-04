@@ -80,6 +80,9 @@
       if (data.hasOwnProperty('topology_version')) {
         obj['topology_version'] = ApiClient.convertToType(data['topology_version'], 'Integer');
       }
+      if (data.hasOwnProperty('topology_version_key')) {
+        obj['topology_version_key'] = ApiClient.convertToType(data['topology_version_key'], 'Integer');
+      }      
       if (data.hasOwnProperty('number_of_projects')) {
         obj['number_of_projects'] = ApiClient.convertToType(data['number_of_projects'], 'Integer');
       }
@@ -120,6 +123,10 @@
    * @member {Integer} topology_version
    */
   exports.prototype['topology_version'] = undefined;
+  /**
+   * @member {Integer} topology_version_key
+   */
+  exports.prototype['topology_version_key'] = undefined;  
   /**
    * @member {Integer} number_of_projects
    */
