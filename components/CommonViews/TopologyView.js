@@ -47,6 +47,7 @@ class TopologyView extends React.Component {
                   stages={stages} 
                   handleProjectEdit={handleProjectEdit}
                   handleProjectDelete={handleProjectDelete}
+                  handleCreateProject={handleCreateProject}
                   handleCreateStage={handleCreateStage}
                   deleteStageClicked={handleStageDelete}
                   editStageClicked={handleStageEdit}

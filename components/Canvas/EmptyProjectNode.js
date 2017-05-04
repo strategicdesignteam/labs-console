@@ -1,15 +1,15 @@
-export const emptyStageNode = {
-  'name': 'Add Promotion Stage',
+export const emptyProjectNode = {
+  'name': 'Add Project',
   'titleYOffset': 24,
-  'label': 'Add a promotion stage for your topology projects.',
+  'label': 'A promotion stage must contain at least one project. Create a project template to begin.',
   'labelYOffset': 180,
-  'labelWidth': 200,
+  'labelWidth': 210,
   'icon': 'pficon pficon pficon-add-circle-o',
   'iconYOffset': 80,
   'fontSize': '70px',
   'iconWidth': 70,
-  'buttonLabel': 'Add Stage',
-  'buttonYOffset': 250,
+  'buttonLabel': 'Add Project',
+  'buttonYOffset': 270,
   'buttonClass': 'btn btn-primary',
   'x': 60,
   'y': 52,
@@ -20,5 +20,5 @@ export const emptyStageNode = {
   'invalid': false,
   'selected': false,
   'containerNode': true,
-  'emptyStageNode': true
+  'emptyProjectNode': true
 }

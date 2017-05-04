@@ -133,6 +133,42 @@
         authNames, contentTypes, accepts, returnType, callback
       );
     }
+    /**
+     * Deletes a build
+     * 
+     * @param {Integer} id Build id to delete
+     * @param {module:api/BuildApi~deleteBuildCallback} callback The callback function, accepting three arguments: error, data, response
+     */
+    this.deleteBuild = function(id, callback) {
+      var postBody = null;
+
+      // verify the required parameter 'id' is set
+      if (id == undefined || id == null) {
+        throw "Missing the required parameter 'id' when calling deleteBuild";
+      }
+
+
+      var pathParams = {
+        'id': id
+      };
+      var queryParams = {
+      };
+      var headerParams = {
+      };
+      var formParams = {
+      };
+
+      var authNames = [];
+      var contentTypes = [];
+      var accepts = ['application/json'];
+      var returnType = null;
+
+      return this.apiClient.callApi(
+        '/builds/{id}', 'DELETE',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
 
     /**
      * Callback function to receive the result of the buildsGet operation.

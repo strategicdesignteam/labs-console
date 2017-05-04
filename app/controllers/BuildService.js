@@ -28,7 +28,10 @@ exports.addBuild = function(args, res, next) {
     newBuild.topology_version = topology.version;
     newBuild.datetime_started = args.body.dateTimeStarted;
     newBuild.status = 'pending';
-    newBuild.ansible_tower_link  = 'https://tower.strategicdesign.io/'; //default this for now
+
+    //set tower link to job workflow id for now
+    newBuild.ansible_tower_link  = 'https://tower.strategicdesign.io/#/workflows/' + 
+      args.body.towerJobId + '#followAnchor';
     newBuild.number_of_projects = topology.project_templates.length;
     newBuild.number_of_stages = topology.promotion_process.length;
     newBuild.tower_job_id = args.body.towerJobId;
@@ -86,6 +89,22 @@ exports.buildsIdGET = function(args, res, next) {
       if(err) { return common.handleError(res, err); }
       return res.json(200, builds);
     });
+};
+
+exports.deleteBuild = function(args, res, next) {
+  /**
+   * parameters expected in the args:
+  * id (Long)
+  **/
+  Build.findById(args.params.id, function(err, build) {
+    if(err) return res.send(500, err);
+    if(!build) { return res.send(404); }
+    //calling remove explicitly so that 'pre' remove middleware fires
+    build.remove(function(err){
+      if(err) return res.send(500, err);
+      return res.send(200);
+    });
+  });  
 };
 
 exports.downloadEngagement = function(args, res, next) {

@@ -3,6 +3,7 @@ import BuildCardView from '../CardView/BuildCardView';
 import ListExpansionView from './ListExpansionView';
 import ListExpansionContainer from './ListExpansionContainer';
 import moment from 'moment';
+import cx from 'classnames';
 
 class BuildListView extends React.Component {
 
@@ -20,8 +21,12 @@ class BuildListView extends React.Component {
     switch(status){
       case 'successful':
         return 'pficon pficon-ok list-view-pf-icon-sm list-view-pf-icon-success';
-      case 'error':
+      case 'failed':
         return 'pficon pficon-error-circle-o list-view-pf-icon-sm list-view-pf-icon-danger';
+      case 'canceled':
+        return 'pficon pficon-error-circle-o list-view-pf-icon-sm list-view-pf-icon-danger';        
+      case 'running':
+        return 'pficon pficon-info list-view-pf-icon-sm list-view-pf-icon-info';        
       case 'pending':
         return 'pficon pficon-info list-view-pf-icon-sm list-view-pf-icon-info';
       default:
@@ -62,7 +67,7 @@ class BuildListView extends React.Component {
               <ul className="dropdown-menu dropdown-menu-right" aria-labelledby="dropupKebabRight2">
                 <li><a href="#">View Logs</a></li>
                 <li role="separator" className="divider"></li>
-                <li><a onClick={ (e) => this.handleDelete(e, build)}>Delete</a></li>
+                <li><a onClick={ (e) => this.handleDelete(e, build.id)}>Delete</a></li>
               </ul>
             </div>
             <button className="btn btn-default"
@@ -80,11 +85,11 @@ class BuildListView extends React.Component {
                 <div className="list-group-item-text">
                   {(() => {
                     let content = [];
-                    if(build.status === 'successful' || build.status === 'error'){
+                    if(build.status === 'successful' || build.status === 'failed' || build.status === 'canceled'){
                       content.push(<strong key="finished">Finished: </strong>);
                       content.push(moment(build.datetime_completed).fromNow());
                     }
-                    else if (build.status === 'pending'){
+                    else if (build.status === 'pending' || build.status === 'running'){
                       content.push(<strong key="started">Started: </strong>);
                       content.push(moment(build.datetime_started).fromNow());
                     }
@@ -121,7 +126,7 @@ class BuildListView extends React.Component {
                 <dt>Description</dt>
                 <dd>{ build.topology.description }</dd>
                 <dt>Tower Link</dt>
-                <dd><a href={ build.ansible_tower_link }>{ build.ansible_tower_link }</a></dd>
+                <dd><a href={ build.ansible_tower_link } target="_blank">Tower Job</a></dd>            
               </dl>
             </div>
             <div className="col-xs-12 col-sm-6 col-md-4">
@@ -134,6 +139,15 @@ class BuildListView extends React.Component {
                 {build.status !== 'pending' &&
                 <dd>{ moment(build.datetime_completed).format('MMM Do YYYY, h:mm:ss a') }</dd>
                 }
+              </dl>
+            </div>
+            <div className="col-xs-12 col-sm-6 col-md-4">
+              <dl className="dl-horizontal">
+                <dt>Status</dt>
+                <dd className={cx({
+                    'text-danger': build.status === 'failed' || build.status === 'canceled', 
+                    'text-success': build.status === 'successful'
+                  })}>{build.status}</dd>                  
               </dl>
             </div>
           </div>

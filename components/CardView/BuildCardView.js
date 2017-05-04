@@ -40,16 +40,8 @@ class BuildCardView extends React.Component {
                     <p><span className="spinner spinner-xs spinner-inline"></span> Deploying</p>
                   }
                   {
-                    !deploying && i === 0 &&
-                    <a href="https://labs-console.dev.apps.c2.core.rht-labs.com">https://labs-console.dev.apps.c2.core.rht-labs.com</a>
-                  }
-                  {
-                    !deploying && i === 1 &&
-                    <a href="https://labs-console.uat.apps.c2.core.rht-labs.com">https://labs-console.uat.apps.c2.core.rht-labs.com</a>
-                  }
-                  {
-                    !deploying && i === 2 &&
-                    <a href="https://labs-console.apps.c2.core.rht-labs.com">https://labs-console.apps.c2.core.rht-labs.com</a>
+                    !deploying && 
+                    <a href={'https://project-' + stage.name.toLowerCase() + '.apps.strategicdesign.io'}>{'https://project-' + stage.name.toLowerCase() + '.apps.strategicdesign.io'}</a>
                   }
                 </div>
               </div>

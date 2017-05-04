@@ -13,7 +13,7 @@ export function infraImage (type) {
     case CanvasConstants.INFRASTRUCTURE_TYPES.AZURE.KEY:
       return CanvasConstants.INFRASTRUCTURE_TYPES.AZURE.IMG_PATH;
     case CanvasConstants.INFRASTRUCTURE_TYPES.RHEV.KEY:
-      return CanvasConstants.INFRASTRUCTURE_TYPES.RHEV.KEY;
+      return CanvasConstants.INFRASTRUCTURE_TYPES.RHEV.IMG_PATH;
     case CanvasConstants.INFRASTRUCTURE_TYPES.VMWARE.KEY:
       return CanvasConstants.INFRASTRUCTURE_TYPES.VMWARE.IMG_PATH;
     default:

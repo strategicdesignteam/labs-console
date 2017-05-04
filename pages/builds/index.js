@@ -33,8 +33,12 @@ class BuildsPage extends React.Component {
     this.setState({startBuildModal: true, build: build});
   };
 
-  handleDelete = (event) => {
+  handleDelete = (event, buildId) => {
     event.preventDefault();
+    let buildApi = new labsApi.BuildApi();
+    buildApi.deleteBuild(buildId, (error, data, res) => {
+      this.getBuilds();
+    });
   };
 
   handleRefresh = (event) => {
@@ -71,15 +75,15 @@ class BuildsPage extends React.Component {
 
     if(builds && builds.length) {
       builds.forEach((build) => {
-        if(build.status === 'pending'){
-          //poll running jobs every 10 sec, once they complete, update them & update state
-          let interval = setInterval(() => {
-            jobApi.jobsIdGet(build.tower_job_id, (error, job, res) => {
-              if(job.status === 'successful'){
-                clearInterval(interval);
+        if(build.status === 'pending' || build.status === 'running'){
 
+          let interval;
+          let checkJobs = () => {
+            clearInterval(interval);
+            jobApi.jobsIdGet(build.tower_job_id, (error, job, res) => {
+              if(job.status === 'successful' || job.status === 'failed' || job.status === 'canceled'){
                 build.datetime_completed = job.finished;
-                build.status = 'successful';
+                build.status = job.status;
 
                 buildApi.updateBuild(build.id, {'body': build}, (e) => {
                   //todo: display an error
@@ -88,10 +92,14 @@ class BuildsPage extends React.Component {
                   //requery builds now to update the status...
                   this.getBuilds();
                 });
+              } else {
+                //poll running jobs every 10 sec, once they complete, update them & update state
+                interval = setInterval(checkJobs, 10000);
               }
             })
-          }, 10000)
-
+          }
+          //check immediately first...
+          let timeout = setTimeout(checkJobs, 0);
         }
       })
     }
@@ -109,8 +117,8 @@ class BuildsPage extends React.Component {
 
           if (this.state.builds.length) {
             content.push(<BuildListView builds={ this.state.builds }
-                                        handleBuild={this.handleBuild.bind(this)}
-                                        handleDelete={this.handleDelete.bind(this)}
+                                        handleBuild={this.handleBuild}
+                                        handleDelete={this.handleDelete}
                                         key="builds-list-view"/>);
           } else {
             content.push(<h4 key="builds-no-builds">No current builds.</h4>);

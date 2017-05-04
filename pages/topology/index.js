@@ -73,7 +73,7 @@ class TopologyPage extends React.Component {
     event.preventDefault();
   };  
 
-  handleCreateStage = (event, i) => {
+  handleCreateStage = (event) => {
     this.setState({ homeView: false, createStageView: true, newStage: {} });
     event.preventDefault();
   };
@@ -190,8 +190,7 @@ class TopologyPage extends React.Component {
           setTimeout(() => {
             history.push('/builds');
           }, 1000);
-      });     
-
+      });
     });
   };
 

@@ -36,7 +36,8 @@ const CanvasNode = ({ node, index, defaultNodeWidth, defaultNodeHeight,
     <rect className={cx({
       'invalid-node-rect': node.invalid,
       'node-rect': !node.selected,
-      'selected-node-rect': node.selected
+      'selected-node-rect': node.selected,
+      'dashed': node.emptyStageNode || node.emptyProjectNode
     })}
       ry={node.containerNode ? 15 : 0}
       rx={node.containerNode ? 15 : 0}
@@ -260,14 +261,14 @@ const CanvasNode = ({ node, index, defaultNodeWidth, defaultNodeHeight,
       }
 
       // Sm. Top Right Close Icon
-      const closeIconSize = 16
+      const closeIconSize = 20
       containerNodeContent.push(
         <text className='close-icon' onClick={(e) => { closeClicked(e, i) }}
-          style={{ fontFamily: 'PatternFlyIcons-webfont', fontSize: closeIconSize }}
+          style={{ fontFamily: 'fontawesome', fontSize: closeIconSize }}
           x={containerNodeWidth - 2}
           y={itemYOffset + closeIconSize + 4}
           key={'close-icon' + i}>
-          {'\ue60b'}
+          {'\uf014'}
         </text>
       )
 
