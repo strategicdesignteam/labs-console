@@ -83,7 +83,7 @@ class ProjectCanvasManager extends React.Component {
   }
 
   render () {
-    const {project, handleProjectChange, handleAppChange, canvasClicked, 
+    const {project, infrastructures, handleProjectChange, handleAppChange, canvasClicked, 
       nodes, connections, nodeActions, moveNode,
       selectNode, duplicateSelected, deleteSelected, addNode, selectedNodeIndex} = this.props;
     const projectTabs = this.state.projectTabs;
@@ -118,7 +118,7 @@ class ProjectCanvasManager extends React.Component {
           canvasDropItemTypes={[CanvasItemTypes.CANVAS_NODE, CanvasItemTypes.TOOLBOX_ITEM]}>
           <CanvasPanel panelTitle={selectedNodeIndex < 0 ? 'Project' : 'Application'}>
             {selectedNodeIndex < 0 && 
-              <ProjectPanel handleChange={handleProjectChange} value={project} />
+              <ProjectPanel handleChange={handleProjectChange} value={project} infrastructures={infrastructures} />
             }
             {selectedNodeIndex >= 0 &&
               <ApplicationPanel handleChange={handleAppChange} 

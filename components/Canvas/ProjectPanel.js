@@ -6,7 +6,8 @@ class ProjectPanel extends React.Component {
 
   static propTypes = {
     handleChange: React.PropTypes.func,
-    value: React.PropTypes.object
+    value: React.PropTypes.object,
+    infrastructures: React.PropTypes.array
   };
 
   render() {
@@ -29,14 +30,11 @@ class ProjectPanel extends React.Component {
         <div className="form-group">
           <label className="required-pf">Infrastructure</label>
           <br />
-          <select value={value.type} className="selectpicker form-control"
-            onChange={(e) => { handleChange(e, 'type') } }>
-            <option>OpenStack</option>
-            <option>AWS</option>
-            <option>Google Cloud</option>
-            <option>Azure</option>
-            <option>RHEV</option>
-            <option>VMWare</option>
+          <select value={value.infrastructure} className="selectpicker form-control"
+            onChange={(e) => { handleChange(e, 'infrastructure') } }>
+            {this.props.infrastructures.map((infra, i) => {
+              return <option value={infra.id} key={i}>{infra.name}</option>
+            })}
           </select>
         </div>
       </form>

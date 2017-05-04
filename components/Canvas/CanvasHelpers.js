@@ -1,22 +1,20 @@
-import CanvasConstants from './CanvasConstants'
+import constants from '../../core/constants'
 
 export function infraImage (type) {
   switch(type){
-    case CanvasConstants.INFRASTRUCTURE_TYPES.OPENSHIFT.KEY:
-      return CanvasConstants.INFRASTRUCTURE_TYPES.OPENSHIFT.IMG_PATH;
-    case CanvasConstants.INFRASTRUCTURE_TYPES.AWS.KEY:
-      return CanvasConstants.INFRASTRUCTURE_TYPES.AWS.IMG_PATH;
-    case CanvasConstants.INFRASTRUCTURE_TYPES.OPENSTACK.KEY:
-      return CanvasConstants.INFRASTRUCTURE_TYPES.OPENSTACK.IMG_PATH;
-    case CanvasConstants.INFRASTRUCTURE_TYPES.GOOGLE_CLOUD.KEY:
-      return CanvasConstants.INFRASTRUCTURE_TYPES.GOOGLE_CLOUD.IMG_PATH;
-    case CanvasConstants.INFRASTRUCTURE_TYPES.AZURE.KEY:
-      return CanvasConstants.INFRASTRUCTURE_TYPES.AZURE.IMG_PATH;
-    case CanvasConstants.INFRASTRUCTURE_TYPES.RHEV.KEY:
-      return CanvasConstants.INFRASTRUCTURE_TYPES.RHEV.IMG_PATH;
-    case CanvasConstants.INFRASTRUCTURE_TYPES.VMWARE.KEY:
-      return CanvasConstants.INFRASTRUCTURE_TYPES.VMWARE.IMG_PATH;
+    case constants.INFRASTRUCTURE_TYPES.AWS.KEY:
+      return constants.INFRASTRUCTURE_TYPES.AWS.IMG_PATH;
+    case constants.INFRASTRUCTURE_TYPES.OPENSTACK.KEY:
+      return constants.INFRASTRUCTURE_TYPES.OPENSTACK.IMG_PATH;
+    case constants.INFRASTRUCTURE_TYPES.GOOGLE_CLOUD.KEY:
+      return constants.INFRASTRUCTURE_TYPES.GOOGLE_CLOUD.IMG_PATH;
+    case constants.INFRASTRUCTURE_TYPES.AZURE.KEY:
+      return constants.INFRASTRUCTURE_TYPES.AZURE.IMG_PATH;
+    case constants.INFRASTRUCTURE_TYPES.RHEV.KEY:
+      return constants.INFRASTRUCTURE_TYPES.RHEV.IMG_PATH;
+    case constants.INFRASTRUCTURE_TYPES.VMWARE.KEY:
+      return constants.INFRASTRUCTURE_TYPES.VMWARE.IMG_PATH;
     default:
-      return CanvasConstants.INFRASTRUCTURE_TYPES.OPENSTACK.IMG_PATH;
+      return constants.INFRASTRUCTURE_TYPES.OPENSTACK.IMG_PATH;
   }
 }

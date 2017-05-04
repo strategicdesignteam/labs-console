@@ -5,6 +5,21 @@
     "chunk": "main"
   },
   {
+    "path": "/infrastructures",
+    "page": "./pages/infrastructures",
+    "chunk": "infrastructures"
+  },  
+  {
+    "path": "/infrastructures/create",
+    "page": "./pages/infrastructures/create",
+    "chunk": "infrastructures"
+  },  
+  {
+    "path": "/infrastructures/:id",
+    "page": "./pages/infrastructures/create",
+    "chunk": "infrastructures"
+  },  
+  {
     "path": "/home",
     "page": "./pages/home",
     "chunk": "main"

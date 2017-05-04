@@ -87,7 +87,7 @@ class StagesCanvasManager extends React.Component {
       //create an instance of the project with the specified type from the containerNodeItem (project template)
       //handle any "instantiation" logic associated with project template to --> stage project here.
       let project = deepClone(containerNodeItem.itemAttributes)
-      project.image = infraImage(project.type)
+      project.image = infraImage(project.infrastructureProvider)
       project.backgroundColor = CanvasConstants.STAGE_BACKGROUND_COLOR;
 
       //todo: set label based on infrastructure type & PaaS
@@ -209,7 +209,7 @@ class StagesCanvasManager extends React.Component {
               return <DraggableTopAlignedToolboxItem itemAttributes={project} 
                   canvasSourceItemType={CanvasItemTypes.SCROLL_TOOLBOX_ITEM} key={'drag-item' + i}>
                 <div className='toolbox-item-container'>
-                  <img src={infraImage(project.type)} />
+                  <img src={infraImage(project.infrastructureProvider)} />
                   <span> {project.name} </span>
                   <button className='edit-btn icon' onClick={(e) => {handleProjectEdit(e, i)}}>
                     <i className='fa fa-pencil'></i>

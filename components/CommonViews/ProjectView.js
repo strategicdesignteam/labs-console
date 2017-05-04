@@ -17,6 +17,7 @@ class ProjectView extends React.Component {
     handleSubmit: React.PropTypes.func,
     handleCancel: React.PropTypes.func,
     topology: React.PropTypes.object,
+    infrastructures: React.PropTypes.array,
     value: React.PropTypes.object
   }
 
@@ -79,6 +80,14 @@ class ProjectView extends React.Component {
     this.handleProjectChange = (e, prop) => {
       let o = Object.assign({}, this.state.project);
       o[prop] = e.target.value;
+
+      if(prop === 'infrastructure'){
+        let infra = this.props.infrastructures.find((infra) => { 
+          return infra.id == e.target.value
+        });
+        o['infrastructureProvider'] = infra.provider;
+      }
+
       this.setState({ project: o });
     } 
 
@@ -126,6 +135,7 @@ class ProjectView extends React.Component {
     const {
       handleCancel,
       topology,
+      infrastructures,
       value
     } = this.props;
 
@@ -157,6 +167,7 @@ class ProjectView extends React.Component {
         {breadcrumbs}
         <ProjectCanvasManager 
           project={this.state.project} 
+          infrastructures={infrastructures}
           handleProjectChange={this.handleProjectChange}
           handleAppChange={this.handleAppChange}
           canvasClicked={this.canvasClicked}

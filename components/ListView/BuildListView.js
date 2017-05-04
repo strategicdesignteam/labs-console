@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import BuildCardView from '../CardView/BuildCardView';
 import ListExpansionView from './ListExpansionView';
 import ListExpansionContainer from './ListExpansionContainer';
+import constants from '../../core/constants';
 import moment from 'moment';
 import cx from 'classnames';
 
@@ -19,15 +20,15 @@ class BuildListView extends React.Component {
 
   getIcon(status){
     switch(status){
-      case 'successful':
+      case constants.ANSIBLE_JOB_STATUS.SUCCESSFUL:
         return 'pficon pficon-ok list-view-pf-icon-sm list-view-pf-icon-success';
-      case 'failed':
+      case constants.ANSIBLE_JOB_STATUS.FAILED:
         return 'pficon pficon-error-circle-o list-view-pf-icon-sm list-view-pf-icon-danger';
-      case 'canceled':
+      case constants.ANSIBLE_JOB_STATUS.CANCELLED:
         return 'pficon pficon-error-circle-o list-view-pf-icon-sm list-view-pf-icon-danger';        
-      case 'running':
+      case constants.ANSIBLE_JOB_STATUS.RUNNING:
         return 'pficon pficon-info list-view-pf-icon-sm list-view-pf-icon-info';        
-      case 'pending':
+      case constants.ANSIBLE_JOB_STATUS.PENDING:
         return 'pficon pficon-info list-view-pf-icon-sm list-view-pf-icon-info';
       default:
         return 'pficon pficon-info list-view-pf-icon-sm list-view-pf-icon-info';
@@ -56,10 +57,6 @@ class BuildListView extends React.Component {
               <span className="fa fa-angle-right"></span>
           </div>
           <div className="list-view-pf-actions">
-            {/*<button className="btn btn-danger"
-                    disabled={build.status === 'started'}
-                    onClick={ (e) => this.handleDelete(e, build) }>Delete</button>
-            */}
             <div className="dropdown pull-right dropdown-kebab-pf">
               <button className="btn btn-link dropdown-toggle" type="button" id="dropupKebabRight2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span className="fa fa-ellipsis-v"></span>
@@ -85,11 +82,14 @@ class BuildListView extends React.Component {
                 <div className="list-group-item-text">
                   {(() => {
                     let content = [];
-                    if(build.status === 'successful' || build.status === 'failed' || build.status === 'canceled'){
+                    if(build.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL 
+                      || build.status === constants.ANSIBLE_JOB_STATUS.FAILED 
+                      || build.status === constants.ANSIBLE_JOB_STATUS.CANCELLED){
                       content.push(<strong key="finished">Finished: </strong>);
                       content.push(moment(build.datetime_completed).fromNow());
                     }
-                    else if (build.status === 'pending' || build.status === 'running'){
+                    else if (build.status === constants.ANSIBLE_JOB_STATUS.PENDING 
+                      || build.status === constants.ANSIBLE_JOB_STATUS.RUNNING){
                       content.push(<strong key="started">Started: </strong>);
                       content.push(moment(build.datetime_started).fromNow());
                     }
@@ -125,7 +125,7 @@ class BuildListView extends React.Component {
               <dl className="dl-horizontal">
                 <dt>Description</dt>
                 <dd>{ build.topology.description }</dd>
-                <dt>Tower Link</dt>
+                <dt>Ansible</dt>
                 <dd><a href={ build.ansible_tower_link } target="_blank">Tower Job</a></dd>            
               </dl>
             </div>
@@ -133,10 +133,10 @@ class BuildListView extends React.Component {
               <dl className="dl-horizontal">
                 <dt>Started</dt>
                 <dd>{ moment(build.datetime_started).format('MMM Do YYYY, h:mm:ss a') }</dd>
-                {build.status !== 'pending' &&
+                {build.status !== constants.ANSIBLE_JOB_STATUS.PENDING &&
                 <dt>Finished</dt>
                 }
-                {build.status !== 'pending' &&
+                {build.status !== constants.ANSIBLE_JOB_STATUS.PENDING &&
                 <dd>{ moment(build.datetime_completed).format('MMM Do YYYY, h:mm:ss a') }</dd>
                 }
               </dl>
@@ -145,13 +145,18 @@ class BuildListView extends React.Component {
               <dl className="dl-horizontal">
                 <dt>Status</dt>
                 <dd className={cx({
-                    'text-danger': build.status === 'failed' || build.status === 'canceled', 
-                    'text-success': build.status === 'successful'
+                    'text-danger': build.status === constants.ANSIBLE_JOB_STATUS.FAILED 
+                      || build.status === constants.ANSIBLE_JOB_STATUS.CANCELLED, 
+                    'text-success': build.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL
                   })}>{build.status}</dd>                  
               </dl>
             </div>
           </div>
-          <BuildCardView build={build} deploying={build.status === 'pending'} key={i} item={i} expandedItem={this.state.expandedItem}/>
+          <BuildCardView build={build} 
+            deploying={build.status === constants.ANSIBLE_JOB_STATUS.PENDING} 
+            key={i} 
+            item={i} 
+            expandedItem={this.state.expandedItem}/>
         </ListExpansionContainer>
       </div>
       )}

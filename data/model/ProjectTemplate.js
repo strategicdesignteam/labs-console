@@ -80,8 +80,11 @@
       if (data.hasOwnProperty('display_name')) {
         obj['display_name'] = ApiClient.convertToType(data['display_name'], 'String');
       }
-      if (data.hasOwnProperty('type')) {
-        obj['type'] = ApiClient.convertToType(data['type'], 'String');
+      if (data.hasOwnProperty('infrastructure')) {
+        obj['infrastructure'] = ApiClient.convertToType(data['infrastructure'], 'Integer');
+      }      
+      if (data.hasOwnProperty('infrastructureProvider')) {
+        obj['infrastructureProvider'] = ApiClient.convertToType(data['infrastructureProvider'], 'String');
       }
       if (data.hasOwnProperty('apps')) {
         //I am overriding this to make the ApplicationTemplate more flexible for now...

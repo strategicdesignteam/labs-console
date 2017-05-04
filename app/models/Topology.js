@@ -9,9 +9,10 @@ var Builds = require('./Build');
  * @type {mongoose.Schema}
  */
 var ProjectSchema = new Schema({
+  infrastructure: { type: Number, ref: 'Infrastructure' },
+  infrastructureProvider: {type: String},
   name: {type: String, required: true},
   display_name: {type: String},
-  type: {type: String },
   apps: { type : Array , "default" : [] },
   persistent_volume_claim_templates: { type : Array , "default" : [] }
 });

@@ -5,7 +5,6 @@ import CreateTopologyView from '../../components/CommonViews/CreateTopologyView'
 import history from '../../core/history';
 import constants from '../../core/constants';
 import labsApi from '../../data/index';
-import selectors from '../../data/selectors';
 import c from '../common.css'
 
 class HomePage extends React.Component {
@@ -25,7 +24,6 @@ class HomePage extends React.Component {
   getTopologies(){
     //todo: show spinners here
     this.topologyApi.topologiesGet((error, topologies, res) => {
-      selectors.isBuildable(topologies);
       this.setState({topologies: topologies});
     });
   }
