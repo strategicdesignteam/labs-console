@@ -12,35 +12,5 @@ export default {
   STAGE_BACKGROUND_COLOR: '#fff',
   STAGE_MAX_DISPLAY_ITEMS: 4,
   MAX_STAGES: 12,
-  TOP_RIGHT_ICON_SIZE: 20,
-  INFRASTRUCTURE_TYPES: {
-    OPENSHIFT: {
-      KEY: 'OpenShift',
-      IMG_PATH: '/img/OpenShift-logo.svg',
-    },
-    AWS: {
-      KEY: 'AWS',
-      IMG_PATH: '/img/aws.svg'
-    },
-    OPENSTACK: {
-      KEY: 'OpenStack',
-      IMG_PATH: '/img/shadowman.svg'
-    },
-    GOOGLE_CLOUD: {
-      KEY: 'Google Cloud',
-      IMG_PATH: '/img/google-cloud.png'
-    },
-    AZURE: {
-      KEY: 'Azure',
-      IMG_PATH: '/img/azure.svg'
-    },
-    RHEV: {
-      KEY: 'RHEV',
-      IMG_PATH: '/img/shadowman.svg'
-    },
-    VMWARE: {
-      KEY: 'VMWare',
-      IMG_PATH: '/img/vmware.png'
-    }
-  }
+  TOP_RIGHT_ICON_SIZE: 20
 }

@@ -1,6 +1,7 @@
 var BuildService = require('./controllers/BuildService');
 var JobsService = require('./controllers/JobsService');
 var TopologyService = require('./controllers/TopologyService');
+var InfrastructureService = require('./controllers/InfrastructureService');
 var UserService = require('./controllers/UserService');
 
 module.exports = function(app) {
@@ -28,6 +29,13 @@ module.exports = function(app) {
   app.get('/api/users/:id', UserService.usersIdGET);
   app.put('/api/users/:id', UserService.updateUser);
   app.delete('/api/users/:id', UserService.deleteUser);
+
+  //infrastructures routes
+  app.post('/api/infrastructures', InfrastructureService.addInfrastructure);
+  app.get('/api/infrastructures', InfrastructureService.infrastructuresGET);
+  app.get('/api/infrastructures/:id', InfrastructureService.infrastructuresIdGET);
+  app.put('/api/infrastructures/:id', InfrastructureService.updateInfrastructure);
+  app.delete('/api/infrastructures/:id', InfrastructureService.deleteInfrastructure);
 
   //topologies routes
   app.post('/api/topologies', TopologyService.addTopology);

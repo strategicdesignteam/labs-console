@@ -15,7 +15,7 @@ class TopologyView extends React.Component {
   }
 
   render() {
-    const {topology, handleDownload, handleBuild, projects, stages,
+    const {topology, isBuildable, missingInfra, handleDownload, handleBuild, projects, stages,
       handleCreateStage, handleStageEdit, handleStageDelete, handleStageMoved, 
       handleAddStage, handleAddStageProject, handleDeleteStageProject,
       handleCreateProject, handleProjectEdit, handleProjectDelete, startBuildModal, cancelStart,
@@ -36,7 +36,7 @@ class TopologyView extends React.Component {
           <div className={c.float_right}>
             <button type="submit" className="btn btn-default" onClick={handleCreateProject}>Create Project Template</button>
             &nbsp;&nbsp;
-          <button type="submit" className="btn btn-primary" onClick={handleBuild} disabled={!projects.length || !stages.length}>Build</button>
+          <button type="submit" className="btn btn-primary" onClick={handleBuild} disabled={!isBuildable}>Build</button>
           </div>
         </ol>
       </div>);
@@ -56,25 +56,55 @@ class TopologyView extends React.Component {
                   handleAddStageProject={handleAddStageProject}
                   handleDeleteStageProject={handleDeleteStageProject} />);
 
-    let modal = <Modal id={startBuildModalId}
-      handleClose={cancelStart}
-      key="builds-modal">
-      <div className="text-center">
-        <div className={cx(c.spacing, c.slate_gray)}>
-          <i className="fa fa-rocket fa-3x"></i>
+    
+    let modal;
+    
+    if(startBuildModal && missingInfra.length > 0){
+      //error modal, topology projects are missing buildable infrastructure 
+      modal = <Modal id={startBuildModalId}
+        handleClose={cancelStart}
+        key="builds-modal">
+        <div className="text-center">
+          <div className={cx(c.spacing, c.slate_gray)}>
+            <i className="fa fa-exclamation-circle fa-3x" style={{color: '#c00'}}></i>
+          </div>
+          <h3>Infrastructure Not Ready</h3>
+          <div className={c.spacing} >
+            <p>The following stages have projects with incomplete infrastructure:</p>
+            {missingInfra.map((missing) => {
+              return <div>
+                <b>Stage:</b> &nbsp;<span>{missing.stage.name}</span>  &nbsp;&nbsp;
+                <b>Project:</b> &nbsp;<span>{missing.stageProject.name}</span>
+              </div>
+            })}
+          </div>
+          <p>Try again when infrastructures are ready.</p>
+          <div className={c.spacing}>
+            <button className="btn btn-primary btn-lg" onClick={cancelStart}>OK</button>
+          </div>
         </div>
-        <h3>Build Application Topology</h3>
-        <div className={c.spacing} >
-          <strong>Topology:</strong> {topology.name}
+      </Modal>
+    } else if (startBuildModal) {
+      modal = <Modal id={startBuildModalId}
+        handleClose={cancelStart}
+        key="builds-modal">
+        <div className="text-center">
+          <div className={cx(c.spacing, c.slate_gray)}>
+            <i style={{fontSize: 37, marginTop: 5, color: '#39a5dc'}} className="pficon pficon-topology"></i>
+          </div>        
+          <h3>Build Application Topology</h3>
+          <div className={c.spacing} >
+            <strong>Topology:</strong> {topology.name}
+          </div>
+          <p>Are you sure?</p>
+          <div className={c.spacing}>
+            <button className="btn btn-default btn-lg" onClick={cancelStart}>No</button>
+            &nbsp;
+            <button className="btn btn-primary btn-lg" onClick={startBuild}>Yes</button>
+          </div>
         </div>
-        <p>Are you sure?</p>
-        <div className={c.spacing}>
-          <button className="btn btn-default btn-lg" onClick={cancelStart}>No</button>
-          &nbsp;
-                  <button className="btn btn-primary btn-lg" onClick={startBuild}>Yes</button>
-        </div>
-      </div>
-    </Modal>
+      </Modal>
+    }
 
     return (
       <Layout className="container-fluid container-pf-nav-pf-vertical" nav={true}>

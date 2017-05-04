@@ -2,6 +2,7 @@
 var Build = require('../models/Build');
 var Topology = require('../models/Topology');
 var common = require('../common/common');
+var constants = require('../../core/constants');
 var automation = require('../automation/automation');
 
 exports.addBuild = function(args, res, next) {
@@ -27,7 +28,7 @@ exports.addBuild = function(args, res, next) {
     //create Build
     newBuild.topology_version = topology.version;
     newBuild.datetime_started = args.body.dateTimeStarted;
-    newBuild.status = 'pending';
+    newBuild.status = constants.default.ANSIBLE_JOB_STATUS.PENDING;
 
     //set tower link to job workflow id for now
     newBuild.ansible_tower_link  = 'https://tower.strategicdesign.io/#/workflows/' + 

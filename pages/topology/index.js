@@ -19,6 +19,7 @@ class TopologyPage extends React.Component {
 
   state = {
     projects: [],
+    infrastructures: [],
     stages: [],
     homeView: true,
     createProjectView: false,
@@ -27,7 +28,9 @@ class TopologyPage extends React.Component {
     topology: {},
     newProject: {},
     newStage: {},
+    isBuildable: false,
     startBuildModal: false,
+    missingInfra: [],
     loaded: false
   };
 
@@ -41,16 +44,38 @@ class TopologyPage extends React.Component {
   }
 
   getTopology() {
-    let topologyApi = new labsApi.TopologyApi();
-    topologyApi.topologiesIdGet(this.props.route.params.id, (error, topology, res) => {
-      selectors.isBuildable([topology]);
+    Promise.all([this.topologyGet(), this.infraGet()]).then((values) => {
+      let topology = values[0];
+      let infrastructures = values[1];
       this.setState({ 
         topology: topology, 
         projects: topology.project_templates, 
         stages: topology.promotion_process, 
+        infrastructures: infrastructures,
+        isBuildable: selectors.hasStageProjects(topology),
         loaded: true 
       });
     });
+  }
+
+  topologyGet = () => {
+    return new Promise((resolve, reject) => {
+      let topologyApi = new labsApi.TopologyApi();
+      topologyApi.topologiesIdGet(this.props.route.params.id, (error, topology, res) => {
+        if(error) reject(err);
+        resolve(topology);
+      })
+    })
+  }
+
+  infraGet = () => {
+    return new Promise((resolve, reject) => {
+      let infrastructureApi = new labsApi.InfrastructureApi();
+      infrastructureApi.infrastructuresGet((error, infrastructures, res) => {
+        if(error) reject(err);
+        resolve(infrastructures);
+      })
+    })
   }
 
   handleCreateProject = (event) => {
@@ -122,6 +147,8 @@ class TopologyPage extends React.Component {
     topology.promotion_process[index].projects = topology.promotion_process[index].projects || [];
     topology.promotion_process[index].projects.push(project);
 
+    this.setState({isBuildable: true});
+
     topologyApi.updateTopology(topology.id, {'body': topology}, (e) => {
       if(e) console.log(e); //todo: handle error
     });    
@@ -131,6 +158,8 @@ class TopologyPage extends React.Component {
     let topologyApi = new labsApi.TopologyApi();
     let topology = Object.assign({}, this.state.topology);
     topology.promotion_process[index].projects.splice(projectIndex, 1);
+
+    this.setState({isBuildable: selectors.hasStageProjects(topology)});
 
     topologyApi.updateTopology(topology.id, {'body': topology}, (e) => {
       if(e) console.log(e); //todo: handle error
@@ -149,7 +178,17 @@ class TopologyPage extends React.Component {
 
   handleBuild = (event, index) => {
     event.preventDefault();
-    this.setState({ startBuildModal: true });
+
+    //check the current state of infrastructures for stage projects before starting
+    Promise.all([this.topologyGet(), this.infraGet()]).then((values) => {
+      let topology = values[0];
+      let infrastructures = values[1];
+
+      this.setState({ 
+        startBuildModal: true, 
+        missingInfra: selectors.missingInfra(topology, infrastructures)
+      });
+    });
   };
 
   handleDownload = (event, index) => {
@@ -218,6 +257,8 @@ class TopologyPage extends React.Component {
     if (this.state.homeView && this.state.loaded) {
       return (
         <TopologyView topology={this.state.topology}
+          isBuildable={this.state.isBuildable}
+          missingInfra={this.state.missingInfra}
           handleDownload={this.handleDownload}
           handleBuild={this.handleBuild}
           projects={this.state.projects}
@@ -240,6 +281,7 @@ class TopologyPage extends React.Component {
     } else if (this.state.createProjectView && this.state.loaded) {
       return (
         <ProjectView topology={this.state.topology}
+          infrastructures={this.state.infrastructures}
           handleSubmit={this.handleSubmitProject}
           handleCancel={this.handleCancelProject}
           value={this.state.newProject} />

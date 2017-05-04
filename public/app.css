@@ -65,6 +65,10 @@ hr {
   margin-left: 150px;
   }
 }
+/** the bold font weight causes a minor offset gap **/
+.dl-horizontal dt {
+  margin-top: 1.1px;
+}
 
 /** list-view expansion blue to grey override **/
 .list-view-pf .list-group-item.list-view-pf-expand-active:first-child {
@@ -75,6 +79,11 @@ hr {
 }
 .list-group-item-container {
   border-top: #bbbbbb 1px solid;
+}
+
+/** center align alert text */
+.alert {
+  text-align: center;
 }
 
 .blue-text {
@@ -209,7 +218,7 @@ select.selectpicker {
   min-height: 20px;
 }
 
-/* pf-tabs */
+/** pf-tabs */
 ul.nav.nav-tabs.user-tabs {
   margin-bottom: 20px;
 }
@@ -226,6 +235,20 @@ ul.nav.nav-tabs.user-tabs {
 .nav.nav-tabs li,
 .nav.nav-tabs li a {
   cursor: pointer;
+}
+
+/** pf-tooltip **/
+pf-tooltip {
+  display: none;
+}
+.tooltip-label {
+  display: inline;
+}
+.pficon.pficon-info.tooltip-info {
+  color: #1589CB;
+  font-size:14px;
+  padding-left: 10px;
+  vertical-align: text-bottom;
 }
 
 /** Canvas CSS **/
@@ -690,4 +713,16 @@ ul.nav.nav-tabs.user-tabs {
   font-weight: 600;
   padding-bottom: 12px;
   padding-top: 12px;
+}
+
+/**
+  Provider image select
+*/
+.provider-image {
+  width: 90px; 
+  height: 63px; 
+  line-height: 63px; 
+  text-align: center; 
+  display: inline-block; 
+  vertical-align: middle;
 }

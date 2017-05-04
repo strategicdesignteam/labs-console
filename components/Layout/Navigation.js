@@ -32,9 +32,15 @@ class Navigation extends React.Component {
     return (
       <div className={cx('nav-pf-vertical',{'collapsed': this.props.explicitCollapse})}>
         <ul className="list-group">
+          <li className={"list-group-item" + (location.pathname.indexOf('/infrastructures') >= 0 ? ' active' : '')}>
+            <Link to="/infrastructures">
+              <span className="pficon pficon-network" data-toggle="tooltip" title="Infrastructures"></span>
+              <span className="list-group-item-value">Infrastructures</span>
+            </Link>
+          </li>        
           <li className={"list-group-item" + (this.state.topologyTabActive ? ' active' : '')}>
             <Link to="/home">
-              <span className="fa fa-rocket" data-toggle="tooltip" title="Topology"></span>
+              <span className="pficon pficon-topology" data-toggle="tooltip" title="Topology"></span>
               <span className="list-group-item-value">Topologies</span>
             </Link>
           </li>

@@ -7,20 +7,20 @@
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.Job = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient);
+    root.RedHatOpenInnovationLabsConsoleApi.Infrastructure = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient);
   }
 }(this, function(ApiClient) {
   'use strict';
 
   /**
-   * The Job model module.
-   * @module model/Job
+   * The Infrastructure model module.
+   * @module model/Infrastructure
    * @version 0.1.0
    */
 
   /**
-   * Constructs a new <code>Job</code>.
-   * @alias module:model/Job
+   * Constructs a new <code>Infrastructure</code>.
+   * @alias module:model/Infrastructure
    * @class
    */
   var exports = function() {

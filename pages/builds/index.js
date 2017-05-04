@@ -75,13 +75,15 @@ class BuildsPage extends React.Component {
 
     if(builds && builds.length) {
       builds.forEach((build) => {
-        if(build.status === 'pending' || build.status === 'running'){
-
+        if(build.status === constants.ANSIBLE_JOB_STATUS.PENDING 
+          || build.status === constants.ANSIBLE_JOB_STATUS.RUNNING){
           let interval;
           let checkJobs = () => {
             clearInterval(interval);
             jobApi.jobsIdGet(build.tower_job_id, (error, job, res) => {
-              if(job.status === 'successful' || job.status === 'failed' || job.status === 'canceled'){
+              if(job.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL 
+                || job.status === constants.ANSIBLE_JOB_STATUS.FAILED 
+                || job.status === constants.ANSIBLE_JOB_STATUS.CANCELLED){
                 build.datetime_completed = job.finished;
                 build.status = job.status;
 
