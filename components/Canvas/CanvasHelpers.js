@@ -15,6 +15,6 @@ export function infraImage (type) {
     case constants.INFRASTRUCTURE_TYPES.VMWARE.KEY:
       return constants.INFRASTRUCTURE_TYPES.VMWARE.IMG_PATH;
     default:
-      return constants.INFRASTRUCTURE_TYPES.OPENSTACK.IMG_PATH;
+      return '/img/empty.png';
   }
 }
