@@ -25,7 +25,7 @@ A web interface to drive push button infrastructure. Built with [patternfly](htt
 ├── /pages/                     # React components for web pages
 │   ├── /app/                   # App page
 │   ├── /error/                 # Error page
-│   ├── /home/                  # Home page
+│   ├── /welcome/               # Welcome page
 │   └── /...                    # etc.
 ├── /public/                    # Static files such as favicon.ico etc.
 │   ├── /dist/                  # The folder for compiled output

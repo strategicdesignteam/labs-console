@@ -165,7 +165,7 @@ class CreateStageForm extends React.Component {
             <div className="page-header" key="define-stages-page-header">
               <ol className="breadcrumb">
                 <li>
-                  <Link to="/home">Topologies</Link>
+                  <Link to="/topologies">Topologies</Link>
                 </li>
                 <li>
                   <a href="#" onClick={this.handleCancel}>
@@ -226,7 +226,7 @@ class CreateStageForm extends React.Component {
           <div className="page-header" key="define-stages-page-header">
             <ol className="breadcrumb">
               <li>
-                <Link to="/home">Topologies</Link>
+                <Link to="/topologies">Topologies</Link>
               </li>
               <li>
                 <a href="#" onClick={this.handleCancel}>

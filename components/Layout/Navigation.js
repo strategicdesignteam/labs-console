@@ -15,7 +15,7 @@ class Navigation extends React.Component {
   }
 
   checkRoutes(location){
-    let topologyRoutes = ['/home','/topology'];
+    let topologyRoutes = ['/topologies','/topology'];
     this.setState({
       topologyTabActive: topologyRoutes.some((route) => {return location.pathname.indexOf(route) > -1})
     })
@@ -39,7 +39,7 @@ class Navigation extends React.Component {
             </Link>
           </li>        
           <li className={"list-group-item" + (this.state.topologyTabActive ? ' active' : '')}>
-            <Link to="/home">
+            <Link to="/topologies">
               <span className="pficon pficon-topology" data-toggle="tooltip" title="Topology"></span>
               <span className="list-group-item-value">Topologies</span>
             </Link>
