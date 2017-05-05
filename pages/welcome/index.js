@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import Layout from '../../components/Layout';
 import EmptyState from '../../components/EmptyState/EmptyState';
-import CreateTopologyView from '../../components/CommonViews/CreateTopologyView';
 import labsApi from '../../data/index';
 import history from '../../core/history';
 import constants from '../../core/constants';
@@ -14,16 +13,7 @@ class WelcomePage extends React.Component {
   }
 
   handleCreate = (event) => {
-    history.push('/infrastructures');
-  };
-
-  handleSubmit = (event) => {
-    history.push('/home');
-  };
-  
-  handleCancel = (event) => {
-    event.preventDefault();
-    this.setState({createTopologyView: false});
+    history.push('/infrastructures/create');
   };
 
   componentWillMount(){

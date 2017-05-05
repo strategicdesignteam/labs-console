@@ -87,8 +87,6 @@ exports.infrastructuresIdGET = function(args, res, next) {
    * parameters expected in the args:
   * id (Long)
   **/
-  console.log("ID:")
-  console.log(args.params.id);
 
   Infrastructure.findOne({_id: args.params.id})
     .exec(function (err, infrastructure) {

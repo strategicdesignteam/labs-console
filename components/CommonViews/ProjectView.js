@@ -144,7 +144,7 @@ class ProjectView extends React.Component {
     let breadcrumbs = <div className="page-header" key="topologies-page-header">
       <ol className="breadcrumb">
         <li>
-          <Link to="/home">Topologies</Link>
+          <Link to="/topologies">Topologies</Link>
         </li>
         <li >
           <a href="#" onClick={handleCancel}>

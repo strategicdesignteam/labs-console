@@ -23,12 +23,12 @@ class TopologyView extends React.Component {
 
     let content = [];
 
-    //Home View Content
+    //Topologies View Content
     content.push(
       <div className="page-header" key="topologies-page-header">
         <ol className="breadcrumb">
           <li>
-            <Link to="/home">Topologies</Link>
+            <Link to="/topologies">Topologies</Link>
           </li>
           <li className="active"> <strong>Topology:</strong>
             &nbsp; {topology.name}

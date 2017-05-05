@@ -20,9 +20,9 @@
     "chunk": "infrastructures"
   },  
   {
-    "path": "/home",
-    "page": "./pages/home",
-    "chunk": "main"
+    "path": "/topologies",
+    "page": "./pages/topologies",
+    "chunk": "topology"
   },
   {
     "path": "/topology/:id",

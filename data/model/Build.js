@@ -96,10 +96,10 @@
         obj['tower_job_id'] = ApiClient.convertToType(data['tower_job_id'], 'Number');
       }      
       if (data.hasOwnProperty('datetime_started')) {
-        obj['datetime_started'] = ApiClient.convertToType(data['datetime_started'], 'Date');
+        obj['datetime_started'] = ApiClient.convertToType(data['datetime_started'], 'String');
       }
       if (data.hasOwnProperty('datetime_completed')) {
-        obj['datetime_completed'] = ApiClient.convertToType(data['datetime_completed'], 'Date');
+        obj['datetime_completed'] = ApiClient.convertToType(data['datetime_completed'], 'String');
       }
       if (data.hasOwnProperty('status')) {
         obj['status'] = ApiClient.convertToType(data['status'], 'String');

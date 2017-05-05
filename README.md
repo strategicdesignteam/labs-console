@@ -16,6 +16,7 @@ A web interface to drive push button infrastructure. Built with [patternfly](htt
 │   ├── /Link  /                # Link component to be used insted of <a>
 │   └── /...                    # etc.
 ├── /core/                      # Core framework
+│   ├── /constants.js           # Front end and Backend shared constants
 │   ├── /history.js             # Handles client-side navigation
 │   ├── /router.js              # Handles routing and data fetching
 │   └── /store.js               # Application state manager (Redux)
@@ -24,10 +25,11 @@ A web interface to drive push button infrastructure. Built with [patternfly](htt
 ├── /pages/                     # React components for web pages
 │   ├── /app/                   # App page
 │   ├── /error/                 # Error page
-│   ├── /home/                  # Home page
+│   ├── /welcome/               # Welcome page
 │   └── /...                    # etc.
 ├── /public/                    # Static files such as favicon.ico etc.
 │   ├── /dist/                  # The folder for compiled output
+│   ├── /img/                   # Application images
 │   ├── favicon.ico             # Application icon to be displayed in bookmarks
 │   ├── robots.txt              # Instructions for search engine crawlers
 │   └── /...                    # etc.
@@ -57,24 +59,47 @@ $ npm install                   # Install project dependencies listed in package
  ```
  docker run --rm --detach -p 27017:27017 -P -e MONGODB_USER=mongo -e MONGODB_PASSWORD=mongo -e MONGODB_DATABASE=mongo -e MONGODB_ADMIN_PASSWORD=mongo openshift/mongodb-24-centos7
  export MONGO_URL=mongodb://mongo:mongo@localhost:27017/mongo
- npm start
  ```
+Alternatively, you can use Homebrew to install Mongo DB on Mac OSX. Guide [here](http://treehouse.github.io/installation-guides/mac/mongo-mac.html)
 
-**Step 3**. Launch the node.js backend (ensure you have an instance of Mongo running first, guide for Mac OSX [here](http://treehouse.github.io/installation-guides/mac/mongo-mac.html)):
+**Step 3**. Build the front end UI
+```shell
+$ node run build
+```
+
+**Step 4**. Launch the node.js backend (ensure you have an instance of Mongo running first):
 ```shell
 $ node server.js
 ```
+You can now view the application running at [http://0.0.0.0:8080/](http://0.0.0.0:8080/)
 
-**Step 4**. Compile and launch the UI:
+If you'd like to debug the UI with [BrowserSync](https://browsersync.io/) / HMR, run the UI in a new terminal:
 
 ```shell
-$ node run
+$ node run.js
 ```
+The app should become available at [http://localhost:3000/](http://localhost:3000/).
 
 You can also test your app in release (production) mode by running `node run start --release` or
-with HMR and React Hot Loader disabled by running `node run start --no-hmr`. The app should become
-available at [http://localhost:3000/](http://localhost:3000/).
+with HMR and React Hot Loader disabled by running `node run start --no-hmr`. 
 
+### Environment Variables
+The following environment variables should be set in [OCP](https://www.openshift.com/container-platform/):
+
+**Build Variables**
+
+| Key | Value | Description |
+| --- | --- | --- |
+| BUILD_ENV | production | Ensures `node_modules` are pruned after build step |
+
+**Deployment Variables**
+
+| Key | Value | Description |
+| --- | --- | --- |
+| OPENSHIFT_MONGODB_DB_URL | mongodb://`[user]`:`[pw]`@mongodb.`[project]`.svc.cluster.local/`[db]` | Mongo CN |
+| TOWER_URL | https://`[user]`:`[password]`@`[tower.yourdomain.io]`/ | Ansible Tower instance |
+| TOWER_WORKFLOW_ID | 0 | Tower Workflow ID |
+| NODE_TLS_REJECT_UNAUTHORIZED | 0 | Ignore self signed cert errors with Tower |
 
 ### How to Test
 
@@ -85,10 +110,10 @@ $ npm run lint                  # Check JavaScript and CSS code for potential is
 $ npm run test                  # Run unit tests. Or, `npm run test:watch` or `npm run test:cov`
 ```
 
-### How to Deploy
+### How to Build Production Assets
 
-To build for production, run:
+To build productions assets in `public`, run:
 
 ```shell
-$ node run build                # Or, `node run build --release` for production build
+$ node run build --release
 ```
