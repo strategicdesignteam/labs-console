@@ -243,26 +243,6 @@ export const projectTabs = [
     title: 'Container Platform',
     categories: [
       {
-        title: 'RHEL',
-        applications: [
-          {
-            name: 'OpenShift',
-            image: '/img/OpenShift-logo.svg',
-            backgroundColor: '#fff'
-          },
-          {
-            name: 'Kubernetes',
-            image: '/img/kubernetes.svg',
-            backgroundColor: '#fff'
-          },
-          {
-            name: 'Docker',
-            image: '/img/docker.png',
-            backgroundColor: '#fff'
-          }
-        ]
-      },
-      {
         title: 'Monitoring and Logging',
         applications: [
           {
