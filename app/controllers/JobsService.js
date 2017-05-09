@@ -34,7 +34,7 @@ exports.addProjectJob = function(args, res, next) {
   }
 }
 
-function post(url, args, rest, next) {
+function post(url, args, res, next) {
   superagent
     .post(url)
     .set('Content-Type', 'application/json')

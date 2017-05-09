@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import s from './styles.css';
 
 class BuildCardView extends React.Component {
-  
+
   matchHeight(){
     // matchHeight the contents of each .card-pf and then the .card-pf itself
     $(".row-cards-pf > [class*='col'] > .card-pf > .card-pf-body").matchHeight();
@@ -34,14 +34,14 @@ class BuildCardView extends React.Component {
                   <div className="progress">
                       <div className="progress-bar progress-bar-striped active" role="progressbar" style={{width:'100%'}}></div>
                   </div>
-                  }    
+                  }
                   {
                     deploying &&
                     <p><span className="spinner spinner-xs spinner-inline"></span> Deploying</p>
                   }
                   {
-                    !deploying && 
-                    <a href={'https://project-' + stage.name.toLowerCase() + '.apps.strategicdesign.io'}>{'https://project-' + stage.name.toLowerCase() + '.apps.strategicdesign.io'}</a>
+                    !deploying &&
+                    <a href={'http://' + stage.projects[0].name + '-' + stage.name.toLowerCase() + '.apps.strategicdesign.io'} target="_blank">{'http://' + stage.projects[0].name + '-' + stage.name.toLowerCase() + '.apps.strategicdesign.io'}</a>
                   }
                 </div>
               </div>
