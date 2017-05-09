@@ -185,6 +185,10 @@ class TopologyPage extends React.Component {
       let infrastructures = values[1];
 
       this.setState({ 
+        topology: topology, 
+        projects: topology.project_templates,
+        stages: topology.promotion_process,
+        infrastructures: infrastructures,
         startBuildModal: true, 
         missingInfra: selectors.missingInfra(topology, infrastructures)
       });
@@ -216,21 +220,41 @@ class TopologyPage extends React.Component {
     event.preventDefault();
     let buildApi = new labsApi.BuildApi();
     let jobApi = new labsApi.JobApi();
+    let jobs = [];
+    let count = 0;
 
-    //call the JobsApi to create the Job in Tower...
-    jobApi.addJob({ body: {}}, (e, data, res) => {
+    //call the JobsApi to create the Job in Tower for every project
+    this.state.stages.forEach((stage) =>{
+      if(stage.projects && stage.projects.length){
+        stage.projects.forEach((project) => {
+          count++;
+          let body = {project_name: project.name + '-' + stage.name};
+          jobApi.addProjectJob({ body: body}, (e, data, res) => {
+            if(e) console.log(e);
+            jobs.push({id: data.id, created: data.created});
+          });
+        })
+      }
+    })
 
-      //link tower job id to the Build object
-      buildApi.addBuild({ body: 
-        { topologyId: this.state.topology.id, towerJobId: data.id, dateTimeStarted: data.created } }, 
-        (e, data, res) => {
-          if (e) console.log(e);
-          this.hideStartBuildModal();
-          setTimeout(() => {
-            history.push('/builds');
-          }, 1000);
-      });
-    });
+    const checkJobsAdded = () => {
+      if(jobs.length !== count){
+        setTimeout(checkJobsAdded, 500); //check all jobs created every 500ms
+      } else {
+        //link Build to the last job started for now...
+        let lastJob = jobs[jobs.length - 1];
+        buildApi.addBuild({ body: 
+          { topologyId: this.state.topology.id, towerJobId: lastJob.id, dateTimeStarted: lastJob.created } }, 
+          (e, data, res) => {
+            if (e) console.log(e);
+            this.hideStartBuildModal();
+            setTimeout(() => {
+              history.push('/builds');
+            }, 1000);
+        });
+      }
+    }
+    checkJobsAdded();
   };
 
   handleProjectDelete = (event, index) => {
