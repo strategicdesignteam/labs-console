@@ -83,7 +83,7 @@ class StagesCanvasManager extends React.Component {
         this.props.editStageClicked(e, this.state.selectedStageIndex)
       }
     }
-    this.addContainerNodeItem = (index, containerNodeItem) => {      
+    this.addContainerNodeItem = (index, containerNodeItem) => {
       //create an instance of the project with the specified type from the containerNodeItem (project template)
       //handle any "instantiation" logic associated with project template to --> stage project here.
       let project = deepClone(containerNodeItem.itemAttributes)
@@ -91,7 +91,8 @@ class StagesCanvasManager extends React.Component {
       project.backgroundColor = CanvasConstants.STAGE_BACKGROUND_COLOR;
 
       //todo: set label based on infrastructure type & PaaS
-      project.label = 'Open Shift on ' + project.type; 
+      //project.label = 'on ' + project.infrastructureProvider;
+      project.label = 'test-dev on AWS1'
 
       //again, i am intercepting this at the Stage Manager level to make the UI more responsive immediately
       this.setState(update(this.state, {
@@ -160,16 +161,16 @@ class StagesCanvasManager extends React.Component {
       const rows = Math.floor((stages.length) / (CanvasConstants.MAX_STAGES_IN_ROW))
       let emptyNode = {
         ...emptyStageNode,
-        x: ((stages.length % CanvasConstants.MAX_STAGES_IN_ROW) * CanvasConstants.STAGE_WIDTH) 
+        x: ((stages.length % CanvasConstants.MAX_STAGES_IN_ROW) * CanvasConstants.STAGE_WIDTH)
           + (((stages.length % CanvasConstants.MAX_STAGES_IN_ROW) + 1) * CanvasConstants.STAGE_PADDING_X),
         y: (rows * CanvasConstants.STAGE_HEIGHT) + ((rows + 1) * CanvasConstants.STAGE_PADDING_Y),
       }
       additionalNodes.push(emptyNode);
     }
     // extend stages with UI specific properties
-    let extended = stages.map((stage) => { 
+    let extended = stages.map((stage) => {
       return {
-        ...stage, 
+        ...stage,
         titleYOffset : CanvasConstants.STAGE_TITLE_Y_OFFSET,
         width: CanvasConstants.STAGE_WIDTH,
         height: CanvasConstants.STAGE_HEIGHT,
@@ -206,7 +207,7 @@ class StagesCanvasManager extends React.Component {
         <CanvasScrollToolbox isOpen={this.state.toolboxOpen}>
           <ul className='toolbox-items-list'>
             {projects.length > 0 && projects.map((project, i) =>{
-              return <DraggableTopAlignedToolboxItem itemAttributes={project} 
+              return <DraggableTopAlignedToolboxItem itemAttributes={project}
                   canvasSourceItemType={CanvasItemTypes.SCROLL_TOOLBOX_ITEM} key={'drag-item' + i}>
                 <div className='toolbox-item-container'>
                   <img src={infraImage(project.infrastructureProvider)} />
@@ -219,9 +220,9 @@ class StagesCanvasManager extends React.Component {
                   </button>
                 </div>
               </DraggableTopAlignedToolboxItem>
-            })}            
+            })}
           </ul>
-        </CanvasScrollToolbox>        
+        </CanvasScrollToolbox>
         <Canvas
           canvasClass='canvas stage-canvas'
           readOnly={this.state.readOnly}

@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Layout from '../../components/Layout';
 import InfrastructureListView from '../../components/ListView/InfrastructureListView';
+import ToastNotificationService from '../../components/ToastNotification/ToastNotificationService';
 import Alert from '../../components/Alert/Alert';
 import Modal from '../../components/Modal/Modal';
 import labsApi from '../../data/index';
@@ -19,13 +20,23 @@ class InfrastructurePage extends React.Component {
 
   componentWillMount() {
     this.getInfrastructures();
+
+    //requery infrastructures after ToastNotificationService notifies us of a change
+    ToastNotificationService.monitorNotifications(
+      constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD, this.getInfrastructures
+    );
   }
 
-  getInfrastructures(){
+  componentWillUnmount() {
+    ToastNotificationService.unregisterNotifications(
+      constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD, this.getInfrastructures
+    );
+  }
+
+  getInfrastructures = () => {
     let infrastructureApi = new labsApi.InfrastructureApi();
     infrastructureApi.infrastructuresGet((error, infrastructures, res) => {
       this.setState({infrastructures: infrastructures});
-      this.pollRunningInfra(infrastructures);
     });
   }
 
@@ -39,51 +50,24 @@ class InfrastructurePage extends React.Component {
     history.push('/infrastructures/' + id);
   }
 
-  handleDeleteInfrastructure = (event, infrastructureId) => {
-    let infrastructureApi = new labsApi.InfrastructureApi();
-    infrastructureApi.deleteInfrastructure(infrastructureId, (error, data, res) => {
-      this.getInfrastructures();
-    });    
-    event.preventDefault();
-  }
-
-  pollRunningInfra(infrastructures) {
+  handleDeleteInfrastructure = (event, infrastructure) => {
+    //start a destroy job in Tower
     let infrastructureApi = new labsApi.InfrastructureApi();
     let jobApi = new labsApi.JobApi();
 
-    if(infrastructures && infrastructures.length) {
-      infrastructures.forEach((infrastructure) => {
-        if(infrastructure.status === constants.ANSIBLE_JOB_STATUS.PENDING 
-          || infrastructure.status === constants.ANSIBLE_JOB_STATUS.RUNNING){
+    jobApi.destroyInfrastructureJob({ body: {}}, (e, job, res) => {
+      infrastructure.status = job.status;
+      infrastructure.tower_job_id = job.id;
+      infrastructure.datetime_started = job.created;
+      infrastructure.destroy_started = true;
 
-          let interval;
-          let checkJobs = () => {
-            clearInterval(interval);
-            jobApi.jobsIdGet(infrastructure.tower_job_id, (error, job, res) => {
-              if(job.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL 
-               || job.status === constants.ANSIBLE_JOB_STATUS.FAILED 
-               || job.status === constants.ANSIBLE_JOB_STATUS.CANCELLED){
-                infrastructure.datetime_completed = job.finished;
-                infrastructure.status = job.status;
-
-                infrastructureApi.updateInfrastructure(infrastructure.id, {'body': infrastructure}, (e) => {
-                  //todo: display an error
-                  if (e) console.error(e);
-                  
-                  //requery infrastructures now to update the status...
-                  this.getInfrastructures();
-                });
-              } else {
-                //poll running jobs every 10 sec, once they complete, update them & update state
-                interval = setInterval(checkJobs, 10000);
-              }
-            })
-          }
-          //check immediately first...
-          let timeout = setTimeout(checkJobs, 0);
-        }
-      })
-    }
+      infrastructureApi.updateInfrastructure(infrastructure.id, {'body': infrastructure}, (e) => {
+        //todo: display an error
+        if (e) console.error(e);
+        this.getInfrastructures();
+      });
+    });
+    event.preventDefault();
   }
 
   alertDismiss = (e) => {
@@ -107,7 +91,7 @@ class InfrastructurePage extends React.Component {
 
           if(this.state.infrastructures.length && !this.state.alertDismissed &&
             this.state.infrastructures.some((infra) => { 
-              return infra.status === constants.ANSIBLE_JOB_STATUS.PENDING || infra.status === constants.ANSIBLE_JOB_STATUS.RUNNING
+              return (infra.status === constants.ANSIBLE_JOB_STATUS.PENDING || infra.status === constants.ANSIBLE_JOB_STATUS.RUNNING) && !infra.destroy_started
             })){
             content.push(<Alert onDismiss={this.alertDismiss} type="info">
               <span>Building new infrastructure can take up to 90 minutes. You can continue working during this time.</span>

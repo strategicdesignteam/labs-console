@@ -30,21 +30,21 @@
 
 
     /**
-     * Callback function to receive the result of the addJob operation.
-     * @callback module:api/JobApi~addJobCallback
+     * Callback function to receive the result of the addInfrastructureJob operation.
+     * @callback module:api/JobApi~addInfrastructureJobCallback
      * @param {String} error Error message, if any.
      * @param data This operation does not return a value.
      * @param {String} response The complete HTTP response.
      */
 
     /**
-     * Add a new Job
+     * Add a new infrastructure Job
      * 
      * @param {Object} opts Optional parameters
      * @param {module:model/Body} opts.body Job object that needs to be added to the store
-     * @param {module:api/JobApi~addJobCallback} callback The callback function, accepting three arguments: error, data, response
+     * @param {module:api/JobApi~addInfrastructureJobCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    this.addJob = function(opts, callback) {
+    this.addInfrastructureJob = function(opts, callback) {
       opts = opts || {};
       var postBody = opts['body'];
 
@@ -64,13 +64,95 @@
       var returnType = Object;
 
       return this.apiClient.callApi(
-        '/Jobs', 'POST',
+        '/jobs/infrastructure', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, callback
       );
     }
 
 
+    /**
+     * Callback function to receive the result of the destroyInfrastructureJob operation.
+     * @callback module:api/JobApi~destroyInfrastructureJobCallback
+     * @param {String} error Error message, if any.
+     * @param data This operation does not return a value.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Destroy infrastructure Job
+     * 
+     * @param {Object} opts Optional parameters
+     * @param {module:model/Body} opts.body Job object that needs to be added to the store
+     * @param {module:api/JobApi~destroyInfrastructureJobCallback} callback The callback function, accepting three arguments: error, data, response
+     */
+    this.destroyInfrastructureJob = function(opts, callback) {
+      opts = opts || {};
+      var postBody = opts['body'];
+
+
+      var pathParams = {
+      };
+      var queryParams = {
+      };
+      var headerParams = {
+      };
+      var formParams = {
+      };
+
+      var authNames = [];
+      var contentTypes = ['application/json'];
+      var accepts = ['application/json'];
+      var returnType = Object;
+
+      return this.apiClient.callApi(
+        '/jobs/infrastructureDestroy', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the addProjectJob operation.
+     * @callback module:api/JobApi~addProjectJobCallback
+     * @param {String} error Error message, if any.
+     * @param data This operation does not return a value.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Add a new project Job
+     * 
+     * @param {Object} opts Optional parameters
+     * @param {module:model/Body} opts.body Job object that needs to be added to the store
+     * @param {module:api/JobApi~addProjectJobCallback} callback The callback function, accepting three arguments: error, data, response
+     */
+    this.addProjectJob = function(opts, callback) {
+      opts = opts || {};
+      var postBody = opts['body'];
+
+
+      var pathParams = {
+      };
+      var queryParams = {
+      };
+      var headerParams = {
+      };
+      var formParams = {
+      };
+
+      var authNames = [];
+      var contentTypes = ['application/json'];
+      var accepts = ['application/json'];
+      var returnType = Object;
+
+      return this.apiClient.callApi(
+        '/jobs/project', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+    
     /**
      * Callback function to receive the result of the JobsIdGet operation.
      * @callback module:api/JobApi~JobsIdGetCallback
@@ -110,7 +192,7 @@
       var returnType = Job;
 
       return this.apiClient.callApi(
-        '/Jobs/{id}', 'GET',
+        '/jobs/{id}', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, callback
       );

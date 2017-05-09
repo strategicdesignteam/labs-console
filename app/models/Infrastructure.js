@@ -19,7 +19,8 @@ var InfrastructureSchema = new Schema({
     status: {type: String},
     tower_job_id: {type: Number},
     datetime_started: {type: Date},
-    datetime_completed: {type: Date}
+    datetime_completed: {type: Date},
+    destroy_started: {type: Boolean}
   },
   {
     //http://mongoosejs.com/docs/guide.html#timestamps

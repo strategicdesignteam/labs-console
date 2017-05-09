@@ -87,10 +87,10 @@
         obj['version'] = ApiClient.convertToType(data['version'], 'Integer');
       }
       if (data.hasOwnProperty('datetime_created')) {
-        obj['datetime_created'] = ApiClient.convertToType(data['datetime_created'], 'Date');
+        obj['datetime_created'] = ApiClient.convertToType(data['datetime_created'], 'String');
       }
       if (data.hasOwnProperty('datetime_modified')) {
-        obj['datetime_modified'] = ApiClient.convertToType(data['datetime_modified'], 'Date');
+        obj['datetime_modified'] = ApiClient.convertToType(data['datetime_modified'], 'String');
       }
       if (data.hasOwnProperty('name')) {
         obj['name'] = ApiClient.convertToType(data['name'], 'String');

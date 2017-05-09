@@ -43,6 +43,11 @@ var constants = {
     FAILED: 'failed',
     CANCELLED: 'canceled',
     SUCCESSFUL: 'successful'
+  },
+  NOTIFICATION_TYPES: {
+    INFRASTRUCTURE_BUILD: 1,
+    INFRASTRUCTURE_DESTROY_BUILD: 2,
+    TOPOLOGY_BUILD: 4
   }
 };
 

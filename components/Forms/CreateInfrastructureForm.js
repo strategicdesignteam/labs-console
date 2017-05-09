@@ -51,7 +51,7 @@ class CreateInfrastructureForm extends React.Component {
       let infra = Object.assign({}, this.state.newInfrastructure);
 
       //call the JobsApi to create the Job in Tower, and associate Job ID
-      jobApi.addJob({ body: {}}, (e, job, res) => {
+      jobApi.addInfrastructureJob({ body: {}}, (e, job, res) => {
         infra.status = job.status;
         infra.tower_job_id = job.id;
         infra.datetime_started = job.created;

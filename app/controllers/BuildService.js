@@ -31,7 +31,6 @@ exports.addBuild = function(args, res, next) {
       if (err) return common.handleError(res, err);
       //create Build
       newBuild.topology_version = topology.version;
-      console.log(topology);
       newBuild.topology_version_key = topology.__v;
       newBuild.datetime_started = args.body.dateTimeStarted;
       newBuild.status = constants.default.ANSIBLE_JOB_STATUS.PENDING;

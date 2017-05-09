@@ -11,7 +11,9 @@ module.exports = function(app) {
   // authentication routes here
 
   //tower jobs routes
-  app.post('/api/jobs', JobsService.addJob);
+  app.post('/api/jobs/infrastructure', JobsService.addInfrastructureJob);
+  app.post('/api/jobs/infrastructureDestroy', JobsService.destroyInfrastructureJob);
+  app.post('/api/jobs/project', JobsService.addProjectJob);
   app.get('/api/jobs/:id', JobsService.jobsIdGET);
 
   //builds routes
