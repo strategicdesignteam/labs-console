@@ -58,7 +58,8 @@ exports.updateInfrastructure = function(args, res, next) {
     if(infrastructure) {
       infrastructure.status = args.body.status;
       infrastructure.datetime_completed = args.body.datetime_completed;
-
+      infrastructure.destroy_started = args.body.destroy_started;
+      
       infrastructure.save(function(err) {
         if (err) return validationError(res, err);
         res.send(200);

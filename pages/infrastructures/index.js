@@ -27,6 +27,12 @@ class InfrastructurePage extends React.Component {
     );
   }
 
+  componentWillUnmount() {
+    ToastNotificationService.unregisterNotifications(
+      constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD, this.getInfrastructures
+    );
+  }
+
   getInfrastructures = () => {
     let infrastructureApi = new labsApi.InfrastructureApi();
     infrastructureApi.infrastructuresGet((error, infrastructures, res) => {
@@ -44,11 +50,23 @@ class InfrastructurePage extends React.Component {
     history.push('/infrastructures/' + id);
   }
 
-  handleDeleteInfrastructure = (event, infrastructureId) => {
+  handleDeleteInfrastructure = (event, infrastructure) => {
+    //start a destroy job in Tower
     let infrastructureApi = new labsApi.InfrastructureApi();
-    infrastructureApi.deleteInfrastructure(infrastructureId, (error, data, res) => {
-      this.getInfrastructures();
-    });    
+    let jobApi = new labsApi.JobApi();
+
+    jobApi.destroyInfrastructureJob({ body: {}}, (e, job, res) => {
+      infrastructure.status = job.status;
+      infrastructure.tower_job_id = job.id;
+      infrastructure.datetime_started = job.created;
+      infrastructure.destroy_started = true;
+
+      infrastructureApi.updateInfrastructure(infrastructure.id, {'body': infrastructure}, (e) => {
+        //todo: display an error
+        if (e) console.error(e);
+        this.getInfrastructures();
+      });
+    });
     event.preventDefault();
   }
 
@@ -73,7 +91,7 @@ class InfrastructurePage extends React.Component {
 
           if(this.state.infrastructures.length && !this.state.alertDismissed &&
             this.state.infrastructures.some((infra) => { 
-              return infra.status === constants.ANSIBLE_JOB_STATUS.PENDING || infra.status === constants.ANSIBLE_JOB_STATUS.RUNNING
+              return (infra.status === constants.ANSIBLE_JOB_STATUS.PENDING || infra.status === constants.ANSIBLE_JOB_STATUS.RUNNING) && !infra.destroy_started
             })){
             content.push(<Alert onDismiss={this.alertDismiss} type="info">
               <span>Building new infrastructure can take up to 90 minutes. You can continue working during this time.</span>

@@ -14,6 +14,16 @@ exports.addInfrastructureJob = function(args, res, next) {
   }
 }
 
+exports.destroyInfrastructureJob = function(args, res, next) {
+  if(process.env.TOWER_URL){
+    var url = process.env.TOWER_URL + 'api/v1/workflow_job_templates/' + process.env.DESTROY_INFRA_WORKFLOW_ID + '/launch/';
+    post(url, args, res, next);
+  } else {
+    //return dummy response for UI if TOWER_URL not configured...
+    res.json(mockAddJob.mock);
+  }
+}
+
 exports.addProjectJob = function(args, res, next) {
   if(process.env.TOWER_URL){
     var url = process.env.TOWER_URL + 'api/v1/workflow_job_templates/' + process.env.ADD_PROJECT_WORKFLOW_ID + '/launch/';

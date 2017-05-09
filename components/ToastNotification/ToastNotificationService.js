@@ -4,24 +4,48 @@ import labsApi from '../../data/index';
 /** A singleton class for handling ToastNotification monitoring */
 class ToastNotificationService {
   constructor() {
+    this.infrastructureCallbacks = [];
+    this.pollingInfrastructures = [];
+
     this.monitorNotifications = (notifications, callback) => {
-      if(constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD & notifications){
+      if(constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD & notifications || 
+        constants.NOTIFICATION_TYPES.INFRASTRUCTURE_DESTROY_BUILD & notifications){
+        this.infrastructureCallbacks.push(callback);
+        //if we aren't yet polling, start polling for this notification type
         //wait a second for sub components to render & register all notification handlers
-        setTimeout(this.pollRunningInfraBuilds(callback), 1000);
+        setTimeout(this.pollRunningInfraBuilds, 1000); 
+      }
+    }
+
+    this.unregisterNotifications = (notifications, callback) => {
+      if(constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD & notifications || 
+        constants.NOTIFICATION_TYPES.INFRASTRUCTURE_DESTROY_BUILD & notifications){
+        for(let i =0; i < this.infrastructureCallbacks.length; i++){
+          if(this.infrastructureCallbacks[i] === callback){
+            this.infrastructureCallbacks.splice(i, 1);
+          }
+        }
       }
     }
   }
 
-  pollRunningInfraBuilds(callback) {
+  pollRunningInfraBuilds = () => {
     let infrastructureApi = new labsApi.InfrastructureApi();
     let jobApi = new labsApi.JobApi();
+    let that = this;
 
     infrastructureApi.infrastructuresGet((error, infrastructures, res) => {
       if(infrastructures && infrastructures.length) {
         infrastructures.forEach((infrastructure) => {
           if(infrastructure.status === constants.ANSIBLE_JOB_STATUS.PENDING 
             || infrastructure.status === constants.ANSIBLE_JOB_STATUS.RUNNING){
+            
+            //do not poll the same infrastructure twice
+            let polled = this.pollingInfrastructures.find((infra) => {return infra.id === infrastructure.id});
+            if(polled) return;
 
+            //poll the infra and add it to the list
+            this.pollingInfrastructures.push(infrastructure);
             let interval;
             let checkJobs = () => {
               clearInterval(interval);
@@ -30,19 +54,33 @@ class ToastNotificationService {
                 || job.status === constants.ANSIBLE_JOB_STATUS.FAILED 
                 || job.status === constants.ANSIBLE_JOB_STATUS.CANCELLED){
 
-                  infrastructure.datetime_completed = job.finished;
-                  infrastructure.status = job.status;
-
-                  infrastructureApi.updateInfrastructure(infrastructure.id, {'body': infrastructure}, (e) => {
-                    //todo: display an error
-                    if (e) console.error(e);
-
-                    //notify all toast listeners w/ registered callbacks
-                    callback({
-                      notification_type: constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD,
-                      data: infrastructure 
+                  if(infrastructure.destroy_started && job.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL){
+                    //this was a destroy job, delete the infra from the list
+                    infrastructureApi.deleteInfrastructure(infrastructure.id, (error, data, res) => {
+                      that.infrastructureCallbacks.forEach((callback) => {
+                        callback({
+                          notification_type: constants.NOTIFICATION_TYPES.INFRASTRUCTURE_DESTROY_BUILD,
+                          data: infrastructure,
+                          job: job 
+                        });
+                      });
                     });
-                  });
+                  } else {
+                    infrastructure.datetime_completed = job.finished;
+                    infrastructure.status = job.status;
+                    infrastructureApi.updateInfrastructure(infrastructure.id, {'body': infrastructure}, (e) => {
+                      //todo: display an error
+                      if (e) console.error(e);
+                      //notify all toast listeners w/ registered callbacks
+                      that.infrastructureCallbacks.forEach((callback) => {
+                        callback({
+                          notification_type: constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD,
+                          data: infrastructure,
+                          job: job
+                        });
+                      });
+                    });
+                  }
                 } else {
                   //poll running jobs every 10 sec, once they complete, update them & update state
                   interval = setInterval(checkJobs, 10000);

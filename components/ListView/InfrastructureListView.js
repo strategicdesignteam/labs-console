@@ -56,7 +56,7 @@ class InfrastructureListView extends React.Component {
               <ul className="dropdown-menu dropdown-menu-right" aria-labelledby="dropupKebabRight2">
                 <li><a onClick={ (e) => this.props.handleView(e, infrastructure.id) }>View</a></li>
                 <li role="separator" className="divider"></li>
-                <li><a onClick={ (e) => this.props.handleDelete(e, infrastructure.id)}>Delete</a></li>
+                <li><a onClick={ (e) => this.props.handleDelete(e, infrastructure)}>Delete</a></li>
               </ul>
             </div>
           </div>
@@ -93,9 +93,19 @@ class InfrastructureListView extends React.Component {
                   infrastructure.status === constants.ANSIBLE_JOB_STATUS.RUNNING) && 
                 <div className="list-view-pf-additional-info-item">
                     <div className="progress" style={{width: 200, margin: 'auto'}}>
-                      <div className="progress-bar progress-bar-striped active" role="progressbar" style={{width:'100%'}}>
-                        <span>Deploying...</span>
-                      </div>
+                      {
+                        infrastructure.destroy_started &&
+                      <div className="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style={{width:'100%'}}>
+                        <span>Deleting...</span>
+                      </div>                        
+                      }
+                      {
+                        !infrastructure.destroy_started &&
+                        <div className="progress-bar progress-bar-striped active" role="progressbar" style={{width:'100%'}}>
+                          <span>Deploying...</span>
+                        </div>
+                      }
+
                   </div>
                 </div>
                 }

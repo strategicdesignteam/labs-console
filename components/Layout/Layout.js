@@ -32,7 +32,8 @@ class Layout extends React.Component {
         <div className={cx(s.content, this.props.className, {'collapsed-nav': this.state.explicitCollapse})}>
           <ToastNotificationList 
             notificationTypes={
-              constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD
+              constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD 
+              | constants.NOTIFICATION_TYPES.INFRASTRUCTURE_DESTROY_BUILD
             }/>
           { this.props.children }
         </div>

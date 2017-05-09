@@ -22,6 +22,12 @@ class ToastNotificationList extends React.Component {
     );
   }
 
+  componentWillUnmount() {
+    ToastNotificationService.unregisterNotifications(
+      this.props.notificationTypes, this.addNotification
+    );
+  }
+
   addNotification = (notification) => {
     this.setState(
       update(this.state, {notifications: {$push: [notification]}})
@@ -35,13 +41,17 @@ class ToastNotificationList extends React.Component {
   };
 
   formatNotification(notification, i){
-    let type = notification.data.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL 
+    let type = notification.job.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL 
       ? 'success' : 'error';
 
     switch(notification.notification_type){
       case constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD:
         return <ToastNotification type={type} onDismiss={(e) => {this.onDismiss(e, i)}} key={i}>
           {notification.data.name + ' completed ' + (type === 'success' ? 'successfully' : 'in error.')}
+        </ToastNotification>
+      case constants.NOTIFICATION_TYPES.INFRASTRUCTURE_DESTROY_BUILD:
+        return <ToastNotification type={type} onDismiss={(e) => {this.onDismiss(e, i)}} key={i}>
+          {notification.data.name + ' deleted ' + (type === 'success' ? 'successfully' : 'in error.')}
         </ToastNotification>
     }
   }

@@ -99,6 +99,7 @@ The following environment variables should be set in [OCP](https://www.openshift
 | OPENSHIFT_MONGODB_DB_URL | mongodb://`[user]`:`[pw]`@mongodb.`[project]`.svc.cluster.local/`[db]` | Mongo CN |
 | TOWER_URL | https://`[user]`:`[password]`@`[tower.yourdomain.io]`/ | Ansible Tower instance |
 | ADD_INFRA_WORKFLOW_ID | 0 | Tower Add Infra Workflow ID |
+| DESTROY_INFRA_WORKFLOW_ID | 0 | Tower Delete Infra Workflow ID |
 | ADD_PROJECT_WORKFLOW_ID | 0 | Tower Add Project Workflow ID |
 | NODE_TLS_REJECT_UNAUTHORIZED | 0 | Ignore self signed cert errors with Tower |
 

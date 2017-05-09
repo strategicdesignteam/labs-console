@@ -12,6 +12,7 @@ module.exports = function(app) {
 
   //tower jobs routes
   app.post('/api/jobs/infrastructure', JobsService.addInfrastructureJob);
+  app.post('/api/jobs/infrastructureDestroy', JobsService.destroyInfrastructureJob);
   app.post('/api/jobs/project', JobsService.addProjectJob);
   app.get('/api/jobs/:id', JobsService.jobsIdGET);
 
