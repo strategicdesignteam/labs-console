@@ -228,7 +228,7 @@ class TopologyPage extends React.Component {
       if(stage.projects && stage.projects.length){
         stage.projects.forEach((project) => {
           count++;
-          let body = {project_name: project.name + '-' + stage.name};
+          let body = {project_name: project.name};
           jobApi.addProjectJob({ body: body}, (e, data, res) => {
             if(e) console.log(e);
             jobs.push({id: data.id, created: data.created});
