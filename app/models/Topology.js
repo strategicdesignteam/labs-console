@@ -11,6 +11,7 @@ var Builds = require('./Build');
 var ProjectSchema = new Schema({
   infrastructure: { type: Number, ref: 'Infrastructure' },
   infrastructureProvider: {type: String},
+  infrastructureName: {type: String},
   name: {type: String, required: true},
   display_name: {type: String},
   apps: { type : Array , "default" : [] },

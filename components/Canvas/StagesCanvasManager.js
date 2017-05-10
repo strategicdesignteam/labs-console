@@ -86,13 +86,11 @@ class StagesCanvasManager extends React.Component {
     this.addContainerNodeItem = (index, containerNodeItem) => {
       //create an instance of the project with the specified type from the containerNodeItem (project template)
       //handle any "instantiation" logic associated with project template to --> stage project here.
-      let project = deepClone(containerNodeItem.itemAttributes)
-      project.image = infraImage(project.infrastructureProvider)
+      let project = deepClone(containerNodeItem.itemAttributes);
+      project.name += '-' + this.state.nodes[index].name.toLowerCase();
+      project.image = infraImage(project.infrastructureProvider);
       project.backgroundColor = CanvasConstants.STAGE_BACKGROUND_COLOR;
-
-      //todo: set label based on infrastructure type & PaaS
-      //project.label = 'on ' + project.infrastructureProvider;
-      project.label = 'test-dev on AWS1'
+      project.label = project.infrastructureName;
 
       //again, i am intercepting this at the Stage Manager level to make the UI more responsive immediately
       this.setState(update(this.state, {

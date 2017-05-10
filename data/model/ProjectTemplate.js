@@ -86,6 +86,9 @@
       if (data.hasOwnProperty('infrastructureProvider')) {
         obj['infrastructureProvider'] = ApiClient.convertToType(data['infrastructureProvider'], 'String');
       }
+      if (data.hasOwnProperty('infrastructureName')) {
+        obj['infrastructureName'] = ApiClient.convertToType(data['infrastructureName'], 'String');
+      }
       if (data.hasOwnProperty('apps')) {
         //I am overriding this to make the ApplicationTemplate more flexible for now...
         // obj['apps'] = ApiClient.convertToType(data['apps'], [ApplicationTemplate]);
@@ -110,6 +113,18 @@
    * @member {String} display_name
    */
   exports.prototype['display_name'] = undefined;
+  /**
+   * @member {Integer} id
+   */
+  exports.prototype['infrastructure'] = undefined;  
+  /**
+   * @member {String} display_name
+   */
+  exports.prototype['infrastructureProvider'] = undefined;
+  /**
+   * @member {String} display_name
+   */
+  exports.prototype['infrastructureName'] = undefined;
   /**
    * @member {module:model/ProjectTemplate.TypeEnum} type
    */

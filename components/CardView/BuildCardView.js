@@ -41,7 +41,9 @@ class BuildCardView extends React.Component {
                   }
                   {
                     !deploying &&
-                    <a href={'http://' + stage.projects[0].name + '-' + stage.name.toLowerCase() + '.apps.strategicdesign.io'} target="_blank">{'http://' + stage.projects[0].name + '-' + stage.name.toLowerCase() + '.apps.strategicdesign.io'}</a>
+                    <a href={'http://' + stage.projects[0].name + '.apps.strategicdesign.io'} target="_blank">
+                      {'http://' + stage.projects[0].name + '.apps.strategicdesign.io'}
+                    </a>
                   }
                 </div>
               </div>

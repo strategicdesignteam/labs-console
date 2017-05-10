@@ -86,6 +86,7 @@ class ProjectView extends React.Component {
           return infra.id == e.target.value
         });
         o['infrastructureProvider'] = infra.provider;
+        o['infrastructureName'] = infra.name;
       }
 
       this.setState({ project: o });
