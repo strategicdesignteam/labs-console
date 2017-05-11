@@ -97,6 +97,8 @@ The following environment variables should be set in [OCP](https://www.openshift
 | Key | Value | Description |
 | --- | --- | --- |
 | OPENSHIFT_MONGODB_DB_URL | mongodb://`[user]`:`[pw]`@mongodb.`[project]`.svc.cluster.local/`[db]` | Mongo CN |
+| ADMIN_USER | admin | Default admin login |
+| ADMIN_PASS | password | Default admin password |
 | TOWER_URL | https://`[user]`:`[password]`@`[tower.yourdomain.io]`/ | Ansible Tower instance |
 | ADD_INFRA_WORKFLOW_ID | 0 | Tower Add Infra Workflow ID |
 | DESTROY_INFRA_WORKFLOW_ID | 0 | Tower Delete Infra Workflow ID |

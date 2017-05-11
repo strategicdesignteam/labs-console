@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import store from './core/store';
 import router from './core/router';
 import history from './core/history';
+import labsApi from './data/index';
 
 //polyfill scripts
 import objectAssign from './core/object-assign';
@@ -28,6 +29,14 @@ function renderComponent(component) {
 // Find and render a web page matching the current URL path,
 // if such page is not found then render an error page (see routes.json, core/router.js)
 function render(location) {
+  // Check if user logged in, if not, route to login page
+  let loginApi = labsApi.LoginApi.instance;
+  loginApi.getCredentials();
+  
+  if((!loginApi.loggedInUser || !loginApi.credentials ) && location.pathname !== '/'){
+    return history.push('/');
+  }
+
   router.resolve(routes, location)
     .then(renderComponent)
     .catch(error => router.resolve(routes, { ...location, error }).then(renderComponent));

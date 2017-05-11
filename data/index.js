@@ -25,9 +25,9 @@
 (function(factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('./ApiClient'), require('./model/ApplicationTemplate'), require('./model/ApplicationTopology'), require('./model/Body'), require('./model/Build'), require('./model/ClaimType'), require('./model/ErrorModel'), require('./model/LabelSelectorTemplate'), require('./model/PVCAssociationTemplate'), require('./model/PersistentVolumeClaimTemplate'), require('./model/Port'), require('./model/ProjectTemplate'), require('./model/RoleBinding'), require('./model/Route'), require('./model/Service'), require('./model/Stage'), require('./model/Job'), require('./model/User'), require('./model/Infrastructure'), require('./api/BuildApi'), require('./api/TopologyApi'), require('./api/UserApi'), require('./api/JobApi'), require('./api/InfrastructureApi'));
+    module.exports = factory(require('./ApiClient'), require('./model/ApplicationTemplate'), require('./model/ApplicationTopology'), require('./model/Body'), require('./model/Build'), require('./model/ClaimType'), require('./model/ErrorModel'), require('./model/LabelSelectorTemplate'), require('./model/PVCAssociationTemplate'), require('./model/PersistentVolumeClaimTemplate'), require('./model/Port'), require('./model/ProjectTemplate'), require('./model/RoleBinding'), require('./model/Route'), require('./model/Service'), require('./model/Stage'), require('./model/Job'), require('./model/User'), require('./model/Infrastructure'), require('./api/LoginApi'), require('./api/BuildApi'), require('./api/TopologyApi'), require('./api/UserApi'), require('./api/JobApi'), require('./api/InfrastructureApi'));
   }
-}(function(ApiClient, ApplicationTemplate, ApplicationTopology, Body, Build, ClaimType, ErrorModel, LabelSelectorTemplate, PVCAssociationTemplate, PersistentVolumeClaimTemplate, Port, ProjectTemplate, RoleBinding, Route, Service, Stage, Job, User, Infrastructure, BuildApi, TopologyApi, UserApi, JobApi, InfrastructureApi){
+}(function(ApiClient, ApplicationTemplate, ApplicationTopology, Body, Build, ClaimType, ErrorModel, LabelSelectorTemplate, PVCAssociationTemplate, PersistentVolumeClaimTemplate, Port, ProjectTemplate, RoleBinding, Route, Service, Stage, Job, User, Infrastructure, LoginApi, BuildApi, TopologyApi, UserApi, JobApi, InfrastructureApi){
   'use strict';
 
   /**
@@ -151,7 +151,12 @@
      * The Infrastructure model constructor.
      * @property {module:model/Infrastructure}
      */
-    Infrastructure: Infrastructure,    
+    Infrastructure: Infrastructure,
+    /**
+     * The LoginApi service constructor.
+     * @property {module:api/LoginApi}
+     */
+    LoginApi: LoginApi,
     /**
      * The BuildApi service constructor.
      * @property {module:api/BuildApi}

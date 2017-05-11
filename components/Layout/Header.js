@@ -2,8 +2,15 @@ import React, {PropTypes} from 'react';
 import s from './Layout.css';
 import cx from 'classnames';
 import Link from '../Link';
+import labsApi from '../../data/index';
+import history from '../../core/history';
 
 class Header extends React.Component {
+  logout = (event) => {
+    event.preventDefault();
+    labsApi.LoginApi.instance.logoutUser();
+    history.push('/');
+  };
   render() {
     return (
       <nav className="navbar navbar-pf-vertical">
@@ -58,7 +65,7 @@ class Header extends React.Component {
               </a>
               <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
                 <li><a href="#">Preferences</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="#" onClick={this.logout}>Logout</a></li>
               </ul>
             </li>
           </ul>

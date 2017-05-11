@@ -269,38 +269,15 @@
    */
   exports.prototype.applyAuthToRequest = function(request, authNames) {
     var _this = this;
-    authNames.forEach(function(authName) {
-      var auth = _this.authentications[authName];
-      switch (auth.type) {
-        case 'basic':
-          if (auth.username || auth.password) {
-            request.auth(auth.username || '', auth.password || '');
-          }
-          break;
-        case 'apiKey':
-          if (auth.apiKey) {
-            var data = {};
-            if (auth.apiKeyPrefix) {
-              data[auth.name] = auth.apiKeyPrefix + ' ' + auth.apiKey;
-            } else {
-              data[auth.name] = auth.apiKey;
-            }
-            if (auth['in'] === 'header') {
-              request.set(data);
-            } else {
-              request.query(data);
-            }
-          }
-          break;
-        case 'oauth2':
-          if (auth.accessToken) {
-            request.set({'Authorization': 'Bearer ' + auth.accessToken});
-          }
-          break;
-        default:
-          throw new Error('Unknown authentication type: ' + auth.type);
-      }
-    });
+    _this.hash = _this.hash || _this.getCookie('hash');
+    _this.username = _this.username || _this.getCookie('username');
+    _this.password = _this.password || _this.getCookie('password');
+
+    //if we have a hash, add it to the request and use basic auth
+    if(_this.hash){
+      request.auth(_this.username || '', _this.password || '');
+      request.set({'hash': _this.hash});
+    }
   };
 
   /**
@@ -403,6 +380,10 @@
 
 
     request.end(function(error, response) {
+      if(error && error.status === 401){
+        //user has not logged in or is not allowed access, redirect to login page
+        window.location.href = '/';
+      }
       if (callback) {
         var data = null;
         if (!error) {
@@ -502,6 +483,35 @@
       }
     }
   };
+
+  /**
+  * Sets a cookie 
+  */
+  exports.prototype.setCookie = function(cname, cvalue) {
+    var d = new Date();
+    d.setTime(d.getTime() + (30 * 60 * 1000)); //30 minute expiration
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+
+  /**
+   * Gets a cookie
+   */
+  exports.prototype.getCookie = function(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+  }
 
   /**
    * The default API client implementation.
