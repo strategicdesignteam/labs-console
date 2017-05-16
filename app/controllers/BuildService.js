@@ -3,7 +3,6 @@ var Build = require('../models/Build');
 var Topology = require('../models/Topology');
 var common = require('../common/common');
 var constants = require('../../core/constants');
-var automation = require('../automation/automation');
 
 exports.addBuild = function(args, res, next) {
   /**
@@ -16,14 +15,6 @@ exports.addBuild = function(args, res, next) {
   Topology.findById(args.body.topologyId, function (err, topology) {
     if(err) { return common.handleError(res, err); }
     if(!topology) { return res.send(404); }
-
-    //call the Automation API - if successful, create a new Build entry, if not, ignore and return
-    // automation.createAutomation(topology).then((data) => {
-
-    // }).catch((err) => {
-    //   //error creating the automation
-    //   return common.handleError(res, err);
-    // });
 
     //increment topology version on each build
     topology.version += 1;
@@ -113,22 +104,4 @@ exports.deleteBuild = function(args, res, next) {
       return res.send(200);
     });
   });  
-};
-
-exports.downloadEngagement = function(args, res, next) {
-  /**
-   * Temporary method to manually construct engagement JSON and download it to client
-   */
-  Topology.findById(args.params.id, function (err, topology) {
-    if(err) { return common.handleError(res, err); }
-    if(!topology) { return res.send(404); }
-
-    //call the Automation API - if successful, create a new Build entry, if not, ignore and return
-    automation.createAutomation(topology).then((data) => {
-      res.json({ engagement: data.engagement });
-    }).catch((err) => {
-      //error creating the automation
-      return common.handleError(res, err);
-    });
-  });
 };

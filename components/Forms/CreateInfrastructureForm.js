@@ -318,7 +318,7 @@ class CreateInfrastructureForm extends React.Component {
         <div className="form-group">
           <div className="col-sm-2"></div>
           <div className="col-sm-8">
-            <p>Selecting <b>"Create"</b> will start the automations to deploy Red Hat OpenShift Container Platform on the selected provider platform. This cluster will be then be available to your topology projects.</p>
+            <p>Selecting <b>"Create"</b> will start the automations to deploy Red Hat OpenShift Container Platform on the selected provider platform. This platform will be then be available to your topology projects.</p>
           </div>
         </div>  
         }              

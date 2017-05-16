@@ -27,8 +27,6 @@ module.exports = function(app) {
   app.get('/api/builds/:id', BuildService.buildsIdGET);
   app.delete('/api/builds/:id', BuildService.deleteBuild);
 
-  app.get('/api/downloadEngagement/:id', BuildService.downloadEngagement);
-
   //users routes
   app.all('/api/users*', auth.basicAuth);
   app.post('/api/users', UserService.addUser);

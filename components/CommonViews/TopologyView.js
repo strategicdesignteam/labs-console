@@ -15,7 +15,7 @@ class TopologyView extends React.Component {
   }
 
   render() {
-    const {topology, isBuildable, missingInfra, handleDownload, handleBuild, projects, stages,
+    const {topology, isBuildable, missingInfra, handleBuild, projects, stages,
       handleCreateStage, handleStageEdit, handleStageDelete, handleStageMoved, 
       handleAddStage, handleAddStageProject, handleDeleteStageProject,
       handleCreateProject, handleProjectEdit, handleProjectDelete, startBuildModal, cancelStart,

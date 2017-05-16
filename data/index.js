@@ -1,6 +1,6 @@
 /**
  * Red Hat Open Innovation Labs Console API
- * Specification for interaction between the Labs Console front-end and back-end. Additionally, this API will be used to experiment with new concepts in order to allow the Automation API (https://github.com/rht-labs/automation-api) to remain stable.
+ * Specification for interaction between the Labs Console front-end and back-end.
  *
  * OpenAPI spec version: 0.1.0
  * Contact: rhc-open-innovation-labs@redhat.com
@@ -31,7 +31,6 @@
   'use strict';
 
   /**
-   * Specification_for_interaction_between_the_Labs_Console_front_end_and_back_end__Additionally_this_API_will_be_used_to_experiment_with_new_concepts_in_order_to_allow_the_Automation_API__httpsgithub_comrht_labsautomation_api_to_remain_stable_.<br>
    * The <code>index</code> module provides access to constructors for all the classes which comprise the public API.
    * <p>
    * An AMD (recommended!) or CommonJS application will generally do something equivalent to the following:

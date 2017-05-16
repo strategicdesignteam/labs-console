@@ -195,17 +195,6 @@ class TopologyPage extends React.Component {
     });
   };
 
-  handleDownload = (event, index) => {
-    event.preventDefault();
-    let buildApi = new labsApi.BuildApi();
-    buildApi.downloadEngagement(this.state.topology.id, (e, data, res) => {
-      if (e) console.log(e);
-
-      //for now, we will download the JSON to the user's browser
-      FileDownload.saveJson(data.engagement);
-    });
-  };
-
   cancelStart = (event) => {
     event.preventDefault();
     this.hideStartBuildModal();
@@ -283,7 +272,6 @@ class TopologyPage extends React.Component {
         <TopologyView topology={this.state.topology}
           isBuildable={this.state.isBuildable}
           missingInfra={this.state.missingInfra}
-          handleDownload={this.handleDownload}
           handleBuild={this.handleBuild}
           projects={this.state.projects}
           stages={this.state.stages}

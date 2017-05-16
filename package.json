@@ -117,7 +117,10 @@
     }
   },
   "jest": {
-    "testRegex": "(/test/.*\\.spec.js)$"
+    "testRegex": "(/test/.*\\.spec.js)$",
+    "moduleNameMapper": {
+      "^.+\\.(css|less)$": "<rootDir>/test/frontend/__mocks__/styleMock.js"
+    }
   },
   "scripts": {
     "eslint": "eslint components core pages test utils main.js run.js webpack.config.js",

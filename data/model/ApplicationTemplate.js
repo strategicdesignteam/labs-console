@@ -1,6 +1,6 @@
 /**
  * Red Hat Open Innovation Labs Console API
- * Specification for interaction between the Labs Console front-end and back-end. Additionally, this API will be used to experiment with new concepts in order to allow the Automation API (https://github.com/rht-labs/automation-api) to remain stable.
+ * Specification for interaction between the Labs Console front-end and back-end.
  *
  * OpenAPI spec version: 0.1.0
  * Contact: rhc-open-innovation-labs@redhat.com
