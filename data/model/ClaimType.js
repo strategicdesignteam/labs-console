@@ -22,23 +22,21 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
     module.exports = factory(require('../ApiClient'));
-  } else {
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.ClaimType = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient);
+    root.RedHatOpenInnovationLabsConsoleApi.ClaimType = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient
+    );
   }
-}(this, function(ApiClient) {
-  'use strict';
-
-
-
-
+}(this, (ApiClient) => {
   /**
    * The ClaimType model module.
    * @module model/ClaimType
@@ -50,11 +48,8 @@
    * @alias module:model/ClaimType
    * @class
    */
-  var exports = function() {
-    var _this = this;
-
-
-
+  const exports = function () {
+    const _this = this;
   };
 
   /**
@@ -64,29 +59,31 @@
    * @param {module:model/ClaimType} obj Optional instance to populate.
    * @return {module:model/ClaimType} The populated <code>ClaimType</code> instance.
    */
-  exports.constructFromObject = function(data, obj) {
+  exports.constructFromObject = function (data, obj) {
     if (data) {
       obj = obj || new exports();
 
       if (data.hasOwnProperty('kind')) {
-        obj['kind'] = ApiClient.convertToType(data['kind'], 'String');
+        obj.kind = ApiClient.convertToType(data.kind, 'String');
       }
       if (data.hasOwnProperty('name_template')) {
-        obj['name_template'] = ApiClient.convertToType(data['name_template'], 'String');
+        obj.name_template = ApiClient.convertToType(
+          data.name_template,
+          'String'
+        );
       }
     }
     return obj;
-  }
+  };
 
   /**
    * @member {module:model/ClaimType.KindEnum} kind
    */
-  exports.prototype['kind'] = undefined;
+  exports.prototype.kind = undefined;
   /**
    * @member {String} name_template
    */
-  exports.prototype['name_template'] = undefined;
-
+  exports.prototype.name_template = undefined;
 
   /**
    * Allowed values for the <code>kind</code> property.
@@ -98,15 +95,13 @@
      * value: "secret"
      * @const
      */
-    "secret": "secret",
+    secret: 'secret',
     /**
      * value: "claim"
      * @const
      */
-    "claim": "claim"  };
-
+    claim: 'claim'
+  };
 
   return exports;
 }));
-
-

@@ -22,23 +22,25 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('../ApiClient'), require('./LabelSelectorTemplate'));
-  } else {
+    module.exports = factory(
+      require('../ApiClient'),
+      require('./LabelSelectorTemplate')
+    );
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.PersistentVolumeClaimTemplate = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient, root.RedHatOpenInnovationLabsConsoleApi.LabelSelectorTemplate);
+    root.RedHatOpenInnovationLabsConsoleApi.PersistentVolumeClaimTemplate = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient,
+      root.RedHatOpenInnovationLabsConsoleApi.LabelSelectorTemplate
+    );
   }
-}(this, function(ApiClient, LabelSelectorTemplate) {
-  'use strict';
-
-
-
-
+}(this, (ApiClient, LabelSelectorTemplate) => {
   /**
    * The PersistentVolumeClaimTemplate model module.
    * @module model/PersistentVolumeClaimTemplate
@@ -50,14 +52,8 @@
    * @alias module:model/PersistentVolumeClaimTemplate
    * @class
    */
-  var exports = function() {
-    var _this = this;
-
-
-
-
-
-
+  const exports = function () {
+    const _this = this;
   };
 
   /**
@@ -67,50 +63,51 @@
    * @param {module:model/PersistentVolumeClaimTemplate} obj Optional instance to populate.
    * @return {module:model/PersistentVolumeClaimTemplate} The populated <code>PersistentVolumeClaimTemplate</code> instance.
    */
-  exports.constructFromObject = function(data, obj) {
+  exports.constructFromObject = function (data, obj) {
     if (data) {
       obj = obj || new exports();
 
       if (data.hasOwnProperty('id')) {
-        obj['id'] = ApiClient.convertToType(data['id'], 'Integer');
+        obj.id = ApiClient.convertToType(data.id, 'Integer');
       }
       if (data.hasOwnProperty('name')) {
-        obj['name'] = ApiClient.convertToType(data['name'], 'String');
+        obj.name = ApiClient.convertToType(data.name, 'String');
       }
       if (data.hasOwnProperty('access_modes')) {
-        obj['access_modes'] = ApiClient.convertToType(data['access_modes'], ['String']);
+        obj.access_modes = ApiClient.convertToType(data.access_modes, [
+          'String'
+        ]);
       }
       if (data.hasOwnProperty('storage')) {
-        obj['storage'] = ApiClient.convertToType(data['storage'], 'Integer');
+        obj.storage = ApiClient.convertToType(data.storage, 'Integer');
       }
       if (data.hasOwnProperty('selector')) {
-        obj['selector'] = LabelSelectorTemplate.constructFromObject(data['selector']);
+        obj.selector = LabelSelectorTemplate.constructFromObject(data.selector);
       }
     }
     return obj;
-  }
+  };
 
   /**
    * @member {Integer} id
    */
-  exports.prototype['id'] = undefined;
+  exports.prototype.id = undefined;
   /**
    * @member {String} name
    */
-  exports.prototype['name'] = undefined;
+  exports.prototype.name = undefined;
   /**
    * @member {Array.<module:model/PersistentVolumeClaimTemplate.AccessModesEnum>} access_modes
    */
-  exports.prototype['access_modes'] = undefined;
+  exports.prototype.access_modes = undefined;
   /**
    * @member {Integer} storage
    */
-  exports.prototype['storage'] = undefined;
+  exports.prototype.storage = undefined;
   /**
    * @member {module:model/LabelSelectorTemplate} selector
    */
-  exports.prototype['selector'] = undefined;
-
+  exports.prototype.selector = undefined;
 
   /**
    * Allowed values for the <code>accessModes</code> property.
@@ -122,20 +119,18 @@
      * value: "ReadWriteOnce"
      * @const
      */
-    "ReadWriteOnce": "ReadWriteOnce",
+    ReadWriteOnce: 'ReadWriteOnce',
     /**
      * value: "ReadOnlyMany"
      * @const
      */
-    "ReadOnlyMany": "ReadOnlyMany",
+    ReadOnlyMany: 'ReadOnlyMany',
     /**
      * value: "ReadWriteMany"
      * @const
      */
-    "ReadWriteMany": "ReadWriteMany"  };
-
+    ReadWriteMany: 'ReadWriteMany'
+  };
 
   return exports;
 }));
-
-

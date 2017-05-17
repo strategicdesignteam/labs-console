@@ -1,4 +1,4 @@
-import {default as tmpl} from './panel.template';
+import { default as tmpl } from './panel.template';
 
 /**
  * <b>&lt;pf-tab&gt;</b> element for Patternfly Web Components
@@ -20,7 +20,7 @@ export class PfTab extends HTMLElement {
   /**
    * Called when an instance was inserted into the document
    */
-  attachedCallback () {
+  attachedCallback() {
     this.appendChild(this._template.content);
   }
 
@@ -31,8 +31,8 @@ export class PfTab extends HTMLElement {
    * @param {string} oldValue The old attribute value
    * @param {string} newValue The new attribute value
    */
-  attributeChangedCallback (attrName, oldValue, newValue) {
-    var parent = this.parentNode;
+  attributeChangedCallback(attrName, oldValue, newValue) {
+    const parent = this.parentNode;
     if (attrName === 'tabTitle' && parent && parent.handleTitle) {
       parent.handleTitle(this, newValue);
     }
@@ -41,7 +41,7 @@ export class PfTab extends HTMLElement {
   /**
    * Called when an instance of the element is created
    */
-  createdCallback () {
+  createdCallback() {
     this._template = document.createElement('template');
     this._template.innerHTML = tmpl;
   }
@@ -51,7 +51,7 @@ export class PfTab extends HTMLElement {
    *
    * @returns {string} The tabTitle
    */
-  get tabTitle () {
+  get tabTitle() {
     return this._tabTitle;
   }
 
@@ -60,7 +60,7 @@ export class PfTab extends HTMLElement {
    *
    * @param {string} value The tab tabTitle
    */
-  set tabTitle (value) {
+  set tabTitle(value) {
     if (this._tabTitle !== value) {
       this._tabTitle = value;
       this.setAttribute('tabTitle', value);
@@ -72,7 +72,7 @@ export class PfTab extends HTMLElement {
    *
    * @returns {boolean} True if tab is active
    */
-  get active () {
+  get active() {
     return this._active;
   }
 
@@ -81,7 +81,7 @@ export class PfTab extends HTMLElement {
    *
    * @param {boolean} value True to set tab active
    */
-  set active (value) {
+  set active(value) {
     if (this._active !== value) {
       this._active = value;
       this.setAttribute('active', value);

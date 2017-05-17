@@ -1,7 +1,7 @@
-import constants from '../../core/constants'
+import constants from '../../core/constants';
 
-export function infraImage (type) {
-  switch(type){
+export function infraImage(type) {
+  switch (type) {
     case constants.INFRASTRUCTURE_TYPES.AWS.KEY:
       return constants.INFRASTRUCTURE_TYPES.AWS.IMG_PATH;
     case constants.INFRASTRUCTURE_TYPES.OPENSTACK.KEY:

@@ -22,23 +22,27 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('../ApiClient'), require('./ApplicationTemplate'), require('./PersistentVolumeClaimTemplate'));
-  } else {
+    module.exports = factory(
+      require('../ApiClient'),
+      require('./ApplicationTemplate'),
+      require('./PersistentVolumeClaimTemplate')
+    );
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.ProjectTemplate = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient, root.RedHatOpenInnovationLabsConsoleApi.ApplicationTemplate, root.RedHatOpenInnovationLabsConsoleApi.PersistentVolumeClaimTemplate);
+    root.RedHatOpenInnovationLabsConsoleApi.ProjectTemplate = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient,
+      root.RedHatOpenInnovationLabsConsoleApi.ApplicationTemplate,
+      root.RedHatOpenInnovationLabsConsoleApi.PersistentVolumeClaimTemplate
+    );
   }
-}(this, function(ApiClient, ApplicationTemplate, PersistentVolumeClaimTemplate) {
-  'use strict';
-
-
-
-
+}(this, (ApiClient, ApplicationTemplate, PersistentVolumeClaimTemplate) => {
   /**
    * The ProjectTemplate model module.
    * @module model/ProjectTemplate
@@ -49,15 +53,12 @@
    * Constructs a new <code>ProjectTemplate</code>.
    * @alias module:model/ProjectTemplate
    * @class
-   * @param name {String} 
+   * @param name {String}
    */
-  var exports = function(name) {
-    var _this = this;
+  const exports = function (name) {
+    const _this = this;
 
-
-    _this['name'] = name;
-
-
+    _this.name = name;
   };
 
   /**
@@ -67,76 +68,88 @@
    * @param {module:model/ProjectTemplate} obj Optional instance to populate.
    * @return {module:model/ProjectTemplate} The populated <code>ProjectTemplate</code> instance.
    */
-  exports.constructFromObject = function(data, obj) {
+  exports.constructFromObject = function (data, obj) {
     if (data) {
       obj = obj || new exports();
 
       if (data.hasOwnProperty('id')) {
-        obj['id'] = ApiClient.convertToType(data['id'], 'Integer');
+        obj.id = ApiClient.convertToType(data.id, 'Integer');
       }
       if (data.hasOwnProperty('name')) {
-        obj['name'] = ApiClient.convertToType(data['name'], 'String');
+        obj.name = ApiClient.convertToType(data.name, 'String');
       }
       if (data.hasOwnProperty('display_name')) {
-        obj['display_name'] = ApiClient.convertToType(data['display_name'], 'String');
+        obj.display_name = ApiClient.convertToType(data.display_name, 'String');
       }
       if (data.hasOwnProperty('infrastructure')) {
-        obj['infrastructure'] = ApiClient.convertToType(data['infrastructure'], 'Integer');
-      }      
+        obj.infrastructure = ApiClient.convertToType(
+          data.infrastructure,
+          'Integer'
+        );
+      }
       if (data.hasOwnProperty('infrastructureProvider')) {
-        obj['infrastructureProvider'] = ApiClient.convertToType(data['infrastructureProvider'], 'String');
+        obj.infrastructureProvider = ApiClient.convertToType(
+          data.infrastructureProvider,
+          'String'
+        );
       }
       if (data.hasOwnProperty('infrastructureName')) {
-        obj['infrastructureName'] = ApiClient.convertToType(data['infrastructureName'], 'String');
+        obj.infrastructureName = ApiClient.convertToType(
+          data.infrastructureName,
+          'String'
+        );
       }
       if (data.hasOwnProperty('apps')) {
-        //I am overriding this to make the ApplicationTemplate more flexible for now...
+        // I am overriding this to make the ApplicationTemplate more flexible for now...
         // obj['apps'] = ApiClient.convertToType(data['apps'], [ApplicationTemplate]);
-        obj['apps'] = ApiClient.convertToType(data['apps'], [Object]);
+        obj.apps = ApiClient.convertToType(data.apps, [Object]);
       }
       if (data.hasOwnProperty('persistent_volume_claim_templates')) {
-        obj['persistent_volume_claim_templates'] = ApiClient.convertToType(data['persistent_volume_claim_templates'], [PersistentVolumeClaimTemplate]);
+        obj.persistent_volume_claim_templates = ApiClient.convertToType(
+          data.persistent_volume_claim_templates,
+          [PersistentVolumeClaimTemplate]
+        );
       }
     }
     return obj;
-  }
+  };
 
   /**
    * @member {Integer} id
    */
-  exports.prototype['id'] = undefined;
+  exports.prototype.id = undefined;
   /**
    * @member {String} name
    */
-  exports.prototype['name'] = undefined;
+  exports.prototype.name = undefined;
   /**
    * @member {String} display_name
    */
-  exports.prototype['display_name'] = undefined;
+  exports.prototype.display_name = undefined;
   /**
    * @member {Integer} id
    */
-  exports.prototype['infrastructure'] = undefined;  
+  exports.prototype.infrastructure = undefined;
   /**
    * @member {String} display_name
    */
-  exports.prototype['infrastructureProvider'] = undefined;
+  exports.prototype.infrastructureProvider = undefined;
   /**
    * @member {String} display_name
    */
-  exports.prototype['infrastructureName'] = undefined;
+  exports.prototype.infrastructureName = undefined;
   /**
    * @member {module:model/ProjectTemplate.TypeEnum} type
    */
-  exports.prototype['type'] = undefined;
+  exports.prototype.type = undefined;
   /**
    * @member {Array.<module:model/ApplicationTemplate>} apps
    */
-  exports.prototype['apps'] = undefined;
+  exports.prototype.apps = undefined;
   /**
    * @member {Array.<module:model/PersistentVolumeClaimTemplate>} persistent_volume_claim_templates
    */
-  exports.prototype['persistent_volume_claim_templates'] = undefined;
+  exports.prototype.persistent_volume_claim_templates = undefined;
 
   /**
    * Allowed values for the <code>type</code> property.
@@ -148,40 +161,38 @@
      * value: "OpenShift"
      * @const
      */
-    "OpenShift": "OpenShift",
+    OpenShift: 'OpenShift',
     /**
      * value: "OpenStack"
      * @const
      */
-    "OpenStack": "OpenStack",
+    OpenStack: 'OpenStack',
     /**
      * value: "AWS"
      * @const
      */
-    "AWS": "AWS",
+    AWS: 'AWS',
     /**
      * value: "Google Cloud"
      * @const
      */
-    "Google Cloud": "Google Cloud",
+    'Google Cloud': 'Google Cloud',
     /**
      * value: "Azure"
      * @const
      */
-    "Azure": "Azure",
+    Azure: 'Azure',
     /**
      * value: "RHEV"
      * @const
      */
-    "RHEV": "RHEV",
+    RHEV: 'RHEV',
     /**
      * value: "VMWare"
      * @const
      */
-    "VMWare": "VMWare"  };
-
+    VMWare: 'VMWare'
+  };
 
   return exports;
 }));
-
-

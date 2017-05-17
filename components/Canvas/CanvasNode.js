@@ -1,35 +1,33 @@
-import React, { PropTypes } from 'react'
-import cx from 'classnames'
+import React, { PropTypes } from 'react';
+import cx from 'classnames';
 
 /**
  * Canvas Node for Patternfly React
  */
-const CanvasNode = ({ node, index, defaultNodeWidth, defaultNodeHeight, 
-  foreignObjectSupport, nodeButtonClicked, removeContainerNodeItem, containerNodeItemClicked }) => {
-  const nodeWidth = node.width || defaultNodeWidth
-  const nodeHeight = node.height || defaultNodeHeight
-  const titleHeight = 42
+const CanvasNode = ({
+  node,
+  index,
+  defaultNodeWidth,
+  defaultNodeHeight,
+  foreignObjectSupport,
+  nodeButtonClicked,
+  removeContainerNodeItem,
+  containerNodeItemClicked
+}) => {
+  const nodeWidth = node.width || defaultNodeWidth;
+  const nodeHeight = node.height || defaultNodeHeight;
+  const titleHeight = 42;
 
-  let content = []
+  const content = [];
 
   const closeClicked = (e, i) => {
-    e.stopPropagation()
-    removeContainerNodeItem(index, i)
-  }
+    e.stopPropagation();
+    removeContainerNodeItem(index, i);
+  };
 
   const itemClicked = (e, i) => {
-    containerNodeItemClicked(index, i)
-  }
-
-  const editNodeIconClicked = (e, i) => {
-    e.stopPropagation()
-    editNodeIconClick(e, i)
-  }
-
-  const deleteNodeIconClicked = (e, i) => {
-    e.stopPropagation()
-    deleteNodeIconClick(e, i)
-  }
+    containerNodeItemClicked(index, i);
+  };
 
   // Node
   content.push(
@@ -37,17 +35,18 @@ const CanvasNode = ({ node, index, defaultNodeWidth, defaultNodeHeight,
       'invalid-node-rect': node.invalid,
       'node-rect': !node.selected,
       'selected-node-rect': node.selected,
-      'dashed': node.emptyStageNode || node.emptyProjectNode
+      dashed: node.emptyStageNode || node.emptyProjectNode
     })}
       ry={node.containerNode ? 15 : 0}
       rx={node.containerNode ? 15 : 0}
-      x='0'
-      y='0'
+      x="0"
+      y="0"
       width={nodeWidth}
       height={nodeHeight}
       fill={node.backgroundColor}
-      fillOpacity='1.0' key='node' />
-  )
+      fillOpacity="1.0"
+      key="node"/>
+  );
 
   // Node Title: no-wrap
   if (!foreignObjectSupport) {
@@ -59,166 +58,185 @@ const CanvasNode = ({ node, index, defaultNodeWidth, defaultNodeHeight,
       })}
         x={nodeWidth / 2}
         y={nodeHeight - 24}
-        textAnchor='middle'
-        alignmentBaseline='middle' key='title-no-wrap'>
+        textAnchor="middle"
+        alignmentBaseline="middle"
+        key="title-no-wrap">
         {node.name}
       </text>
-    )
+    );
   }
 
   // Node Title: text-wrap
   if (foreignObjectSupport) {
     content.push(
-      <foreignObject x='0'
-        y={node.titleYOffset || (nodeHeight - titleHeight)}
+      <foreignObject x="0"
+        y={node.titleYOffset || nodeHeight - titleHeight}
         width={nodeWidth}
-        height={titleHeight} key='title-text-wrap'>
-        <div className='node-header' style={{ width: nodeWidth }}>
-          <p className={cx({ 'invalid-node-header': node.invalid })} style={{ width: node.width }}>
+        height={titleHeight}
+        key="title-text-wrap">
+        <div className="node-header" style={{ width: nodeWidth }}>
+          <p className={cx({ 'invalid-node-header': node.invalid })}
+            style={{ width: node.width }}>
             {node.name}
           </p>
         </div>
       </foreignObject>
-    )
+    );
   }
 
   // Node Label
-  if(foreignObjectSupport && node.label){
+  if (foreignObjectSupport && node.label) {
     content.push(
-      <foreignObject x='0'
-        y={node.labelYOffset || (nodeHeight - titleHeight + 20)}
-        width={nodeWidth} key='label-text-wrap'>
-        <div className='node-label' style={{ width: nodeWidth }}>
+      <foreignObject x="0"
+        y={node.labelYOffset || nodeHeight - titleHeight + 20}
+        width={nodeWidth}
+        key="label-text-wrap">
+        <div className="node-label" style={{ width: nodeWidth }}>
           <p style={{ width: node.labelWidth || nodeWidth }}>
             {node.label}
           </p>
         </div>
       </foreignObject>
-    )
+    );
   }
 
   // Node Button
-  if(foreignObjectSupport && node.buttonLabel){
+  if (foreignObjectSupport && node.buttonLabel) {
     content.push(
-      <foreignObject x='0'
-        y={node.buttonYOffset || (nodeHeight - titleHeight + 20)}
-        width={nodeWidth} key='button-text-wrap'>
-        <div className='node-button' style={{ width: nodeWidth }}>
-          <button className={node.buttonClass} onClick={(e) => nodeButtonClicked(e, index)}>
+      <foreignObject x="0"
+        y={node.buttonYOffset || nodeHeight - titleHeight + 20}
+        width={nodeWidth}
+        key="button-text-wrap">
+        <div className="node-button" style={{ width: nodeWidth }}>
+          <button className={node.buttonClass}
+            onClick={e => nodeButtonClicked(e, index)}>
             {node.buttonLabel}
           </button>
         </div>
       </foreignObject>
-    )
-  }  
+    );
+  }
 
   // Node Image
   if (node.image) {
     content.push(
-      <image className={cx({ 'node-center-img': true, 'invalid-node-img': node.invalid })}
+      <image className={cx({
+        'node-center-img': true,
+        'invalid-node-img': node.invalid
+      })}
         href={node.image}
         xlinkHref={node.image}
-        x={(nodeWidth / 2) - 40}
+        x={nodeWidth / 2 - 40}
         y={node.imageYOffset || 20}
-        height='80px'
-        width='80px'
-        key='node-image' />
-    )
+        height="80px"
+        width="80px"
+        key="node-image"/>
+    );
   }
 
   // Node Icon: icon class
   if (node.icon && !node.image && foreignObjectSupport) {
-    const fontSize = parseInt(node.fontSize)
+    const fontSize = parseInt(node.fontSize, 10);
     content.push(
-      <foreignObject className={cx({ 'node-center-img-icon': true, 'invalid-node-header': node.invalid })}
+      <foreignObject className={cx({
+        'node-center-img-icon': true,
+        'invalid-node-header': node.invalid
+      })}
         x={(nodeWidth - node.iconWidth) / 2}
-        y={node.iconYOffset || ((nodeHeight / 2) - 54)}
+        y={node.iconYOffset || nodeHeight / 2 - 54}
         height={fontSize}
         width={node.iconWidth}
-        key='node-icon-class'>
-        <i className={node.icon} style={{ fontSize: node.fontSize || '76px' }} />
+        key="node-icon-class">
+        <i className={node.icon}
+          style={{ fontSize: node.fontSize || '76px' }}/>
       </foreignObject>
-    )
+    );
   }
 
   // Node Icon: fontContent
   if (node.fontFamily && !node.image) {
     content.push(
-      <text className={cx({ 'node-center-icon': true, 'invalid-node-header': node.invalid })}
+      <text className={cx({
+        'node-center-icon': true,
+        'invalid-node-header': node.invalid
+      })}
         style={{ fontFamily: node.fontFamily }}
-        x={((nodeWidth / 2) - 38 + (node.bundle ? 4 : 0))}
-        y='90'
-        key='node-icon-fontcontent'>
+        x={nodeWidth / 2 - 38 + (node.bundle ? 4 : 0)}
+        y="90"
+        key="node-icon-fontcontent">
         {node.fontContent}
       </text>
-    )
+    );
   }
-
-  
 
   // Sm. Top Left Bundle Icon
   if (node.bundle) {
     content.push(
-      <text className='bundle-icon'
+      <text className="bundle-icon"
         style={{ fontFamily: 'PatternFlyIcons-webfont', fontSize: 20 }}
-        x='6'
-        y='22'
-        key='bundle-icon'>
+        x="6"
+        y="22"
+        key="bundle-icon">
         {'\ue918'}
       </text>
-    )
+    );
   }
 
   // Container Node Content
   if (node.containerNode && node.containerItems && node.containerItems.length) {
-    const containerNodeHeight = 70
-    const containerNodeMargin = 20
-    const containerImageHeight = 50
-    const containerNodeWidth = nodeWidth - (containerNodeMargin * 2)
+    const containerNodeHeight = 70;
+    const containerNodeMargin = 20;
+    const containerImageHeight = 50;
+    const containerNodeWidth = nodeWidth - containerNodeMargin * 2;
 
     node.containerItems.map((item, i) => {
-      if (i >= node.maxDisplayItems) return
+      if (i >= node.maxDisplayItems) return;
 
-      const itemYOffset = (i * containerNodeHeight) + titleHeight + node.titleYOffset + (i * containerNodeMargin)
-      let containerNodeContent = []
+      const itemYOffset =
+        i * containerNodeHeight +
+        titleHeight +
+        node.titleYOffset +
+        i * containerNodeMargin;
+      const containerNodeContent = [];
 
       // Container Node
       containerNodeContent.push(
-        <rect
-          className={cx('node-rect')}
+        <rect className={cx('node-rect')}
           x={containerNodeMargin}
           y={itemYOffset}
           width={containerNodeWidth}
           height={containerNodeHeight}
-          key={'item-node-rect' + i} />
-      )
+          key={`item-node-rect${i}`}/>
+      );
 
-      const titleOffset = 40
+      const titleOffset = 40;
       // Container Node Title
       containerNodeContent.push(
         <text className={cx({
           'node-header': true
         })}
-          x={(containerNodeWidth / 2) + titleOffset}
+          x={containerNodeWidth / 2 + titleOffset}
           y={itemYOffset + 25}
-          textAnchor='middle'
-          alignmentBaseline='middle' key={'container-node-title' + i}>
+          textAnchor="middle"
+          alignmentBaseline="middle"
+          key={`container-node-title${i}`}>
           {item.name}
         </text>
-      )
+      );
 
       // Container Node Label
       containerNodeContent.push(
         <text className={cx({
           'node-label': true
         })}
-          x={(containerNodeWidth / 2) + titleOffset}
+          x={containerNodeWidth / 2 + titleOffset}
           y={itemYOffset + 50}
-          textAnchor='middle'
-          alignmentBaseline='middle' key={'container-node-label' + i}>
+          textAnchor="middle"
+          alignmentBaseline="middle"
+          key={`container-node-label${i}`}>
           {item.label}
         </text>
-      )
+      );
 
       // Container Node Image
       if (item.image) {
@@ -229,61 +247,67 @@ const CanvasNode = ({ node, index, defaultNodeWidth, defaultNodeHeight,
             y={itemYOffset + 10}
             height={containerImageHeight}
             width={containerImageHeight}
-            key={'item-image' + i} />
-        )
+            key={`item-image${i}`}/>
+        );
       }
 
       // Container Node Icon: icon class
       if (item.icon && !item.image && foreignObjectSupport) {
         containerNodeContent.push(
-          <foreignObject
-            x={containerNodeMargin + 10}
+          <foreignObject x={containerNodeMargin + 10}
             y={itemYOffset + 10}
             height={containerImageHeight}
             width={containerImageHeight}
-            key={'item-icon-class' + i}>
-            <i className={item.icon} style={{ fontSize: item.fontSize || '45px' }} />
+            key={`item-icon-class${i}`}>
+            <i className={item.icon}
+              style={{ fontSize: item.fontSize || '45px' }}/>
           </foreignObject>
-        )
+        );
       }
 
       // Container Node Icon: fontContent
       if (item.fontFamily && !item.image) {
         containerNodeContent.push(
-          <text
-            style={{ fontFamily: item.fontFamily, fontSize: item.fontSize }}
+          <text style={{ fontFamily: item.fontFamily, fontSize: item.fontSize }}
             x={containerNodeMargin + 10}
             y={itemYOffset + 10 + parseInt(item.fontSize, 10)}
-            key={'node-icon-fontcontent' + i}>
+            key={`node-icon-fontcontent${i}`}>
             {item.fontContent}
           </text>
-        )
+        );
       }
 
       // Sm. Top Right Close Icon
-      const closeIconSize = 20
+      const closeIconSize = 20;
       containerNodeContent.push(
-        <text className='close-icon' onClick={(e) => { closeClicked(e, i) }}
+        <text className="close-icon"
+          onClick={(e) => {
+            closeClicked(e, i);
+          }}
           style={{ fontFamily: 'fontawesome', fontSize: closeIconSize }}
           x={containerNodeWidth - 2}
           y={itemYOffset + closeIconSize + 4}
-          key={'close-icon' + i}>
+          key={`close-icon${i}`}>
           {'\uf014'}
         </text>
-      )
+      );
 
-      content.push(<g onClick={(e) => { itemClicked(e, i) }} key={'item' + i}>
-        {containerNodeContent}
-      </g>
-      )
-    })
+      content.push(
+        <g onClick={(e) => {
+          itemClicked(e, i);
+        }}
+          key={`item${i}`}>
+          {containerNodeContent}
+        </g>
+      );
+    });
   }
   return (
     <g>
       {content}
     </g>
-  )
-}
+  );
+};
 CanvasNode.PropTypes = {
   /** the canvas node object */
   node: PropTypes.object,
@@ -301,9 +325,9 @@ CanvasNode.PropTypes = {
   removeContainerNodeItem: PropTypes.func,
   /** function to handle container node item click */
   containerNodeItemClicked: PropTypes.func
-}
+};
 CanvasNode.defaultProps = {
   defaultNodeWidth: 150,
   defaultNodeHeight: 150
-}
-export default CanvasNode
+};
+export default CanvasNode;

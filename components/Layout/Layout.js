@@ -7,35 +7,37 @@ import ToastNotificationList from '../ToastNotification/ToastNotificationList';
 import s from './Layout.css';
 
 class Layout extends React.Component {
-
   static propTypes = {
     className: PropTypes.string,
     nav: PropTypes.bool
   };
 
   constructor(props) {
-    super(props) 
+    super(props);
     this.state = {
       explicitCollapse: location.pathname.indexOf('/topology') > -1
-    } 
+    };
   }
 
   render() {
     return (
       <div>
-        <Header />
+        <Header/>
         {(() => {
-          if(this.props.nav) {
-            return <Navigation explicitCollapse={this.state.explicitCollapse} />;
+          if (this.props.nav) {
+            return (
+              <Navigation explicitCollapse={this.state.explicitCollapse}/>
+            );
           }
         })()}
-        <div className={cx(s.content, this.props.className, {'collapsed-nav': this.state.explicitCollapse})}>
-          <ToastNotificationList 
-            notificationTypes={
-              constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD 
-              | constants.NOTIFICATION_TYPES.INFRASTRUCTURE_DESTROY_BUILD
+        <div className={cx(s.content, this.props.className, {
+          'collapsed-nav': this.state.explicitCollapse
+        })}>
+          <ToastNotificationList notificationTypes={
+              constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD |
+                constants.NOTIFICATION_TYPES.INFRASTRUCTURE_DESTROY_BUILD
             }/>
-          { this.props.children }
+          {this.props.children}
         </div>
       </div>
     );

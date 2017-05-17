@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 /**
  * React <b>Tab</b> Component for Patternfly Web Components
@@ -15,39 +15,43 @@ import React, { PropTypes } from 'react';
  *
  */
 class Tab extends React.Component {
-
   static propTypes = {
     tabTitle: React.PropTypes.string,
     active: React.PropTypes.bool,
     tabKey: React.PropTypes.string
   };
 
-  componentDidUpdate() {
-    this.setActive();
-  }
-
   componentDidMount() {
     this.setActive();
   }
 
-  setActive(){
-    if(this.props.active){
-      this.refs.pfTab.parentElement.setActiveTab(this.props.tabTitle || "");
+  componentDidUpdate() {
+    this.setActive();
+  }
+
+  setActive() {
+    if (this.props.active) {
+      this.pfTab.parentElement.setActiveTab(this.props.tabTitle || '');
     }
   }
 
   render() {
-    const {tabKey} = this.props;
+    const { tabKey } = this.props;
     return (
-    <pf-tab tabTitle={this.props.tabTitle || ""} active={this.props.active || false} key={tabKey} ref="pfTab">
-      {this.props.children}
-    </pf-tab>
-    )
+      <pf-tab tabTitle={this.props.tabTitle || ''}
+        active={this.props.active || false}
+        key={tabKey}
+        ref={(tab) => {
+          this.pfTab = tab;
+        }}>
+        {this.props.children}
+      </pf-tab>
+    );
   }
 }
 
 Tab.defaultProps = {
   tabKey: 'tab'
-}
+};
 
 export default Tab;

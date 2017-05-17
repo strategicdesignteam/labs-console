@@ -49,7 +49,7 @@ export const projectTabs = [
             name: 'Perl',
             image: '/img/perl.jpg',
             backgroundColor: '#fff'
-          },    
+          },
           {
             name: 'PHP',
             image: '/img/php.png',
@@ -69,7 +69,7 @@ export const projectTabs = [
             name: 'Spring',
             image: '/img/spring.png',
             backgroundColor: '#fff'
-          }          
+          }
         ]
       },
       {
@@ -204,7 +204,7 @@ export const projectTabs = [
             name: 'JUnit',
             image: '/img/junit.png',
             backgroundColor: '#fff'
-          }          
+          }
         ]
       },
       {
@@ -237,7 +237,7 @@ export const projectTabs = [
           }
         ]
       }
-    ] 
+    ]
   },
   {
     title: 'Container Platform',
@@ -269,4 +269,4 @@ export const projectTabs = [
       }
     ]
   }
-]
+];

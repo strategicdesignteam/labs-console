@@ -22,23 +22,22 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
     module.exports = factory(require('../ApiClient'), require('./Service'));
-  } else {
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.Route = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient, root.RedHatOpenInnovationLabsConsoleApi.Service);
+    root.RedHatOpenInnovationLabsConsoleApi.Route = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient,
+      root.RedHatOpenInnovationLabsConsoleApi.Service
+    );
   }
-}(this, function(ApiClient, Service) {
-  'use strict';
-
-
-
-
+}(this, (ApiClient, Service) => {
   /**
    * The Route model module.
    * @module model/Route
@@ -49,17 +48,12 @@
    * Constructs a new <code>Route</code>.
    * @alias module:model/Route
    * @class
-   * @param routeType {module:model/Route.RouteTypeEnum} 
+   * @param routeType {module:model/Route.RouteTypeEnum}
    */
-  var exports = function(routeType) {
-    var _this = this;
+  const exports = function (routeType) {
+    const _this = this;
 
-
-
-    _this['route_type'] = routeType;
-
-
-
+    _this.route_type = routeType;
   };
 
   /**
@@ -69,57 +63,56 @@
    * @param {module:model/Route} obj Optional instance to populate.
    * @return {module:model/Route} The populated <code>Route</code> instance.
    */
-  exports.constructFromObject = function(data, obj) {
+  exports.constructFromObject = function (data, obj) {
     if (data) {
       obj = obj || new exports();
 
       if (data.hasOwnProperty('id')) {
-        obj['id'] = ApiClient.convertToType(data['id'], 'String');
+        obj.id = ApiClient.convertToType(data.id, 'String');
       }
       if (data.hasOwnProperty('name')) {
-        obj['name'] = ApiClient.convertToType(data['name'], 'String');
+        obj.name = ApiClient.convertToType(data.name, 'String');
       }
       if (data.hasOwnProperty('route_type')) {
-        obj['route_type'] = ApiClient.convertToType(data['route_type'], 'String');
+        obj.route_type = ApiClient.convertToType(data.route_type, 'String');
       }
       if (data.hasOwnProperty('hostname')) {
-        obj['hostname'] = ApiClient.convertToType(data['hostname'], 'String');
+        obj.hostname = ApiClient.convertToType(data.hostname, 'String');
       }
       if (data.hasOwnProperty('port')) {
-        obj['port'] = ApiClient.convertToType(data['port'], 'Integer');
+        obj.port = ApiClient.convertToType(data.port, 'Integer');
       }
       if (data.hasOwnProperty('service')) {
-        obj['service'] = Service.constructFromObject(data['service']);
+        obj.service = Service.constructFromObject(data.service);
       }
     }
     return obj;
-  }
+  };
 
   /**
    * @member {String} id
    */
-  exports.prototype['id'] = undefined;
+  exports.prototype.id = undefined;
   /**
    * @member {String} name
    */
-  exports.prototype['name'] = undefined;
+  exports.prototype.name = undefined;
   /**
    * @member {module:model/Route.RouteTypeEnum} route_type
    */
-  exports.prototype['route_type'] = undefined;
+  exports.prototype.route_type = undefined;
   /**
    * @member {String} hostname
    */
-  exports.prototype['hostname'] = undefined;
+  exports.prototype.hostname = undefined;
   /**
    * @member {Integer} port
    */
-  exports.prototype['port'] = undefined;
+  exports.prototype.port = undefined;
   /**
    * @member {module:model/Service} service
    */
-  exports.prototype['service'] = undefined;
-
+  exports.prototype.service = undefined;
 
   /**
    * Allowed values for the <code>route_type</code> property.
@@ -131,25 +124,23 @@
      * value: "edge"
      * @const
      */
-    "edge": "edge",
+    edge: 'edge',
     /**
      * value: "passthrough"
      * @const
      */
-    "passthrough": "passthrough",
+    passthrough: 'passthrough',
     /**
      * value: "reencrypt"
      * @const
      */
-    "reencrypt": "reencrypt",
+    reencrypt: 'reencrypt',
     /**
      * value: "default"
      * @const
      */
-    "default": "default"  };
-
+    default: 'default'
+  };
 
   return exports;
 }));
-
-

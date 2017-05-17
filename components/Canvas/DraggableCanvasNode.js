@@ -1,11 +1,11 @@
-import React, { PropTypes } from 'react'
-import { DragSource, DropTarget } from 'react-dnd'
-import CanvasNode from './CanvasNode'
-import CanvasItemTypes from './CanvasItemTypes'
+import React, { PropTypes } from 'react';
+import { DragSource, DropTarget } from 'react-dnd';
+import CanvasNode from './CanvasNode';
+import CanvasItemTypes from './CanvasItemTypes';
 
 const nodeSource = {
-  beginDrag (props) {
-    props.selectNode(props.index)
+  beginDrag(props) {
+    props.selectNode(props.index);
     return {
       index: props.index,
       node: props.node,
@@ -13,63 +13,59 @@ const nodeSource = {
       defaultNodeHeight: props.defaultNodeHeight,
       foreignObjectSupport: props.foreignObjectSupport,
       zoomLevel: props.zoomLevel
-    }
+    };
   }
-}
+};
 
-const sourceCollect = (connect, monitor) => {
-  return {
-    connectDragSource: connect.dragSource(),
-    connectDragPreview: connect.dragPreview(),
-    isDragging: monitor.isDragging()
-  }
-}
+const sourceCollect = (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  connectDragPreview: connect.dragPreview(),
+  isDragging: monitor.isDragging()
+});
 
 const nodeTarget = {
-  drop (props, monitor, component) {
-    const item = monitor.getItem()
-    props.addContainerNodeItem(props.index, item)
+  drop(props, monitor) {
+    const item = monitor.getItem();
+    props.addContainerNodeItem(props.index, item);
   }
-}
+};
 
 const targetCollect = (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
   isOver: monitor.isOver(),
   canDrop: monitor.canDrop(),
   itemType: monitor.getItemType()
-})
+});
 
 /**
  * Draggable Canvas Node for Patternfly React
  */
 class DraggableCanvasNode extends React.Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.nodeClicked = (e, index) => {
-      props.selectNode(index)
-      if(props.nodeClicked) {
-        props.nodeClicked(e, index)
+      props.selectNode(index);
+      if (props.nodeClicked) {
+        props.nodeClicked(e, index);
       }
-      //prevent bubble to canvas
-      e.stopPropagation()
-    }
+      // prevent bubble to canvas
+      e.stopPropagation();
+    };
     this.nodeButtonClicked = (e, index) => {
-      if(props.nodeButtonClicked) {
-        props.nodeButtonClicked(e, index)
+      if (props.nodeButtonClicked) {
+        props.nodeButtonClicked(e, index);
       }
-      //prevent bubble to canvas
-      e.stopPropagation()
-    } 
+      // prevent bubble to canvas
+      e.stopPropagation();
+    };
   }
-  render () {
+  render() {
     const {
       node,
       index,
       defaultNodeWidth,
       defaultNodeHeight,
       foreignObjectSupport,
-      selectNode,
-      nodeClicked,
       nodeButtonClicked,
       removeContainerNodeItem,
       containerNodeItemClicked,
@@ -77,33 +73,38 @@ class DraggableCanvasNode extends React.Component {
       connectDragSource,
       connectDropTarget,
       isOver
-    } = this.props
+    } = this.props;
 
     if (isDragging) {
-      return null
+      return null;
     }
 
-    let nodeState = { ...this.props.node, selected: isOver || this.props.node.selected }
+    const nodeState = {
+      ...this.props.node,
+      selected: isOver || this.props.node.selected
+    };
 
     let content = (
-      <g transform={`translate(${node.x}, ${node.y})`} onClick={(e) => { this.nodeClicked(e, index)}}>
-        <CanvasNode
-          node={nodeState}
+      <g transform={`translate(${node.x}, ${node.y})`}
+        onClick={(e) => {
+          this.nodeClicked(e, index);
+        }}>
+        <CanvasNode node={nodeState}
           index={index}
           defaultNodeWidth={defaultNodeWidth}
           defaultNodeHeight={defaultNodeHeight}
           foreignObjectSupport={foreignObjectSupport}
           nodeButtonClicked={nodeButtonClicked}
           removeContainerNodeItem={removeContainerNodeItem}
-          containerNodeItemClicked={containerNodeItemClicked} />
+          containerNodeItemClicked={containerNodeItemClicked}/>
       </g>
-    )
-    content = connectDragSource(content, { dropEffect: 'move' })
+    );
+    content = connectDragSource(content, { dropEffect: 'move' });
 
     if (node.containerNode) {
-      content = connectDropTarget(content)
+      content = connectDropTarget(content);
     }
-    return content
+    return content;
   }
 }
 DraggableCanvasNode.PropTypes = {
@@ -135,10 +136,12 @@ DraggableCanvasNode.PropTypes = {
   connectDragSource: PropTypes.func,
   /** React DnD connect drop target */
   connectDropTarget: PropTypes.func
-}
+};
 
-const dropItemTypes = (props) => { return props.node.containerNodeDropItemTypes || [] }
+const dropItemTypes = props => props.node.containerNodeDropItemTypes || [];
 
 export default DropTarget(dropItemTypes, nodeTarget, targetCollect)(
-  DragSource(CanvasItemTypes.CANVAS_NODE, nodeSource, sourceCollect)(DraggableCanvasNode)
-)
+  DragSource(CanvasItemTypes.CANVAS_NODE, nodeSource, sourceCollect)(
+    DraggableCanvasNode
+  )
+);

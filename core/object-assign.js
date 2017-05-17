@@ -1,8 +1,7 @@
-//Object.assign polyfill
-if (typeof Object.assign != 'function') {
+// Object.assign polyfill
+if (typeof Object.assign !== 'function') {
   (function () {
     Object.assign = function (target) {
-      'use strict';
       // We must check against these specific cases.
       if (target === undefined || target === null) {
         throw new TypeError('Cannot convert undefined or null to object');
@@ -21,5 +20,5 @@ if (typeof Object.assign != 'function') {
       }
       return output;
     };
-  })();
+  }());
 }

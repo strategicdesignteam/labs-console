@@ -5,4 +5,4 @@ const PfTooltipTemplate = `
 </div>
 `;
 
-export {PfTooltipTemplate as default};
+export { PfTooltipTemplate as default };

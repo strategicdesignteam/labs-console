@@ -1,10 +1,9 @@
-'use strict';
 var Build = require('../models/Build');
 var Topology = require('../models/Topology');
 var common = require('../common/common');
 var constants = require('../../core/constants');
 
-exports.addBuild = function(args, res, next) {
+exports.addBuild = function (args, res, next) {
   /**
    * parameters expected in the args:
   * body (Body)
@@ -12,58 +11,61 @@ exports.addBuild = function(args, res, next) {
   var newBuild = new Build();
   newBuild.topology = args.body.topologyId;
 
-  Topology.findById(args.body.topologyId, function (err, topology) {
-    if(err) { return common.handleError(res, err); }
-    if(!topology) { return res.send(404); }
+  Topology.findById(args.body.topologyId, (err, topology) => {
+    if (err) {
+      return common.handleError(res, err);
+    }
+    if (!topology) {
+      return res.send(404);
+    }
 
-    //increment topology version on each build
+    // increment topology version on each build
     topology.version += 1;
-    topology.save(function(err, topology) {
+    topology.save((err, topology) => {
       if (err) return common.handleError(res, err);
-      //create Build
+      // create Build
       newBuild.topology_version = topology.version;
       newBuild.topology_version_key = topology.__v;
       newBuild.datetime_started = args.body.dateTimeStarted;
       newBuild.status = constants.default.ANSIBLE_JOB_STATUS.PENDING;
 
-      //set tower link to job workflow id for now
-      newBuild.ansible_tower_link  = 'https://tower.strategicdesign.io/#/workflows/' + 
-        args.body.towerJobId + '#followAnchor';
+      // set tower link to job workflow id for now
+      newBuild.ansible_tower_link = `https://tower.strategicdesign.io/#/workflows/${args.body.towerJobId}#followAnchor`;
       newBuild.number_of_projects = topology.project_templates.length;
       newBuild.number_of_stages = topology.promotion_process.length;
       newBuild.tower_job_id = args.body.towerJobId;
 
-      newBuild.save(function(err, build) {
+      newBuild.save((err, build) => {
         if (err) return common.handleError(res, err);
-        res.json({ build: build });
-        
-      });      
-    }); 
+        res.json({ build });
+      });
+    });
   });
 };
 
-exports.updateBuild = function(args, res, next) {
+exports.updateBuild = function (args, res, next) {
   /**
    * parameters expected in the args:
   * id (Long)
   * body (Build)
   **/
-  Build.findById(args.params.id, function (err, build) {
-    if(build) {
+  Build.findById(args.params.id, (err, build) => {
+    if (build) {
       build.datetime_completed = args.body.datetime_completed;
       build.status = args.body.status;
 
-      build.save(function(err) {
+      build.save((err) => {
         if (err) return validationError(res, err);
         res.send(200);
       });
-    } else {
+    }
+    else {
       res.send(404);
     }
   });
 };
 
-exports.buildsGET = function(args, res, next) {
+exports.buildsGET = function (args, res, next) {
   /**
    * parameters expected in the args:
    **/
@@ -71,37 +73,43 @@ exports.buildsGET = function(args, res, next) {
     .populate('topology')
     .limit(20)
     .sort({ datetime_started: -1, topology_version_key: -1 })
-    .exec(function (err, builds) {
-      if(err) { return common.handleError(res, err); }
+    .exec((err, builds) => {
+      if (err) {
+        return common.handleError(res, err);
+      }
       return res.json(200, builds);
     });
 };
 
-exports.buildsIdGET = function(args, res, next) {
+exports.buildsIdGET = function (args, res, next) {
   /**
    * parameters expected in the args:
    * id (Long)
    **/
-  Build.findOne({_id: args.params.id})
+  Build.findOne({ _id: args.params.id })
     .populate('topology')
-    .exec(function (err, builds) {
-      if(err) { return common.handleError(res, err); }
+    .exec((err, builds) => {
+      if (err) {
+        return common.handleError(res, err);
+      }
       return res.json(200, builds);
     });
 };
 
-exports.deleteBuild = function(args, res, next) {
+exports.deleteBuild = function (args, res, next) {
   /**
    * parameters expected in the args:
   * id (Long)
   **/
-  Build.findById(args.params.id, function(err, build) {
-    if(err) return res.send(500, err);
-    if(!build) { return res.send(404); }
-    //calling remove explicitly so that 'pre' remove middleware fires
-    build.remove(function(err){
-      if(err) return res.send(500, err);
+  Build.findById(args.params.id, (err, build) => {
+    if (err) return res.send(500, err);
+    if (!build) {
+      return res.send(404);
+    }
+    // calling remove explicitly so that 'pre' remove middleware fires
+    build.remove((err) => {
+      if (err) return res.send(500, err);
       return res.send(200);
     });
-  });  
+  });
 };

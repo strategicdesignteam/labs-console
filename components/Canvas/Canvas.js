@@ -1,64 +1,72 @@
-import React, { PropTypes } from 'react'
-import { DropTarget } from 'react-dnd'
-import CanvasItemTypes from './CanvasItemTypes'
-import DraggableCanvasNode from './DraggableCanvasNode'
-import cx from 'classnames'
+import React, { PropTypes } from 'react';
+import { DropTarget } from 'react-dnd';
+import cx from 'classnames';
+import CanvasItemTypes from './CanvasItemTypes';
+import DraggableCanvasNode from './DraggableCanvasNode';
 
 const canvasTarget = {
-  drop (props, monitor, component) {
-    const item = monitor.getItem()
-    const itemType = monitor.getItemType()
-    const delta = monitor.getDifferenceFromInitialOffset()
-    const initial = monitor.getInitialClientOffset()
+  drop(props, monitor, component) {
+    const item = monitor.getItem();
+    const itemType = monitor.getItemType();
+    const delta = monitor.getDifferenceFromInitialOffset();
+    const initial = monitor.getInitialClientOffset();
 
     if (itemType === CanvasItemTypes.CANVAS_NODE) {
-      const x = Math.round(item.node.x + (delta.x / component.zoomLevel))
-      const y = Math.round(item.node.y + (delta.y / component.zoomLevel))
-      component.moveNode(item.index, x, y)
-    } else if (itemType === CanvasItemTypes.TOOLBOX_ITEM) {
-      const canvasPosition = component.svg.getBoundingClientRect()
-      const x = Math.round((delta.x + initial.x - canvasPosition.left) / component.zoomLevel)
-      const y = Math.round((delta.y + initial.y - canvasPosition.top) / component.zoomLevel)
-      component.addNode(item, x, y)
+      const x = Math.round(item.node.x + delta.x / component.zoomLevel);
+      const y = Math.round(item.node.y + delta.y / component.zoomLevel);
+      component.moveNode(item.index, x, y);
+    }
+    else if (itemType === CanvasItemTypes.TOOLBOX_ITEM) {
+      const canvasPosition = component.svg.getBoundingClientRect();
+      const x = Math.round(
+        (delta.x + initial.x - canvasPosition.left) / component.zoomLevel
+      );
+      const y = Math.round(
+        (delta.y + initial.y - canvasPosition.top) / component.zoomLevel
+      );
+      component.addNode(item, x, y);
     }
   }
-}
+};
 
 const collect = (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
   isOver: monitor.isOver(),
   canDrop: monitor.canDrop(),
   itemType: monitor.getItemType()
-})
+});
 
 /**
  * Canvas Component for Patternfly React
  */
 class Canvas extends React.Component {
-  constructor (props) {
-    super(props)
-    this.foreignObjectSupport =
-      document.implementation.hasFeature('www.http://w3.org/TR/SVG11/feature#Extensibility', '1.1')
-    this.zoomLevel = props.zoomLevel
+  constructor(props) {
+    super(props);
+    this.foreignObjectSupport = document.implementation.hasFeature(
+      'www.http://w3.org/TR/SVG11/feature#Extensibility',
+      '1.1'
+    );
+    this.zoomLevel = props.zoomLevel;
   }
-  componentWillReceiveProps (nextProps) {
-    this.zoomLevel = nextProps.zoomLevel
+  componentWillReceiveProps(nextProps) {
+    this.zoomLevel = nextProps.zoomLevel;
   }
-  moveNode (index, x, y) {
-    this.props.moveNode(index, x, y)
-  }
-  addNode (item, x, y) {
-    this.props.addNode(item, x, y)
-  }
-  setSvgReference (svg) {
+  setSvgReference(svg) {
     if (svg) {
-      this.svg = svg
+      this.svg = svg;
     }
   }
-  render () {
+  moveNode(index, x, y) {
+    this.props.moveNode(index, x, y);
+  }
+  addNode(item, x, y) {
+    this.props.addNode(item, x, y);
+  }
+
+  render() {
     const {
       canvasClass,
-      readyOnly,
+      readOnly,
       inConnectingMode,
       canvasHeight,
       canvasWidth,
@@ -75,48 +83,53 @@ class Canvas extends React.Component {
       containerNodeItemClicked,
       canvasClicked,
       children
-    } = this.props
+    } = this.props;
 
     const svgClasses = cx(canvasClass, {
-      'read-only': readyOnly,
+      'read-only': readOnly,
       'canvas-in-connection-mode': inConnectingMode
-    })
+    });
     return (
-      <div className='canvas-editor-toolbox-container'>
+      <div className="canvas-editor-toolbox-container">
         {children}
-        <div className='canvas-container'>
-          {
-          connectDropTarget(<svg ref={(svg) => { this.setSvgReference(svg) }} className={svgClasses} style={{
-            height: canvasHeight,
-            width: canvasWidth,
-            backgroundSize: `${backgroundSize} px ${backgroundSize}px`
-          }} xlinkHref='' onClick={canvasClicked}>
+        <div className="canvas-container">
+          {connectDropTarget(
+            <svg ref={(svg) => {
+              this.setSvgReference(svg);
+            }}
+              className={svgClasses}
+              style={{
+                height: canvasHeight,
+                width: canvasWidth,
+                backgroundSize: `${backgroundSize} px ${backgroundSize}px`
+              }}
+              xlinkHref=""
+              onClick={canvasClicked}>
 
-            {/* Zoom Level */}
-            <g transform={`scale(${zoomLevel})`}>
+              {/* Zoom Level */}
+              <g transform={`scale(${zoomLevel})`}>
 
-              {/* Main Node Loop */}
-              {nodes.map((node, i) => {
-                return <DraggableCanvasNode
-                  node={node}
-                  index={i}
-                  defaultNodeWidth={defaultNodeWidth}
-                  defaultNodeHeight={defaultNodeHeight}
-                  foreignObjectSupport={this.foreignObjectSupport}
-                  zoomLevel={zoomLevel}
-                  selectNode={selectNode}
-                  nodeButtonClicked={nodeButtonClicked}
-                  addContainerNodeItem={addContainerNodeItem}
-                  removeContainerNodeItem={removeContainerNodeItem}
-                  containerNodeItemClicked={containerNodeItemClicked}
-                  key={i} />
-              })}
-            </g>
-          </svg>)
-        }
+                {/* Main Node Loop */}
+                {nodes.map((node, i) => (
+                  <DraggableCanvasNode node={node}
+                    index={i}
+                    defaultNodeWidth={defaultNodeWidth}
+                    defaultNodeHeight={defaultNodeHeight}
+                    foreignObjectSupport={this.foreignObjectSupport}
+                    zoomLevel={zoomLevel}
+                    selectNode={selectNode}
+                    nodeButtonClicked={nodeButtonClicked}
+                    addContainerNodeItem={addContainerNodeItem}
+                    removeContainerNodeItem={removeContainerNodeItem}
+                    containerNodeItemClicked={containerNodeItemClicked}
+                    key={i}/>
+                ))}
+              </g>
+            </svg>
+          )}
         </div>
       </div>
-    )
+    );
   }
 }
 Canvas.propTypes = {
@@ -147,7 +160,7 @@ Canvas.propTypes = {
   /** React DnD connect drop target */
   connectDropTarget: PropTypes.func.isRequired,
   /** function to select a node */
-  selectNode: PropTypes.func,  
+  selectNode: PropTypes.func,
   /** node button was clicked */
   nodeButtonClicked: PropTypes.func,
   /** function to add a container node item */
@@ -161,8 +174,8 @@ Canvas.propTypes = {
   /** function called when canvas surface clicked */
   canvasClicked: PropTypes.func,
   /** allowable item drop types */
-  canvasDropItemTypes: PropTypes.array
-}
+  canvasDropItemTypes: PropTypes.array // eslint-disable-line react/no-unused-prop-types
+};
 Canvas.defaultProps = {
   canvasClass: 'canvas',
   readOnly: false,
@@ -175,6 +188,6 @@ Canvas.defaultProps = {
   defaultNodeHeight: 150,
   connectorHeight: 25,
   canvasNodeDraggable: true
-}
-const dropItemTypes = (props) => { return props.canvasDropItemTypes || [] }
-export default DropTarget(dropItemTypes, canvasTarget, collect)(Canvas)
+};
+const dropItemTypes = props => props.canvasDropItemTypes || [];
+export default DropTarget(dropItemTypes, canvasTarget, collect)(Canvas);

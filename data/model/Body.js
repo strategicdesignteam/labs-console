@@ -22,23 +22,21 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
     module.exports = factory(require('../ApiClient'));
-  } else {
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.Body = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient);
+    root.RedHatOpenInnovationLabsConsoleApi.Body = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient
+    );
   }
-}(this, function(ApiClient) {
-  'use strict';
-
-
-
-
+}(this, (ApiClient) => {
   /**
    * The Body model module.
    * @module model/Body
@@ -49,12 +47,12 @@
    * Constructs a new <code>Body</code>.
    * @alias module:model/Body
    * @class
-   * @param topologyId {Integer} 
+   * @param topologyId {Integer}
    */
-  var exports = function(topologyId) {
-    var _this = this;
+  const exports = function (topologyId) {
+    const _this = this;
 
-    _this['topologyId'] = topologyId;
+    _this.topologyId = topologyId;
   };
 
   /**
@@ -64,25 +62,21 @@
    * @param {module:model/Body} obj Optional instance to populate.
    * @return {module:model/Body} The populated <code>Body</code> instance.
    */
-  exports.constructFromObject = function(data, obj) {
+  exports.constructFromObject = function (data, obj) {
     if (data) {
       obj = obj || new exports();
 
       if (data.hasOwnProperty('topologyId')) {
-        obj['topologyId'] = ApiClient.convertToType(data['topologyId'], 'Integer');
+        obj.topologyId = ApiClient.convertToType(data.topologyId, 'Integer');
       }
     }
     return obj;
-  }
+  };
 
   /**
    * @member {Integer} topologyId
    */
-  exports.prototype['topologyId'] = undefined;
-
-
+  exports.prototype.topologyId = undefined;
 
   return exports;
 }));
-
-

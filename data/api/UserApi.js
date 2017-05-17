@@ -22,20 +22,27 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('../ApiClient'), require('../model/User'), require('../model/ErrorModel'));
-  } else {
+    module.exports = factory(
+      require('../ApiClient'),
+      require('../model/User'),
+      require('../model/ErrorModel')
+    );
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.UserApi = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient, root.RedHatOpenInnovationLabsConsoleApi.User, root.RedHatOpenInnovationLabsConsoleApi.ErrorModel);
+    root.RedHatOpenInnovationLabsConsoleApi.UserApi = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient,
+      root.RedHatOpenInnovationLabsConsoleApi.User,
+      root.RedHatOpenInnovationLabsConsoleApi.ErrorModel
+    );
   }
-}(this, function(ApiClient, User, ErrorModel) {
-  'use strict';
-
+}(this, (ApiClient, User, ErrorModel) => {
   /**
    * User service.
    * @module api/UserApi
@@ -43,15 +50,14 @@
    */
 
   /**
-   * Constructs a new UserApi. 
+   * Constructs a new UserApi.
    * @alias module:api/UserApi
    * @class
    * @param {module:ApiClient} apiClient Optional API client implementation to use,
    * default to {@link module:ApiClient#instance} if unspecified.
    */
-  var exports = function(apiClient) {
+  const exports = function (apiClient) {
     this.apiClient = apiClient || ApiClient.instance;
-
 
     /**
      * Callback function to receive the result of the addUser operation.
@@ -63,36 +69,40 @@
 
     /**
      * Add a new user
-     * 
+     *
      * @param {Object} opts Optional parameters
      * @param {module:model/User} opts.body User object that needs to be added to the store
      * @param {module:api/UserApi~addUserCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    this.addUser = function(opts, callback) {
+    this.addUser = function (opts, callback) {
       opts = opts || {};
-      var postBody = opts['body'];
+      const postBody = opts.body;
 
+      const pathParams = {};
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = ['application/json'];
-      var accepts = ['application/json'];
-      var returnType = null;
+      const authNames = [];
+      const contentTypes = ['application/json'];
+      const accepts = ['application/json'];
+      const returnType = null;
 
       return this.apiClient.callApi(
-        '/users', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/users',
+        'POST',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
 
     /**
      * Callback function to receive the result of the deleteUser operation.
@@ -104,40 +114,45 @@
 
     /**
      * Deletes a user
-     * 
+     *
      * @param {Integer} id User id to delete
      * @param {module:api/UserApi~deleteUserCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    this.deleteUser = function(id, callback) {
-      var postBody = null;
+    this.deleteUser = function (id, callback) {
+      const postBody = null;
 
       // verify the required parameter 'id' is set
       if (id == undefined || id == null) {
         throw "Missing the required parameter 'id' when calling deleteUser";
       }
 
+      const pathParams = {
+        id
+      };
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-        'id': id
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = [];
-      var accepts = ['application/json'];
-      var returnType = null;
+      const authNames = [];
+      const contentTypes = [];
+      const accepts = ['application/json'];
+      const returnType = null;
 
       return this.apiClient.callApi(
-        '/users/{id}', 'DELETE',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/users/{id}',
+        'DELETE',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
 
     /**
      * Callback function to receive the result of the updateUser operation.
@@ -149,43 +164,48 @@
 
     /**
      * Update an existing user
-     * 
+     *
      * @param {Integer} id User ID
      * @param {Object} opts Optional parameters
      * @param {module:model/User} opts.body User object that needs to be updated in the store
      * @param {module:api/UserApi~updateUserCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    this.updateUser = function(id, opts, callback) {
+    this.updateUser = function (id, opts, callback) {
       opts = opts || {};
-      var postBody = opts['body'];
+      const postBody = opts.body;
 
       // verify the required parameter 'id' is set
       if (id == undefined || id == null) {
         throw "Missing the required parameter 'id' when calling updateUser";
       }
 
+      const pathParams = {
+        id
+      };
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-        'id': id
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = ['application/json'];
-      var accepts = ['application/json'];
-      var returnType = null;
+      const authNames = [];
+      const contentTypes = ['application/json'];
+      const accepts = ['application/json'];
+      const returnType = null;
 
       return this.apiClient.callApi(
-        '/users/{id}', 'PUT',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/users/{id}',
+        'PUT',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
 
     /**
      * Callback function to receive the result of the usersGet operation.
@@ -196,34 +216,38 @@
      */
 
     /**
-     * Gets &#x60;User&#x60; objects. 
+     * Gets &#x60;User&#x60; objects.
      * @param {module:api/UserApi~usersGetCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link Array.<module:model/User>}
      */
-    this.usersGet = function(callback) {
-      var postBody = null;
+    this.usersGet = function (callback) {
+      const postBody = null;
 
+      const pathParams = {};
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = [];
-      var accepts = [];
-      var returnType = [User];
+      const authNames = [];
+      const contentTypes = [];
+      const accepts = [];
+      const returnType = [User];
 
       return this.apiClient.callApi(
-        '/users', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/users',
+        'GET',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
 
     /**
      * Callback function to receive the result of the usersIdGet operation.
@@ -234,41 +258,46 @@
      */
 
     /**
-     * Gets a &#x60;User&#x60; object by ID. 
+     * Gets a &#x60;User&#x60; object by ID.
      * @param {Integer} id User ID
      * @param {module:api/UserApi~usersIdGetCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/User}
      */
-    this.usersIdGet = function(id, callback) {
-      var postBody = null;
+    this.usersIdGet = function (id, callback) {
+      const postBody = null;
 
       // verify the required parameter 'id' is set
       if (id == undefined || id == null) {
         throw "Missing the required parameter 'id' when calling usersIdGet";
       }
 
+      const pathParams = {
+        id
+      };
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-        'id': id
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = [];
-      var accepts = [];
-      var returnType = User;
+      const authNames = [];
+      const contentTypes = [];
+      const accepts = [];
+      const returnType = User;
 
       return this.apiClient.callApi(
-        '/users/{id}', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/users/{id}',
+        'GET',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
   };
 
   return exports;

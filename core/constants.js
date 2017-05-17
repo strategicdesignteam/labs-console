@@ -1,9 +1,8 @@
-'use strict';
 /** currently es5 as this is also consumed by the backend Node 4 app */
-
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
+
 /* *
   Application Constants
  */

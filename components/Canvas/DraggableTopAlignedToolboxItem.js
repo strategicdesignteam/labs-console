@@ -1,46 +1,38 @@
-import React, { PropTypes } from 'react'
-import { DragSource } from 'react-dnd'
-import CanvasItemTypes from './CanvasItemTypes'
+import React, { PropTypes } from 'react';
+import { DragSource } from 'react-dnd';
 
-const defaultItemClass = 'toolbox-item'
+const defaultItemClass = 'toolbox-item';
 
 const toolboxItemSource = {
-  beginDrag (props) {
+  beginDrag(props) {
     return {
       itemClass: props.itemClass || defaultItemClass,
       itemAttributes: props.itemAttributes,
       children: props.children
-    }
+    };
   }
-}
+};
 
-const collect = (connect, monitor) => {
-  return {
-    connectDragSource: connect.dragSource(),
-    connectDragPreview: connect.dragPreview(),
-    isDragging: monitor.isDragging()
-  }
-}
+const collect = (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  connectDragPreview: connect.dragPreview(),
+  isDragging: monitor.isDragging()
+});
 
 /**
  * Draggable Top Aligned Toolbox Item for Patternfly React
  */
 class DraggableTopAlignedToolboxItem extends React.Component {
-  render () {
-    const {
-      itemClass,
-      key,
-      connectDragSource,
-      children
-    } = this.props
+  render() {
+    const { itemClass, key, connectDragSource, children } = this.props;
 
     let content = (
       <li className={itemClass} key={key}>
         {children}
       </li>
-    )
-    content = connectDragSource(content, { dropEffect: 'move' })
-    return content
+    );
+    content = connectDragSource(content, { dropEffect: 'move' });
+    return content;
   }
 }
 DraggableTopAlignedToolboxItem.PropTypes = {
@@ -58,10 +50,12 @@ DraggableTopAlignedToolboxItem.PropTypes = {
   connectDragSource: PropTypes.func,
   /** children nodes */
   children: PropTypes.node
-}
+};
 DraggableTopAlignedToolboxItem.defaultProps = {
   itemClass: defaultItemClass,
   itemAttributes: {}
-}
-const dragType = (props) => { return props.canvasSourceItemType }
-export default DragSource(dragType, toolboxItemSource, collect)(DraggableTopAlignedToolboxItem)
+};
+const dragType = props => props.canvasSourceItemType;
+export default DragSource(dragType, toolboxItemSource, collect)(
+  DraggableTopAlignedToolboxItem
+);

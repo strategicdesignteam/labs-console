@@ -13,4 +13,4 @@ export default {
   STAGE_MAX_DISPLAY_ITEMS: 4,
   MAX_STAGES: 12,
   TOP_RIGHT_ICON_SIZE: 20
-}
+};

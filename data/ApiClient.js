@@ -22,20 +22,19 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
     module.exports = factory(require('superagent'));
-  } else {
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
     root.RedHatOpenInnovationLabsConsoleApi.ApiClient = factory(root.superagent);
   }
-}(this, function(superagent) {
-  'use strict';
-
+}(this, (superagent) => {
   /**
    * @module ApiClient
    * @version 0.1.0
@@ -48,16 +47,17 @@
    * @alias module:ApiClient
    * @class
    */
-  var exports = function() {
+  const exports = function () {
     /**
      * The base URL against which to resolve every API call's (relative) path.
      * @type {String}
      * @default https://localhost
      */
-    if(window.location.host.indexOf('localhost') > -1){
-      this.basePath = 'http://0.0.0.0:8080/api'; //point at a local node service running on :8080 if local
-    } else {
-      this.basePath = window.location.protocol + '//' + window.location.host + '/api';
+    if (window.location.host.indexOf('localhost') > -1) {
+      this.basePath = 'http://0.0.0.0:8080/api'; // point at a local node service running on :8080 if local
+    }
+    else {
+      this.basePath = `${window.location.protocol}//${window.location.host}/api`;
     }
 
     /**
@@ -86,7 +86,7 @@
    * @param param The actual parameter.
    * @returns {String} The string representation of <code>param</code>.
    */
-  exports.prototype.paramToString = function(param) {
+  exports.prototype.paramToString = function (param) {
     if (param == undefined || param == null) {
       return '';
     }
@@ -103,17 +103,18 @@
    * @param {Object} pathParams The parameter values to append.
    * @returns {String} The encoded path with parameter values substituted.
    */
-  exports.prototype.buildUrl = function(path, pathParams) {
+  exports.prototype.buildUrl = function (path, pathParams) {
     if (!path.match(/^\//)) {
-      path = '/' + path;
+      path = `/${path}`;
     }
-    var url = this.basePath + path;
-    var _this = this;
-    url = url.replace(/\{([\w-]+)\}/g, function(fullMatch, key) {
-      var value;
+    let url = this.basePath + path;
+    const _this = this;
+    url = url.replace(/\{([\w-]+)\}/g, (fullMatch, key) => {
+      let value;
       if (pathParams.hasOwnProperty(key)) {
         value = _this.paramToString(pathParams[key]);
-      } else {
+      }
+      else {
         value = fullMatch;
       }
       return encodeURIComponent(value);
@@ -132,7 +133,7 @@
    * @param {String} contentType The MIME content type to check.
    * @returns {Boolean} <code>true</code> if <code>contentType</code> represents JSON, otherwise <code>false</code>.
    */
-  exports.prototype.isJsonMime = function(contentType) {
+  exports.prototype.isJsonMime = function (contentType) {
     return Boolean(contentType != null && contentType.match(/^application\/json(;.*)?$/i));
   };
 
@@ -141,8 +142,8 @@
    * @param {Array.<String>} contentTypes
    * @returns {String} The chosen content type, preferring JSON.
    */
-  exports.prototype.jsonPreferredMime = function(contentTypes) {
-    for (var i = 0; i < contentTypes.length; i++) {
+  exports.prototype.jsonPreferredMime = function (contentTypes) {
+    for (let i = 0; i < contentTypes.length; i++) {
       if (this.isJsonMime(contentTypes[i])) {
         return contentTypes[i];
       }
@@ -155,7 +156,7 @@
    * @param param The parameter to check.
    * @returns {Boolean} <code>true</code> if <code>param</code> represents a file.
    */
-  exports.prototype.isFileParam = function(param) {
+  exports.prototype.isFileParam = function (param) {
     // fs.ReadStream in Node.js (but not in runtime like browserify)
     if (typeof window === 'undefined' &&
         typeof require === 'function') {
@@ -186,14 +187,15 @@
    * @param {Object.<String, Object>} params The parameters as object properties.
    * @returns {Object.<String, Object>} normalized parameters.
    */
-  exports.prototype.normalizeParams = function(params) {
-    var newParams = {};
-    for (var key in params) {
+  exports.prototype.normalizeParams = function (params) {
+    const newParams = {};
+    for (const key in params) {
       if (params.hasOwnProperty(key) && params[key] != undefined && params[key] != null) {
-        var value = params[key];
+        const value = params[key];
         if (this.isFileParam(value) || Array.isArray(value)) {
           newParams[key] = value;
-        } else {
+        }
+        else {
           newParams[key] = this.paramToString(value);
         }
       }
@@ -258,7 +260,7 @@
         // return the array directly as SuperAgent will handle it as expected
         return param.map(this.paramToString);
       default:
-        throw new Error('Unknown collection format: ' + collectionFormat);
+        throw new Error(`Unknown collection format: ${collectionFormat}`);
     }
   };
 
@@ -267,16 +269,16 @@
    * @param {Object} request The request object created by a <code>superagent()</code> call.
    * @param {Array.<String>} authNames An array of authentication method names.
    */
-  exports.prototype.applyAuthToRequest = function(request, authNames) {
-    var _this = this;
+  exports.prototype.applyAuthToRequest = function (request, authNames) {
+    const _this = this;
     _this.hash = _this.hash || _this.getCookie('hash');
     _this.username = _this.username || _this.getCookie('username');
     _this.password = _this.password || _this.getCookie('password');
 
-    //if we have a hash, add it to the request and use basic auth
-    if(_this.hash){
+    // if we have a hash, add it to the request and use basic auth
+    if (_this.hash) {
       request.auth(_this.username || '', _this.password || '');
-      request.set({'hash': _this.hash});
+      request.set({ hash: _this.hash });
     }
   };
 
@@ -295,7 +297,7 @@
     }
     // Rely on SuperAgent for parsing response body.
     // See http://visionmedia.github.io/superagent/#parsing-response-bodies
-    var data = response.body;
+    let data = response.body;
     if (data == null) {
       // SuperAgent does not always produce a body; use the unparsed response as a fallback
       data = response.text;
@@ -331,10 +333,9 @@
   exports.prototype.callApi = function callApi(path, httpMethod, pathParams,
       queryParams, headerParams, formParams, bodyParam, authNames, contentTypes, accepts,
       returnType, callback) {
-
-    var _this = this;
-    var url = this.buildUrl(path, pathParams);
-    var request = superagent(httpMethod, url);
+    const _this = this;
+    const url = this.buildUrl(path, pathParams);
+    const request = superagent(httpMethod, url);
 
     // apply authentications
     this.applyAuthToRequest(request, authNames);
@@ -348,44 +349,48 @@
     // set request timeout
     request.timeout(this.timeout);
 
-    var contentType = this.jsonPreferredMime(contentTypes);
+    const contentType = this.jsonPreferredMime(contentTypes);
     if (contentType) {
       request.type(contentType);
-    } else if (!request.header['Content-Type']) {
+    }
+    else if (!request.header['Content-Type']) {
       request.type('application/json');
     }
 
     if (contentType === 'application/x-www-form-urlencoded') {
       request.send(this.normalizeParams(formParams));
-    } else if (contentType == 'multipart/form-data') {
-      var _formParams = this.normalizeParams(formParams);
-      for (var key in _formParams) {
+    }
+    else if (contentType == 'multipart/form-data') {
+      const _formParams = this.normalizeParams(formParams);
+      for (const key in _formParams) {
         if (_formParams.hasOwnProperty(key)) {
           if (this.isFileParam(_formParams[key])) {
             // file field
             request.attach(key, _formParams[key]);
-          } else {
+          }
+          else {
             request.field(key, _formParams[key]);
           }
         }
       }
-    } else if (bodyParam) {
+    }
+    else if (bodyParam) {
       request.send(bodyParam);
     }
 
-    var accept = this.jsonPreferredMime(accepts);
+    const accept = this.jsonPreferredMime(accepts);
     if (accept) {
       request.accept(accept);
     }
 
 
-    request.end(function(error, response) {
-      if(error && error.status === 401){
-        //user has not logged in or is not allowed access, redirect to login page
+    request.end((error, response) => {
+      if (error && error.status === 401) {
+        // user has not logged in or is not allowed access, redirect to login page
         window.location.href = '/';
       }
       if (callback) {
-        var data = null;
+        let data = null;
         if (!error) {
           data = _this.deserialize(response, returnType);
         }
@@ -401,7 +406,7 @@
    * @param {String} str The date value as a string.
    * @returns {Date} The parsed date object.
    */
-  exports.parseDate = function(str) {
+  exports.parseDate = function (str) {
     return new Date(str.replace(/T/i, ' '));
   };
 
@@ -414,7 +419,7 @@
    * all properties on <code>data<code> will be converted to this type.
    * @returns An instance of the specified type.
    */
-  exports.convertToType = function(data, type) {
+  exports.convertToType = function (data, type) {
     switch (type) {
       case 'Boolean':
         return Boolean(data);
@@ -430,18 +435,20 @@
         if (type === Object) {
           // generic object, return directly
           return data;
-        } else if (typeof type === 'function') {
+        }
+        else if (typeof type === 'function') {
           // for model type like: User
           return type.constructFromObject(data);
-        } else if (Array.isArray(type)) {
+        }
+        else if (Array.isArray(type)) {
           // for array type like: ['String']
-          var itemType = type[0];
-          return data.map(function(item) {
-            return exports.convertToType(item, itemType);
-          });
-        } else if (typeof type === 'object') {
+          const itemType = type[0];
+          return data.map(item => exports.convertToType(item, itemType));
+        }
+        else if (typeof type === 'object') {
           // for plain object type like: {'String': 'Integer'}
-          var keyType, valueType;
+          let keyType,
+            valueType;
           for (var k in type) {
             if (type.hasOwnProperty(k)) {
               keyType = k;
@@ -449,19 +456,19 @@
               break;
             }
           }
-          var result = {};
+          const result = {};
           for (var k in data) {
             if (data.hasOwnProperty(k)) {
-              var key = exports.convertToType(k, keyType);
-              var value = exports.convertToType(data[k], valueType);
+              const key = exports.convertToType(k, keyType);
+              const value = exports.convertToType(data[k], valueType);
               result[key] = value;
             }
           }
           return result;
-        } else {
-          // for unknown type, return the data directly
-          return data;
         }
+          // for unknown type, return the data directly
+        return data;
+
     }
   };
 
@@ -470,48 +477,51 @@
    * @param data {Object|Array} The REST data.
    * @param obj {Object|Array} The target object or array.
    */
-  exports.constructFromObject = function(data, obj, itemType) {
+  exports.constructFromObject = function (data, obj, itemType) {
     if (Array.isArray(data)) {
-      for (var i = 0; i < data.length; i++) {
-        if (data.hasOwnProperty(i))
+      for (let i = 0; i < data.length; i++) {
+        if (data.hasOwnProperty(i)) {
           obj[i] = exports.convertToType(data[i], itemType);
+        }
       }
-    } else {
-      for (var k in data) {
-        if (data.hasOwnProperty(k))
+    }
+    else {
+      for (const k in data) {
+        if (data.hasOwnProperty(k)) {
           obj[k] = exports.convertToType(data[k], itemType);
+        }
       }
     }
   };
 
   /**
-  * Sets a cookie 
+  * Sets a cookie
   */
-  exports.prototype.setCookie = function(cname, cvalue) {
-    var d = new Date();
-    d.setTime(d.getTime() + (30 * 60 * 1000)); //30 minute expiration
-    var expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-  }
+  exports.prototype.setCookie = function (cname, cvalue) {
+    const d = new Date();
+    d.setTime(d.getTime() + (30 * 60 * 1000)); // 30 minute expiration
+    const expires = `expires=${d.toUTCString()}`;
+    document.cookie = `${cname}=${cvalue};${expires};path=/`;
+  };
 
   /**
    * Gets a cookie
    */
-  exports.prototype.getCookie = function(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
+  exports.prototype.getCookie = function (cname) {
+    const name = `${cname}=`;
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
     }
-    return "";
-  }
+    return '';
+  };
 
   /**
    * The default API client implementation.

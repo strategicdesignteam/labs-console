@@ -1,8 +1,7 @@
-'use strict';
 var Infrastructure = require('../models/Infrastructure');
 var common = require('../common/common');
 
-exports.addInfrastructure = function(args, res, next) {
+exports.addInfrastructure = function (args, res, next) {
   /**
    * parameters expected in the args:
   * body (Infrastructure)
@@ -19,79 +18,86 @@ exports.addInfrastructure = function(args, res, next) {
   newInfrastructure.highly_available = args.body.highly_available;
   newInfrastructure.master_nodes = args.body.master_nodes;
   newInfrastructure.compute_nodes = args.body.compute_nodes;
-  newInfrastructure.ansible_tower_link = 'https://tower.strategicdesign.io/#/workflows/' + 
-      args.body.tower_job_id + '#followAnchor';
+  newInfrastructure.ansible_tower_link = `https://tower.strategicdesign.io/#/workflows/${args.body.tower_job_id}#followAnchor`;
   newInfrastructure.status = args.body.status;
   newInfrastructure.tower_job_id = args.body.tower_job_id;
   newInfrastructure.datetime_started = args.body.datetime_started;
   newInfrastructure.datetime_completed = args.body.datetime_completed;
 
-  newInfrastructure.save(function(err, infrastructure) {
+  newInfrastructure.save((err, infrastructure) => {
     if (err) return common.handleError(res, err);
-    return res.json(201, { infrastructure: infrastructure });
+    return res.json(201, { infrastructure });
   });
 };
 
-exports.deleteInfrastructure = function(args, res, next) {
+exports.deleteInfrastructure = function (args, res, next) {
   /**
    * parameters expected in the args:
   * id (Long)
   **/
-  Infrastructure.findById(args.params.id, function(err, infrastructure) {
-    if(err) return res.send(500, err);
-    if(!infrastructure) { return res.send(404); }
-    //calling remove explicitly so that 'pre' remove middleware fires
-    infrastructure.remove(function(err){
-      if(err) return res.send(500, err);
+  Infrastructure.findById(args.params.id, (err, infrastructure) => {
+    if (err) return res.send(500, err);
+    if (!infrastructure) {
+      return res.send(404);
+    }
+    // calling remove explicitly so that 'pre' remove middleware fires
+    infrastructure.remove((err) => {
+      if (err) return res.send(500, err);
       return res.send(200);
     });
   });
 };
 
-exports.updateInfrastructure = function(args, res, next) {
+exports.updateInfrastructure = function (args, res, next) {
   /**
    * parameters expected in the args:
   * id (Long)
   * body (Infrastructure)
   **/
-  Infrastructure.findById(args.params.id, function (err, infrastructure) {
-    if(infrastructure) {
+  Infrastructure.findById(args.params.id, (err, infrastructure) => {
+    if (infrastructure) {
       infrastructure.status = args.body.status;
       infrastructure.datetime_completed = args.body.datetime_completed;
       infrastructure.destroy_started = args.body.destroy_started;
-      
-      infrastructure.save(function(err) {
+
+      infrastructure.save((err) => {
         if (err) return validationError(res, err);
         res.send(200);
       });
-    } else {
+    }
+    else {
       res.send(404);
     }
   });
 };
 
-exports.infrastructuresGET = function(args, res, next) {
+exports.infrastructuresGET = function (args, res, next) {
   /**
    * parameters expected in the args:
   **/
   Infrastructure.find()
     .limit(20)
     .sort({ datetime_started: -1 })
-    .exec(function (err, infrastructures) {
-      if(err) { return common.handleError(res, err); }
+    .exec((err, infrastructures) => {
+      if (err) {
+        return common.handleError(res, err);
+      }
       return res.json(200, infrastructures);
     });
 };
 
-exports.infrastructuresIdGET = function(args, res, next) {
+exports.infrastructuresIdGET = function (args, res, next) {
   /**
    * parameters expected in the args:
   * id (Long)
   **/
 
-  Infrastructure.findOne({_id: args.params.id})
-    .exec(function (err, infrastructure) {
-      if(err) { return common.handleError(res, err); }
-      return res.json(200, infrastructure);
-    }); 
+  Infrastructure.findOne({
+    _id: args.params.id
+  }).exec((err, infrastructure) => {
+    if (err) {
+      return common.handleError(res, err);
+    }
+    return res.json(200, infrastructure);
+  });
 };

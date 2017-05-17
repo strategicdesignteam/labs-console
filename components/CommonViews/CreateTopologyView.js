@@ -1,9 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import CreateTopologyForm from '../Forms/CreateTopologyForm';
 import labsApi from '../../data/index';
 
 class CreateTopologyView extends React.Component {
-
   static propTypes = {
     handleSubmit: React.PropTypes.func,
     handleCancel: React.PropTypes.func,
@@ -11,18 +10,18 @@ class CreateTopologyView extends React.Component {
   };
 
   handleSubmit = (event, t) => {
-    let topologyApi = new labsApi.TopologyApi();
-    let topology = new labsApi.ApplicationTopology();
+    const topologyApi = new labsApi.TopologyApi();
+    const topology = new labsApi.ApplicationTopology();
     topology.name = t.name;
     topology.description = t.description;
 
-    topologyApi.addTopology({'body': topology},
-      (e) => {
-        //todo: display an error
-        if (e) {console.error(error); }
-        //return to parent after success
-        this.props.handleSubmit(event);
-      });
+    topologyApi.addTopology({ body: topology }, (e) => {
+      // todo: display an error
+      if (e) console.error(e);
+
+      // return to parent after success
+      this.props.handleSubmit(event);
+    });
 
     event.preventDefault();
   };
@@ -34,8 +33,8 @@ class CreateTopologyView extends React.Component {
   render() {
     return (
       <CreateTopologyForm handleSubmit={this.handleSubmit.bind(this)}
-                          handleCancel={this.handleCancel.bind(this)}
-                          value={this.props.value}/>
+        handleCancel={this.handleCancel.bind(this)}
+        value={this.props.value}/>
     );
   }
 }

@@ -1,17 +1,26 @@
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('../ApiClient'), require('../model/ErrorModel'), require('../model/Body'), require('../model/Job'));
-  } else {
+    module.exports = factory(
+      require('../ApiClient'),
+      require('../model/ErrorModel'),
+      require('../model/Body'),
+      require('../model/Job')
+    );
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.JobApi = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient, root.RedHatOpenInnovationLabsConsoleApi.ErrorModel, root.RedHatOpenInnovationLabsConsoleApi.Body, root.RedHatOpenInnovationLabsConsoleApi.Job);
+    root.RedHatOpenInnovationLabsConsoleApi.JobApi = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient,
+      root.RedHatOpenInnovationLabsConsoleApi.ErrorModel,
+      root.RedHatOpenInnovationLabsConsoleApi.Body,
+      root.RedHatOpenInnovationLabsConsoleApi.Job
+    );
   }
-}(this, function(ApiClient, ErrorModel, Body, Job) {
-  'use strict';
-
+}(this, (ApiClient, ErrorModel, Body, Job) => {
   /**
    * Job service.
    * @module api/JobApi
@@ -19,15 +28,14 @@
    */
 
   /**
-   * Constructs a new JobApi. 
+   * Constructs a new JobApi.
    * @alias module:api/JobApi
    * @class
    * @param {module:ApiClient} apiClient Optional API client implementation to use,
    * default to {@link module:ApiClient#instance} if unspecified.
    */
-  var exports = function(apiClient) {
+  const exports = function (apiClient) {
     this.apiClient = apiClient || ApiClient.instance;
-
 
     /**
      * Callback function to receive the result of the addInfrastructureJob operation.
@@ -39,37 +47,40 @@
 
     /**
      * Add a new infrastructure Job
-     * 
+     *
      * @param {Object} opts Optional parameters
      * @param {module:model/Body} opts.body Job object that needs to be added to the store
      * @param {module:api/JobApi~addInfrastructureJobCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    this.addInfrastructureJob = function(opts, callback) {
+    this.addInfrastructureJob = function (opts, callback) {
       opts = opts || {};
-      var postBody = opts['body'];
+      const postBody = opts.body;
 
+      const pathParams = {};
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = ['application/json'];
-      var accepts = ['application/json'];
-      var returnType = Object;
+      const authNames = [];
+      const contentTypes = ['application/json'];
+      const accepts = ['application/json'];
+      const returnType = Object;
 
       return this.apiClient.callApi(
-        '/jobs/infrastructure', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/jobs/infrastructure',
+        'POST',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
-
+    };
 
     /**
      * Callback function to receive the result of the destroyInfrastructureJob operation.
@@ -81,36 +92,40 @@
 
     /**
      * Destroy infrastructure Job
-     * 
+     *
      * @param {Object} opts Optional parameters
      * @param {module:model/Body} opts.body Job object that needs to be added to the store
      * @param {module:api/JobApi~destroyInfrastructureJobCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    this.destroyInfrastructureJob = function(opts, callback) {
+    this.destroyInfrastructureJob = function (opts, callback) {
       opts = opts || {};
-      var postBody = opts['body'];
+      const postBody = opts.body;
 
+      const pathParams = {};
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = ['application/json'];
-      var accepts = ['application/json'];
-      var returnType = Object;
+      const authNames = [];
+      const contentTypes = ['application/json'];
+      const accepts = ['application/json'];
+      const returnType = Object;
 
       return this.apiClient.callApi(
-        '/jobs/infrastructureDestroy', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/jobs/infrastructureDestroy',
+        'POST',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
 
     /**
      * Callback function to receive the result of the addProjectJob operation.
@@ -122,37 +137,41 @@
 
     /**
      * Add a new project Job
-     * 
+     *
      * @param {Object} opts Optional parameters
      * @param {module:model/Body} opts.body Job object that needs to be added to the store
      * @param {module:api/JobApi~addProjectJobCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    this.addProjectJob = function(opts, callback) {
+    this.addProjectJob = function (opts, callback) {
       opts = opts || {};
-      var postBody = opts['body'];
+      const postBody = opts.body;
 
+      const pathParams = {};
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = ['application/json'];
-      var accepts = ['application/json'];
-      var returnType = Object;
+      const authNames = [];
+      const contentTypes = ['application/json'];
+      const accepts = ['application/json'];
+      const returnType = Object;
 
       return this.apiClient.callApi(
-        '/jobs/project', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/jobs/project',
+        'POST',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
-    
+    };
+
     /**
      * Callback function to receive the result of the JobsIdGet operation.
      * @callback module:api/JobApi~JobsIdGetCallback
@@ -162,41 +181,46 @@
      */
 
     /**
-     * Gets a &#x60;Job&#x60; object by ID. 
+     * Gets a &#x60;Job&#x60; object by ID.
      * @param {Integer} id Job ID
      * @param {module:api/JobApi~JobsIdGetCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/Job}
      */
-    this.jobsIdGet = function(id, callback) {
-      var postBody = null;
+    this.jobsIdGet = function (id, callback) {
+      const postBody = null;
 
       // verify the required parameter 'id' is set
       if (id == undefined || id == null) {
         throw "Missing the required parameter 'id' when calling JobsIdGet";
       }
 
+      const pathParams = {
+        id
+      };
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-        'id': id
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = [];
-      var accepts = [];
-      var returnType = Job;
+      const authNames = [];
+      const contentTypes = [];
+      const accepts = [];
+      const returnType = Job;
 
       return this.apiClient.callApi(
-        '/jobs/{id}', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/jobs/{id}',
+        'GET',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
   };
 
   return exports;

@@ -22,23 +22,27 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('../ApiClient'), require('./PVCAssociationTemplate'), require('./Route'));
-  } else {
+    module.exports = factory(
+      require('../ApiClient'),
+      require('./PVCAssociationTemplate'),
+      require('./Route')
+    );
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.ApplicationTemplate = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient, root.RedHatOpenInnovationLabsConsoleApi.PVCAssociationTemplate, root.RedHatOpenInnovationLabsConsoleApi.Route);
+    root.RedHatOpenInnovationLabsConsoleApi.ApplicationTemplate = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient,
+      root.RedHatOpenInnovationLabsConsoleApi.PVCAssociationTemplate,
+      root.RedHatOpenInnovationLabsConsoleApi.Route
+    );
   }
-}(this, function(ApiClient, PVCAssociationTemplate, Route) {
-  'use strict';
-
-
-
-
+}(this, (ApiClient, PVCAssociationTemplate, Route) => {
   /**
    * The ApplicationTemplate model module.
    * @module model/ApplicationTemplate
@@ -50,25 +54,8 @@
    * @alias module:model/ApplicationTemplate
    * @class
    */
-  var exports = function() {
-    var _this = this;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  const exports = function () {
+    const _this = this;
   };
 
   /**
@@ -78,127 +65,146 @@
    * @param {module:model/ApplicationTemplate} obj Optional instance to populate.
    * @return {module:model/ApplicationTemplate} The populated <code>ApplicationTemplate</code> instance.
    */
-  exports.constructFromObject = function(data, obj) {
+  exports.constructFromObject = function (data, obj) {
     if (data) {
       obj = obj || new exports();
 
       if (data.hasOwnProperty('id')) {
-        obj['id'] = ApiClient.convertToType(data['id'], 'Integer');
+        obj.id = ApiClient.convertToType(data.id, 'Integer');
       }
       if (data.hasOwnProperty('base_image')) {
-        obj['base_image'] = ApiClient.convertToType(data['base_image'], 'String');
+        obj.base_image = ApiClient.convertToType(data.base_image, 'String');
       }
       if (data.hasOwnProperty('base_image_tag')) {
-        obj['base_image_tag'] = ApiClient.convertToType(data['base_image_tag'], 'String');
+        obj.base_image_tag = ApiClient.convertToType(
+          data.base_image_tag,
+          'String'
+        );
       }
       if (data.hasOwnProperty('build_application_commands')) {
-        obj['build_application_commands'] = ApiClient.convertToType(data['build_application_commands'], ['String']);
+        obj.build_application_commands = ApiClient.convertToType(
+          data.build_application_commands,
+          ['String']
+        );
       }
       if (data.hasOwnProperty('build_tool')) {
-        obj['build_tool'] = ApiClient.convertToType(data['build_tool'], 'String');
+        obj.build_tool = ApiClient.convertToType(data.build_tool, 'String');
       }
       if (data.hasOwnProperty('build_image_commands')) {
-        obj['build_image_commands'] = ApiClient.convertToType(data['build_image_commands'], ['String']);
+        obj.build_image_commands = ApiClient.convertToType(
+          data.build_image_commands,
+          ['String']
+        );
       }
       if (data.hasOwnProperty('deploy_image_commands')) {
-        obj['deploy_image_commands'] = ApiClient.convertToType(data['deploy_image_commands'], ['String']);
+        obj.deploy_image_commands = ApiClient.convertToType(
+          data.deploy_image_commands,
+          ['String']
+        );
       }
       if (data.hasOwnProperty('context_dir')) {
-        obj['context_dir'] = ApiClient.convertToType(data['context_dir'], 'String');
+        obj.context_dir = ApiClient.convertToType(data.context_dir, 'String');
       }
       if (data.hasOwnProperty('scm_url')) {
-        obj['scm_url'] = ApiClient.convertToType(data['scm_url'], 'String');
+        obj.scm_url = ApiClient.convertToType(data.scm_url, 'String');
       }
       if (data.hasOwnProperty('scm_type')) {
-        obj['scm_type'] = ApiClient.convertToType(data['scm_type'], 'String');
+        obj.scm_type = ApiClient.convertToType(data.scm_type, 'String');
       }
       if (data.hasOwnProperty('scm_ref')) {
-        obj['scm_ref'] = ApiClient.convertToType(data['scm_ref'], 'String');
+        obj.scm_ref = ApiClient.convertToType(data.scm_ref, 'String');
       }
       if (data.hasOwnProperty('name')) {
-        obj['name'] = ApiClient.convertToType(data['name'], 'String');
+        obj.name = ApiClient.convertToType(data.name, 'String');
       }
       if (data.hasOwnProperty('label_templates')) {
-        obj['label_templates'] = ApiClient.convertToType(data['label_templates'], {'String': 'String'});
+        obj.label_templates = ApiClient.convertToType(data.label_templates, {
+          String: 'String'
+        });
       }
       if (data.hasOwnProperty('environment_variables_templates')) {
-        obj['environment_variables_templates'] = ApiClient.convertToType(data['environment_variables_templates'], {'String': 'String'});
+        obj.environment_variables_templates = ApiClient.convertToType(
+          data.environment_variables_templates,
+          { String: 'String' }
+        );
       }
       if (data.hasOwnProperty('pvc_association_templates')) {
-        obj['pvc_association_templates'] = ApiClient.convertToType(data['pvc_association_templates'], [PVCAssociationTemplate]);
+        obj.pvc_association_templates = ApiClient.convertToType(
+          data.pvc_association_templates,
+          [PVCAssociationTemplate]
+        );
       }
       if (data.hasOwnProperty('routes')) {
-        obj['routes'] = ApiClient.convertToType(data['routes'], [Route]);
+        obj.routes = ApiClient.convertToType(data.routes, [Route]);
       }
     }
     return obj;
-  }
+  };
 
   /**
    * @member {Integer} id
    */
-  exports.prototype['id'] = undefined;
+  exports.prototype.id = undefined;
   /**
    * @member {String} base_image
    */
-  exports.prototype['base_image'] = undefined;
+  exports.prototype.base_image = undefined;
   /**
    * @member {String} base_image_tag
    */
-  exports.prototype['base_image_tag'] = undefined;
+  exports.prototype.base_image_tag = undefined;
   /**
    * @member {Array.<String>} build_application_commands
    */
-  exports.prototype['build_application_commands'] = undefined;
+  exports.prototype.build_application_commands = undefined;
   /**
    * @member {module:model/ApplicationTemplate.BuildToolEnum} build_tool
    */
-  exports.prototype['build_tool'] = undefined;
+  exports.prototype.build_tool = undefined;
   /**
    * @member {Array.<String>} build_image_commands
    */
-  exports.prototype['build_image_commands'] = undefined;
+  exports.prototype.build_image_commands = undefined;
   /**
    * @member {Array.<String>} deploy_image_commands
    */
-  exports.prototype['deploy_image_commands'] = undefined;
+  exports.prototype.deploy_image_commands = undefined;
   /**
    * @member {String} context_dir
    */
-  exports.prototype['context_dir'] = undefined;
+  exports.prototype.context_dir = undefined;
   /**
    * @member {String} scm_url
    */
-  exports.prototype['scm_url'] = undefined;
+  exports.prototype.scm_url = undefined;
   /**
    * @member {String} scm_type
    */
-  exports.prototype['scm_type'] = undefined;
+  exports.prototype.scm_type = undefined;
   /**
    * @member {String} scm_ref
    */
-  exports.prototype['scm_ref'] = undefined;
+  exports.prototype.scm_ref = undefined;
   /**
    * @member {String} name
    */
-  exports.prototype['name'] = undefined;
+  exports.prototype.name = undefined;
   /**
    * @member {Object.<String, String>} label_templates
    */
-  exports.prototype['label_templates'] = undefined;
+  exports.prototype.label_templates = undefined;
   /**
    * @member {Object.<String, String>} environment_variables_templates
    */
-  exports.prototype['environment_variables_templates'] = undefined;
+  exports.prototype.environment_variables_templates = undefined;
   /**
    * @member {Array.<module:model/PVCAssociationTemplate>} pvc_association_templates
    */
-  exports.prototype['pvc_association_templates'] = undefined;
+  exports.prototype.pvc_association_templates = undefined;
   /**
    * @member {Array.<module:model/Route>} routes
    */
-  exports.prototype['routes'] = undefined;
-
+  exports.prototype.routes = undefined;
 
   /**
    * Allowed values for the <code>build_tool</code> property.
@@ -210,30 +216,28 @@
      * value: "s2i"
      * @const
      */
-    "s2i": "s2i",
+    s2i: 's2i',
     /**
      * value: "mvn-3"
      * @const
      */
-    "mvn-3": "mvn-3",
+    'mvn-3': 'mvn-3',
     /**
      * value: "node-4"
      * @const
      */
-    "node-4": "node-4",
+    'node-4': 'node-4',
     /**
      * value: "node-0.10"
      * @const
      */
-    "node-0.10": "node-0.10",
+    'node-0.10': 'node-0.10',
     /**
      * value: "sh"
      * @const
      */
-    "sh": "sh"  };
-
+    sh: 'sh'
+  };
 
   return exports;
 }));
-
-

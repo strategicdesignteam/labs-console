@@ -1,58 +1,73 @@
-import React, { PropTypes } from 'react'
-import cx from 'classnames'
+import React, { PropTypes } from 'react';
+import cx from 'classnames';
 
 /**
  * Canvas Toolbar for Patternfly React
  */
-const CanvasToolbar = ({toolbarClass, toolboxButtonLabel, toolboxButtonClass, toolboxClicked, toolboxOpen,
-    duplicateClicked, duplicateDisabled, deleteClicked, deleteDisabled, editClicked, editDisabled,
-    zoomOutClicked, zoomOutDisabled, zoomInClicked, zoomInDisabled}) => {
+const CanvasToolbar = ({
+  toolbarClass,
+  toolboxButtonLabel,
+  toolboxButtonClass,
+  toolboxClicked,
+  toolboxOpen,
+  duplicateClicked,
+  duplicateDisabled,
+  deleteClicked,
+  deleteDisabled,
+  editClicked,
+  editDisabled,
+  zoomOutClicked,
+  zoomOutDisabled,
+  zoomInClicked,
+  zoomInDisabled
+}) => {
   const buttonIcon = cx({
-    'fa': true,
+    fa: true,
     'fa-angle-double-down': !toolboxOpen,
     'fa-angle-double-up': toolboxOpen
-  })
+  });
   const handleActionClick = (event, func, disabled) => {
-    event.preventDefault()
+    event.preventDefault();
     if (!disabled) {
-      func(event)
+      func(event);
     }
-  }
+  };
   return (
     <div className={toolbarClass}>
       <button className={toolboxButtonClass} onClick={toolboxClicked}>
         {toolboxButtonLabel} &nbsp;
-        <span className={buttonIcon} />
+        <span className={buttonIcon}/>
       </button>
       <span>
-        <span className='more-actions'>
-          <a onClick={(e) => handleActionClick(e, duplicateClicked, duplicateDisabled)}
+        <span className="more-actions">
+          <a onClick={e =>
+              handleActionClick(e, duplicateClicked, duplicateDisabled)}
             className={duplicateDisabled ? 'disabled' : ''}>
-            <span className='pficon fa fa-copy' />
+            <span className="pficon fa fa-copy"/>
           </a>
-          <a onClick={(e) => handleActionClick(e, deleteClicked, deleteDisabled)}
+          <a onClick={e => handleActionClick(e, deleteClicked, deleteDisabled)}
             className={deleteDisabled ? 'disabled' : ''}>
-            <span className='pficon pficon-delete' />
+            <span className="pficon pficon-delete"/>
           </a>
-          <a onClick={(e) => handleActionClick(e, editClicked, editDisabled)}
+          <a onClick={e => handleActionClick(e, editClicked, editDisabled)}
             className={editDisabled ? 'disabled' : ''}>
-            <span className='fa fa-pencil' />
-          </a>          
+            <span className="fa fa-pencil"/>
+          </a>
         </span>
       </span>
-      <span className='right-aligned-controls'>
-        <a onClick={(e) => handleActionClick(e, zoomOutClicked, zoomOutDisabled)}
+      <span className="right-aligned-controls">
+        <a onClick={e => handleActionClick(e, zoomOutClicked, zoomOutDisabled)}
           className={zoomOutDisabled ? 'disabled' : ''}>
-          <span className='pficon fa fa-minus' />
+          <span className="pficon fa fa-minus"/>
         </a>
-        <a onClick={(e) => handleActionClick(e, zoomInClicked, zoomInDisabled)}
+        <a onClick={e => handleActionClick(e, zoomInClicked, zoomInDisabled)}
           className={zoomInDisabled ? 'disabled' : ''}>
-          <span className='pficon fa fa-plus' />
+          <span className="pficon fa fa-plus"/>
         </a>
       </span>
     </div>
-  )
-}
+  );
+};
 CanvasToolbar.propTypes = {
   /** canvas toolbar class  */
   toolbarClass: PropTypes.string,
@@ -67,7 +82,7 @@ CanvasToolbar.propTypes = {
   /** edit action clicked */
   editClicked: PropTypes.func,
   /** edit action disabled */
-  editDisabled: PropTypes.bool,  
+  editDisabled: PropTypes.bool,
   /** duplicate action clicked */
   duplicateClicked: PropTypes.func,
   /** duplicate action disabled */
@@ -84,7 +99,7 @@ CanvasToolbar.propTypes = {
   zoomInClicked: PropTypes.func,
   /** zoom in action disabled */
   zoomInDisabled: PropTypes.bool
-}
+};
 CanvasToolbar.defaultProps = {
   toolbarClass: 'canvas-editor-toolbar',
   toolboxButtonClass: 'btn btn-primary',
@@ -94,6 +109,6 @@ CanvasToolbar.defaultProps = {
   deleteDisabled: false,
   zoomOutDisabled: true,
   zoomInDisabled: false
-}
+};
 
-export default CanvasToolbar
+export default CanvasToolbar;

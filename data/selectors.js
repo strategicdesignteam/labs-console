@@ -9,34 +9,41 @@ const selectors = {
    */
   hasStageProjects(topology) {
     let stageProjects = false;
-    if(topology.project_templates.length && topology.promotion_process.length){
-      topology.promotion_process.map(stages => {
-        if(stages.projects.length){
+    if (
+      topology.project_templates.length && topology.promotion_process.length
+    ) {
+      topology.promotion_process.map((stages) => {
+        if (stages.projects.length) {
           stageProjects = true;
         }
       });
-    }    
+    }
     return stageProjects;
   },
   /**
    * Check topology for any stage projects w/ non ready infra
-   */  
+   */
   missingInfra(topology, infrastructures) {
-    let missingInfra = [];
-    if(topology.project_templates.length && topology.promotion_process.length){
-      topology.promotion_process.map(stage => {
-        if(stage.projects.length){
+    const missingInfra = [];
+    if (
+      topology.project_templates.length && topology.promotion_process.length
+    ) {
+      topology.promotion_process.map((stage) => {
+        if (stage.projects.length) {
           stage.projects.map((stageProject) => {
-            let infra = infrastructures.find((infra) => { 
-              return infra.id == stageProject.infrastructure
-            })
-            if(infra && infra.status !== constants.ANSIBLE_JOB_STATUS.SUCCESSFUL){
-              missingInfra.push({stage: stage, stageProject: stageProject})
-            } else if (!infra) {
-              //infra has been deleted
-              missingInfra.push({stage: stage, stageProject: stageProject})
+            const infra = infrastructures.find(
+              infra => infra.id == stageProject.infrastructure
+            );
+            if (
+              infra && infra.status !== constants.ANSIBLE_JOB_STATUS.SUCCESSFUL
+            ) {
+              missingInfra.push({ stage, stageProject });
             }
-          })
+            else if (!infra) {
+              // infra has been deleted
+              missingInfra.push({ stage, stageProject });
+            }
+          });
         }
       });
     }
@@ -44,4 +51,4 @@ const selectors = {
   }
 };
 
-export default selectors
+export default selectors;

@@ -22,20 +22,27 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('../ApiClient'), require('../model/ApplicationTopology'), require('../model/ErrorModel'));
-  } else {
+    module.exports = factory(
+      require('../ApiClient'),
+      require('../model/ApplicationTopology'),
+      require('../model/ErrorModel')
+    );
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.TopologyApi = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient, root.RedHatOpenInnovationLabsConsoleApi.ApplicationTopology, root.RedHatOpenInnovationLabsConsoleApi.ErrorModel);
+    root.RedHatOpenInnovationLabsConsoleApi.TopologyApi = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient,
+      root.RedHatOpenInnovationLabsConsoleApi.ApplicationTopology,
+      root.RedHatOpenInnovationLabsConsoleApi.ErrorModel
+    );
   }
-}(this, function(ApiClient, ApplicationTopology, ErrorModel) {
-  'use strict';
-
+}(this, (ApiClient, ApplicationTopology, ErrorModel) => {
   /**
    * Topology service.
    * @module api/TopologyApi
@@ -43,15 +50,14 @@
    */
 
   /**
-   * Constructs a new TopologyApi. 
+   * Constructs a new TopologyApi.
    * @alias module:api/TopologyApi
    * @class
    * @param {module:ApiClient} apiClient Optional API client implementation to use,
    * default to {@link module:ApiClient#instance} if unspecified.
    */
-  var exports = function(apiClient) {
+  const exports = function (apiClient) {
     this.apiClient = apiClient || ApiClient.instance;
-
 
     /**
      * Callback function to receive the result of the addTopology operation.
@@ -63,36 +69,40 @@
 
     /**
      * Add a new topology
-     * 
+     *
      * @param {Object} opts Optional parameters
      * @param {module:model/ApplicationTopology} opts.body Toplogy object that needs to be added to the store
      * @param {module:api/TopologyApi~addTopologyCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    this.addTopology = function(opts, callback) {
+    this.addTopology = function (opts, callback) {
       opts = opts || {};
-      var postBody = opts['body'];
+      const postBody = opts.body;
 
+      const pathParams = {};
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = ['application/json'];
-      var accepts = ['application/json'];
-      var returnType = null;
+      const authNames = [];
+      const contentTypes = ['application/json'];
+      const accepts = ['application/json'];
+      const returnType = null;
 
       return this.apiClient.callApi(
-        '/topologies', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/topologies',
+        'POST',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
 
     /**
      * Callback function to receive the result of the deleteTopology operation.
@@ -104,40 +114,45 @@
 
     /**
      * Deletes a topology
-     * 
+     *
      * @param {Integer} id Topology id to delete
      * @param {module:api/TopologyApi~deleteTopologyCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    this.deleteTopology = function(id, callback) {
-      var postBody = null;
+    this.deleteTopology = function (id, callback) {
+      const postBody = null;
 
       // verify the required parameter 'id' is set
       if (id == undefined || id == null) {
         throw "Missing the required parameter 'id' when calling deleteTopology";
       }
 
+      const pathParams = {
+        id
+      };
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-        'id': id
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = [];
-      var accepts = ['application/json'];
-      var returnType = null;
+      const authNames = [];
+      const contentTypes = [];
+      const accepts = ['application/json'];
+      const returnType = null;
 
       return this.apiClient.callApi(
-        '/topologies/{id}', 'DELETE',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/topologies/{id}',
+        'DELETE',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
 
     /**
      * Callback function to receive the result of the topologiesGet operation.
@@ -148,34 +163,38 @@
      */
 
     /**
-     * Gets &#x60;Toplogy&#x60; objects. 
+     * Gets &#x60;Toplogy&#x60; objects.
      * @param {module:api/TopologyApi~topologiesGetCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link Array.<module:model/ApplicationTopology>}
      */
-    this.topologiesGet = function(callback) {
-      var postBody = null;
+    this.topologiesGet = function (callback) {
+      const postBody = null;
 
+      const pathParams = {};
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = [];
-      var accepts = [];
-      var returnType = [ApplicationTopology];
+      const authNames = [];
+      const contentTypes = [];
+      const accepts = [];
+      const returnType = [ApplicationTopology];
 
       return this.apiClient.callApi(
-        '/topologies', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/topologies',
+        'GET',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
 
     /**
      * Callback function to receive the result of the topologiesIdGet operation.
@@ -186,41 +205,46 @@
      */
 
     /**
-     * Gets a &#x60;Topology&#x60; object by ID. 
+     * Gets a &#x60;Topology&#x60; object by ID.
      * @param {Integer} id Topology ID
      * @param {module:api/TopologyApi~topologiesIdGetCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/ApplicationTopology}
      */
-    this.topologiesIdGet = function(id, callback) {
-      var postBody = null;
+    this.topologiesIdGet = function (id, callback) {
+      const postBody = null;
 
       // verify the required parameter 'id' is set
       if (id == undefined || id == null) {
         throw "Missing the required parameter 'id' when calling topologiesIdGet";
       }
 
+      const pathParams = {
+        id
+      };
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-        'id': id
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = [];
-      var accepts = [];
-      var returnType = ApplicationTopology;
+      const authNames = [];
+      const contentTypes = [];
+      const accepts = [];
+      const returnType = ApplicationTopology;
 
       return this.apiClient.callApi(
-        '/topologies/{id}', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/topologies/{id}',
+        'GET',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
 
     /**
      * Callback function to receive the result of the updateTopology operation.
@@ -232,43 +256,48 @@
 
     /**
      * Update an existing topology
-     * 
+     *
      * @param {Integer} id Topology ID
      * @param {Object} opts Optional parameters
      * @param {module:model/ApplicationTopology} opts.body Topology object that needs to be updated in the store
      * @param {module:api/TopologyApi~updateTopologyCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    this.updateTopology = function(id, opts, callback) {
+    this.updateTopology = function (id, opts, callback) {
       opts = opts || {};
-      var postBody = opts['body'];
+      const postBody = opts.body;
 
       // verify the required parameter 'id' is set
       if (id == undefined || id == null) {
         throw "Missing the required parameter 'id' when calling updateTopology";
       }
 
+      const pathParams = {
+        id
+      };
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-        'id': id
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = ['application/json'];
-      var accepts = ['application/json'];
-      var returnType = null;
+      const authNames = [];
+      const contentTypes = ['application/json'];
+      const accepts = ['application/json'];
+      const returnType = null;
 
       return this.apiClient.callApi(
-        '/topologies/{id}', 'PUT',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/topologies/{id}',
+        'PUT',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
   };
 
   return exports;

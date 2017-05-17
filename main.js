@@ -11,15 +11,16 @@ import router from './core/router';
 import history from './core/history';
 import labsApi from './data/index';
 
-//polyfill scripts
-import objectAssign from './core/object-assign';
-import find from './core/find';
-import htmlElementShim from './core/htmlElementShim';
+// polyfill scripts
+import './core/object-assign';
+import './core/find';
+import './core/htmlElementShim';
 
-//webcomponents
-import pfTabs from './components/Tabs/pf-tabs.component';
+// webcomponents
+import './components/Tabs/pf-tabs.component';
 
 let routes = require('./routes.json'); // Loaded with utils/routes-loader.js
+
 const container = document.getElementById('main');
 
 function renderComponent(component) {
@@ -30,16 +31,22 @@ function renderComponent(component) {
 // if such page is not found then render an error page (see routes.json, core/router.js)
 function render(location) {
   // Check if user logged in, if not, route to login page
-  let loginApi = labsApi.LoginApi.instance;
+  const loginApi = labsApi.LoginApi.instance;
   loginApi.getCredentials();
-  
-  if((!loginApi.loggedInUser || !loginApi.credentials ) && location.pathname !== '/'){
+
+  if (
+    (!loginApi.loggedInUser || !loginApi.credentials) &&
+    location.pathname !== '/'
+  ) {
     return history.push('/');
   }
 
-  router.resolve(routes, location)
+  router
+    .resolve(routes, location)
     .then(renderComponent)
-    .catch(error => router.resolve(routes, { ...location, error }).then(renderComponent));
+    .catch(error =>
+      router.resolve(routes, { ...location, error }).then(renderComponent)
+    );
 }
 
 // Handle client-side navigation by using HTML5 History API
@@ -56,6 +63,7 @@ FastClick.attach(document.body);
 if (module.hot) {
   module.hot.accept('./routes.json', () => {
     routes = require('./routes.json'); // eslint-disable-line global-require
+
     render(history.getCurrentLocation());
   });
 }
