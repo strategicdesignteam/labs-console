@@ -43,7 +43,7 @@ function post(url, args, res, next) {
     .send({ extra_vars: args.body })
     .on('error', err => common.handleError(res, err))
     .end((err, response) => {
-      let data = JSON.parse(response.text);
+      var data = JSON.parse(response.text);
       if (err) return common.handleError(response, err);
       res.json(data);
     });
@@ -64,7 +64,7 @@ exports.jobsIdGET = function (args, res, next) {
       })
       .end((err, response) => {
         if (err) return common.handleError(response, err);
-        let data = JSON.parse(response.text);
+        var data = JSON.parse(response.text);
         res.json(200, data);
       });
   }
