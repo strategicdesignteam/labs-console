@@ -1,5 +1,5 @@
 import React from 'react';
-import ListView from './ListView';
+import ListGroup from './ListGroup';
 
 class TopologyListView extends React.Component {
   static propTypes = {
@@ -35,7 +35,7 @@ class TopologyListView extends React.Component {
 
   render() {
     return (
-      <ListView>
+      <ListGroup>
         {this.props.topologies.map((topology, i) => (
           <div className="list-group-item topology-group-item"
             key={i}
@@ -77,7 +77,7 @@ class TopologyListView extends React.Component {
             </div>
           </div>
         ))}
-      </ListView>
+      </ListGroup>
     );
   }
 }

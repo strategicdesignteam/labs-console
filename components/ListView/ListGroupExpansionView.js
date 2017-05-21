@@ -1,6 +1,6 @@
 import React from 'react';
 
-class ListExpansionView extends React.Component {
+class ListGroupExpansionView extends React.Component {
   static bindExpand() {
     // click the list-view heading then expand a row
     $('.list-group-item-header').click(function (event) {
@@ -34,16 +34,16 @@ class ListExpansionView extends React.Component {
   }
 
   componentDidMount() {
-    ListExpansionView.bindExpand();
+    ListGroupExpansionView.bindExpand();
   }
 
   componentDidUpdate() {
-    ListExpansionView.unbind();
-    ListExpansionView.bindExpand();
+    ListGroupExpansionView.unbind();
+    ListGroupExpansionView.bindExpand();
   }
 
   componentWillUnmount() {
-    ListExpansionView.unbind();
+    ListGroupExpansionView.unbind();
   }
 
   render() {
@@ -55,4 +55,4 @@ class ListExpansionView extends React.Component {
   }
 }
 
-export default ListExpansionView;
+export default ListGroupExpansionView;

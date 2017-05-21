@@ -2,8 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import cx from 'classnames';
 import { infraImage } from '../Canvas/CanvasHelpers';
-import ListExpansionView from './ListExpansionView';
-import ListExpansionContainer from './ListExpansionContainer';
+import ListGroupExpansionView from './ListGroupExpansionView';
+import ListGroupExpansionContainer from './ListGroupExpansionContainer';
 import constants from '../../core/constants';
 
 class InfrastructureListView extends React.Component {
@@ -40,7 +40,7 @@ class InfrastructureListView extends React.Component {
 
   render() {
     return (
-      <ListExpansionView key="list-expansion-view">
+      <ListGroupExpansionView key="list-expansion-view">
         {this.props.infrastructures.map((infrastructure, i) => (
           <div className="infra-group-item list-group-item list-view-pf-stacked list-view-pf-top-align"
             key={i}
@@ -191,7 +191,7 @@ class InfrastructureListView extends React.Component {
               </div>
             </div>
 
-            <ListExpansionContainer key="list-item-container">
+            <ListGroupExpansionContainer key="list-item-container">
               <br/>
               <div className="row">
                 <div className="col-xs-12 col-sm-6 col-md-4">
@@ -267,10 +267,10 @@ class InfrastructureListView extends React.Component {
                 </div>
               </div>
 
-            </ListExpansionContainer>
+            </ListGroupExpansionContainer>
           </div>
         ))}
-      </ListExpansionView>
+      </ListGroupExpansionView>
     );
   }
 }

@@ -1,4 +1,6 @@
 import React from 'react';
+import { infraImage } from '../Canvas/CanvasHelpers';
+import constants from '../../core/constants';
 
 class BuildCardView extends React.Component {
   static matchHeight() {
@@ -15,43 +17,79 @@ class BuildCardView extends React.Component {
   }
 
   render() {
-    const { build, deploying } = this.props;
+    const { build, stage, deploying } = this.props;
 
     return (
-      <div className="row row-cards-pf">
-        {build.topology.promotion_process.map((stage, i) => (
+      <div className="row row-cards-pf" style={{ width: '100%' }}>
+        {stage.projects.map((project, i) => (
           <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4"
-            key={`stage-${stage.name}-${i}`}>
+            key={`stage-${project.name}-${i}`}>
             <div className="card-pf card-pf-view">
               <div className="card-pf-body">
                 <div className="card-pf-top-element"
                   style={{ textAlign: 'center' }}>
-                  <span className="pficon pficon-cluster"
-                    style={{ fontSize: '46px', height: '46px' }}/>
+                  <img src={infraImage(project.infrastructureProvider)}
+                    style={{ height: 60 }}
+                    alt="provider"/>
                 </div>
                 <h2 className="card-pf-title text-center">
-                  {stage.name}
+                  {project.name}
                 </h2>
                 <div className="card-pf-items text-center">
                   {deploying &&
                     <div className="progress">
                       <div className="progress-bar progress-bar-striped active"
                         role="progressbar"
-                        style={{ width: '100%' }}/>
+                        style={{ width: '100%' }}>
+                        <span>Deploying...</span>
+                      </div>
                     </div>}
-                  {deploying &&
-                    <p>
-                      <span className="spinner spinner-xs spinner-inline"/>
-                      {' '}
-                      Deploying
-                    </p>}
-                  {!deploying &&
-                    <a href={`http://${stage.projects[0].name}.apps.strategicdesign.io`}
+                </div>
+                {!deploying &&
+                  <div className="card-pf-items text-center">
+                    <div className="card-pf-item">
+                      <span className="card-pf-item-text">
+                        {project.apps.length}
+                        {' '}
+                        {project.apps.length === 1 ? 'app' : 'apps'}
+                      </span>
+                    </div>
+                    <div className="card-pf-item">
+                      {build.status ===
+                        constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
+                        <span className="fa fa-check"/>}
+                      {build.status !==
+                        constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
+                        <span className="fa fa-times"/>}
+                    </div>
+                  </div>}
+                <br/>
+                <div className="card-pf-info">
+                  <div style={{ marginRight: 20, display: 'inline' }}>
+                    <img src="/img/ansible.png"
+                      style={{ height: 22 }}
+                      alt="ansible"/>
+                  </div>
+                  <a href={build.ansible_tower_link}
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    Link to Tower Job
+                  </a>
+                </div>
+                {!deploying &&
+                  build.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
+                  <div className="card-pf-info">
+                    <div style={{ marginRight: 20, display: 'inline' }}>
+                      <img src="/img/OpenShift-logo.svg"
+                        style={{ height: 22 }}
+                        alt="openshift"/>
+                    </div>
+                    <a href={'https://openshift-master.strategicdesign.io'}
                       target="_blank"
                       rel="noopener noreferrer">
-                      {`http://${stage.projects[0].name}.apps.strategicdesign.io`}
-                    </a>}
-                </div>
+                      Link to OpenShift project
+                    </a>
+                  </div>}
               </div>
             </div>
           </div>

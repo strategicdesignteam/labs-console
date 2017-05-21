@@ -1,5 +1,5 @@
 import React from 'react';
-import ListView from './ListView';
+import ListGroup from './ListGroup';
 
 class AppListView extends React.Component {
   static propTypes = {
@@ -35,7 +35,7 @@ class AppListView extends React.Component {
 
   render() {
     return (
-      <ListView>
+      <ListGroup>
         {this.props.apps.map((app, i) => (
           <div className="list-group-item app-group-item" key={i} data-id={i}>
 
@@ -65,7 +65,7 @@ class AppListView extends React.Component {
             </div>
           </div>
         ))}
-      </ListView>
+      </ListGroup>
     );
   }
 }

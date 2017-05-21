@@ -1,6 +1,6 @@
 import React from 'react';
 
-class ListExpansionContainer extends React.Component {
+class ListGroupExpansionContainer extends React.Component {
   render() {
     return (
       <div className="list-group-item-container container-fluid hidden">
@@ -13,4 +13,4 @@ class ListExpansionContainer extends React.Component {
   }
 }
 
-export default ListExpansionContainer;
+export default ListGroupExpansionContainer;

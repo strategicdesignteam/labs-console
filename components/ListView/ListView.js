@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-class ListView extends React.Component {
-  render() {
-    return (
-      <div className="list-group list-view-pf list-view-pf-view">
-        {this.props.children}
-      </div>
-    );
-  }
-}
+/**
+ * ListView Component for Patternfly React
+ */
+const ListView = ({ children, listViewClass }) => (
+  <div className={listViewClass}>
+    {children}
+  </div>
+);
+ListView.propTypes = {
+  /** children nodes  */
+  children: PropTypes.node,
+  /** list view class */
+  listViewClass: PropTypes.string
+};
+ListView.defaultProps = {
+  isActive: false,
+  listViewClass: 'list-pf'
+};
 
 export default ListView;
