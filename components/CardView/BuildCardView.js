@@ -84,7 +84,7 @@ class BuildCardView extends React.Component {
                         style={{ height: 22 }}
                         alt="openshift"/>
                     </div>
-                    <a href={'https://openshift-master.strategicdesign.io'}
+                    <a href={`https://openshift-master.strategicdesign.io/console/project/${project.name}/overview`}
                       target="_blank"
                       rel="noopener noreferrer">
                       Link to OpenShift project
