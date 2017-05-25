@@ -46,7 +46,7 @@ exports.mock = {
   description: '',
   unified_job_template: 99,
   launch_type: 'manual',
-  status: 'pending',
+  status: 'successful',
   failed: false,
   started: '2017-04-21T14:24:45.941421Z',
   finished: '2017-04-21T14:24:50.624099Z',

@@ -72,9 +72,6 @@
     if (data) {
       obj = obj || new exports();
 
-      if (data.hasOwnProperty('id')) {
-        obj.id = ApiClient.convertToType(data.id, 'Integer');
-      }
       if (data.hasOwnProperty('name')) {
         obj.name = ApiClient.convertToType(data.name, 'String');
       }
@@ -115,10 +112,6 @@
   };
 
   /**
-   * @member {Integer} id
-   */
-  exports.prototype.id = undefined;
-  /**
    * @member {String} name
    */
   exports.prototype.name = undefined;
@@ -127,7 +120,7 @@
    */
   exports.prototype.display_name = undefined;
   /**
-   * @member {Integer} id
+   * @member {Integer} infrastructure
    */
   exports.prototype.infrastructure = undefined;
   /**
@@ -139,10 +132,6 @@
    */
   exports.prototype.infrastructureName = undefined;
   /**
-   * @member {module:model/ProjectTemplate.TypeEnum} type
-   */
-  exports.prototype.type = undefined;
-  /**
    * @member {Array.<module:model/ApplicationTemplate>} apps
    */
   exports.prototype.apps = undefined;
@@ -150,49 +139,6 @@
    * @member {Array.<module:model/PersistentVolumeClaimTemplate>} persistent_volume_claim_templates
    */
   exports.prototype.persistent_volume_claim_templates = undefined;
-
-  /**
-   * Allowed values for the <code>type</code> property.
-   * @enum {String}
-   * @readonly
-   */
-  exports.TypeEnum = {
-    /**
-     * value: "OpenShift"
-     * @const
-     */
-    OpenShift: 'OpenShift',
-    /**
-     * value: "OpenStack"
-     * @const
-     */
-    OpenStack: 'OpenStack',
-    /**
-     * value: "AWS"
-     * @const
-     */
-    AWS: 'AWS',
-    /**
-     * value: "Google Cloud"
-     * @const
-     */
-    'Google Cloud': 'Google Cloud',
-    /**
-     * value: "Azure"
-     * @const
-     */
-    Azure: 'Azure',
-    /**
-     * value: "RHEV"
-     * @const
-     */
-    RHEV: 'RHEV',
-    /**
-     * value: "VMWare"
-     * @const
-     */
-    VMWare: 'VMWare'
-  };
 
   return exports;
 }));

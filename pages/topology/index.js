@@ -9,7 +9,6 @@ import selectors from '../../data/selectors';
 import constants from '../../core/constants';
 
 class TopologyPage extends React.Component {
-
   static propTypes = {
     route: React.PropTypes.object
   };
@@ -24,6 +23,7 @@ class TopologyPage extends React.Component {
     topologyName: '',
     topology: {},
     newProject: {},
+    projectIndex: null,
     newStage: {},
     isBuildable: false,
     startBuildModal: false,
@@ -55,24 +55,34 @@ class TopologyPage extends React.Component {
     });
   }
 
-  topologyGet = () => new Promise((resolve, reject) => {
-    const topologyApi = new labsApi.TopologyApi();
-    topologyApi.topologiesIdGet(this.props.route.params.id, (err, topology) => {
-      if (err) reject(err);
-      resolve(topology);
+  topologyGet = () =>
+    new Promise((resolve, reject) => {
+      const topologyApi = new labsApi.TopologyApi();
+      topologyApi.topologiesIdGet(
+        this.props.route.params.id,
+        (err, topology) => {
+          if (err) reject(err);
+          resolve(topology);
+        }
+      );
     });
-  })
 
-  infraGet = () => new Promise((resolve, reject) => {
-    const infrastructureApi = new labsApi.InfrastructureApi();
-    infrastructureApi.infrastructuresGet((err, infrastructures) => {
-      if (err) reject(err);
-      resolve(infrastructures);
+  infraGet = () =>
+    new Promise((resolve, reject) => {
+      const infrastructureApi = new labsApi.InfrastructureApi();
+      infrastructureApi.infrastructuresGet((err, infrastructures) => {
+        if (err) reject(err);
+        resolve(infrastructures);
+      });
     });
-  })
 
   handleCreateProject = (event) => {
-    this.setState({ homeView: false, createProjectView: true, newProject: {} });
+    this.setState({
+      homeView: false,
+      createProjectView: true,
+      newProject: {},
+      projectIndex: null
+    });
     event.preventDefault();
   };
 
@@ -87,7 +97,12 @@ class TopologyPage extends React.Component {
   };
 
   handleProjectEdit = (event, index) => {
-    this.setState({ newProject: this.state.projects[index], homeView: false, createProjectView: true });
+    this.setState({
+      newProject: this.state.projects[index],
+      homeView: false,
+      createProjectView: true,
+      projectIndex: index
+    });
     event.preventDefault();
   };
 
@@ -97,7 +112,11 @@ class TopologyPage extends React.Component {
   };
 
   handleStageEdit = (event, index) => {
-    this.setState({ newStage: this.state.stages[index], homeView: false, createStageView: true });
+    this.setState({
+      newStage: this.state.stages[index],
+      homeView: false,
+      createStageView: true
+    });
     event.preventDefault();
   };
 
@@ -108,7 +127,7 @@ class TopologyPage extends React.Component {
     topology.promotion_process = copy;
 
     this.saveTopology(event, topology);
-  }
+  };
 
   handleStageMoved = (index, x, y) => {
     const topologyApi = new labsApi.TopologyApi();
@@ -118,26 +137,26 @@ class TopologyPage extends React.Component {
     topologyApi.updateTopology(topology.id, { body: topology }, (e) => {
       if (e) console.log(e); // todo: handle error
     });
-  }
+  };
 
   handleAddStage = (stage) => {
     const topologyApi = new labsApi.TopologyApi();
     const topology = Object.assign({}, this.state.topology);
 
-    // delete existing id since we are duplicating this...
-    delete stage.id;
     topology.promotion_process.push(stage);
 
     topologyApi.updateTopology(topology.id, { body: topology }, (e) => {
       if (e) console.log(e); // todo: handle error
       this.getTopology(); // refresh after update
     });
-  }
+  };
 
   handleAddStageProject = (index, project) => {
     const topologyApi = new labsApi.TopologyApi();
     const topology = Object.assign({}, this.state.topology);
-    topology.promotion_process[index].projects = topology.promotion_process[index].projects || [];
+    topology.promotion_process[index].projects = topology.promotion_process[
+      index
+    ].projects || [];
     topology.promotion_process[index].projects.push(project);
 
     this.setState({ isBuildable: true });
@@ -145,7 +164,7 @@ class TopologyPage extends React.Component {
     topologyApi.updateTopology(topology.id, { body: topology }, (e) => {
       if (e) console.log(e); // todo: handle error
     });
-  }
+  };
 
   handleDeleteStageProject = (index, projectIndex) => {
     const topologyApi = new labsApi.TopologyApi();
@@ -157,16 +176,24 @@ class TopologyPage extends React.Component {
     topologyApi.updateTopology(topology.id, { body: topology }, (e) => {
       if (e) console.log(e); // todo: handle error
     });
-  }
+  };
 
   handleSubmitStage = () => {
     this.getTopology(); // refresh
-    this.setState({ homeView: true, createProjectView: false, createStageView: false });
+    this.setState({
+      homeView: true,
+      createProjectView: false,
+      createStageView: false
+    });
   };
 
   handleCancelStage = (event) => {
     event.preventDefault();
-    this.setState({ homeView: true, createProjectView: false, createStageView: false });
+    this.setState({
+      homeView: true,
+      createProjectView: false,
+      createStageView: false
+    });
   };
 
   handleBuild = (event) => {
@@ -202,39 +229,57 @@ class TopologyPage extends React.Component {
     event.preventDefault();
     const buildApi = new labsApi.BuildApi();
     const jobApi = new labsApi.JobApi();
-    const jobs = [];
+    const runningJobs = [];
+    const projectJobs = {};
     let count = 0;
 
     // call the JobsApi to create the Job in Tower for every project
     this.state.stages.forEach((stage) => {
+      // projectJobs object used for quick access on the Build list view
+      projectJobs[stage.name] = {};
       if (stage.projects && stage.projects.length) {
-        stage.projects.forEach((project) => {
+        stage.projects.forEach((project, j) => {
           count += 1;
           const body = { project_name: project.name };
           jobApi.addProjectJob({ body }, (e, data) => {
             if (e) console.log(e);
-            jobs.push({ id: data.id, created: data.created });
+            projectJobs[stage.name][j] = projectJobs[stage.name][j] || {};
+            projectJobs[stage.name][j].jobId = data.id;
+            projectJobs[stage.name][j].created = data.created;
+            projectJobs[stage.name][j].projectName = project.name;
+            projectJobs[stage.name][j].projectIndex = j;
+            projectJobs[stage.name][j].stageName = stage.name;
+            projectJobs[stage.name][j].status = data.status;
+
+            runningJobs.push(projectJobs[stage.name][j]);
           });
         });
       }
     });
 
     const checkJobsAdded = () => {
-      if (jobs.length !== count) {
-        setTimeout(checkJobsAdded, 500); // check all jobs created every 500ms
+      if (runningJobs.length !== count) {
+        setTimeout(checkJobsAdded, 500);
       }
       else {
-        // link Build to the last job started for now...
-        const lastJob = jobs[jobs.length - 1];
-        buildApi.addBuild({ body:
-          { topologyId: this.state.topology.id, towerJobId: lastJob.id, dateTimeStarted: lastJob.created } },
+        buildApi.addBuild(
+          {
+            body: {
+              topologyId: this.state.topology.id,
+              dateTimeStarted: runningJobs[0].created,
+              status: constants.ANSIBLE_JOB_STATUS.PENDING,
+              runningJobs,
+              projectJobs
+            }
+          },
           (e) => {
             if (e) console.log(e);
             this.hideStartBuildModal();
             setTimeout(() => {
               history.push('/builds');
             }, 1000);
-          });
+          }
+        );
       }
     };
     checkJobsAdded();
@@ -247,7 +292,7 @@ class TopologyPage extends React.Component {
     topology.project_templates = copy;
 
     this.saveTopology(event, topology);
-  }
+  };
 
   saveTopology(event, topology) {
     event.preventDefault();
@@ -291,7 +336,8 @@ class TopologyPage extends React.Component {
           infrastructures={this.state.infrastructures}
           handleSubmit={this.handleSubmitProject}
           handleCancel={this.handleCancelProject}
-          value={this.state.newProject}/>
+          value={this.state.newProject}
+          projectIndex={this.state.projectIndex}/>
       );
     }
     else if (this.state.createStageView && this.state.loaded) {
@@ -305,7 +351,7 @@ class TopologyPage extends React.Component {
       );
     }
 
-      // todo: show loading
+    // todo: show loading
     return null;
   }
 }

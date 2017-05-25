@@ -13,7 +13,8 @@ class ProjectView extends React.Component {
     handleCancel: React.PropTypes.func,
     topology: React.PropTypes.object,
     infrastructures: React.PropTypes.array,
-    value: React.PropTypes.object
+    value: React.PropTypes.object,
+    projectIndex: React.PropTypes.number
   };
 
   constructor(props) {
@@ -115,15 +116,13 @@ class ProjectView extends React.Component {
     this.handleSubmit = (event) => {
       const topologyApi = new labsApi.TopologyApi();
       const topology = Object.assign({}, this.props.topology);
-      if (this.state.project.id) {
-        // existing project, just update
-        const index = topology.project_templates.findIndex(
-          p => p.id === this.state.project.id
-        );
-        if (index > -1) {
-          topology.project_templates[index] = this.state.project;
-          topology.project_templates[index].apps = this.state.nodes;
-        }
+      if (this.props.projectIndex !== null) {
+        topology.project_templates[
+          this.props.projectIndex
+        ] = this.state.project;
+        topology.project_templates[
+          this.props.projectIndex
+        ].apps = this.state.nodes;
       }
       else {
         topology.project_templates.push(this.state.project);

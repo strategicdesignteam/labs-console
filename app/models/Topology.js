@@ -5,10 +5,10 @@ var autoIncrement = require('mongoose-auto-increment');
 var Builds = require('./Build');
 
 /**
- * Project Schema
+ * Project Template Schema
  * @type {mongoose.Schema}
  */
-var ProjectSchema = new Schema({
+var ProjectTemplateSchema = new Schema({
   infrastructure: { type: Number, ref: 'Infrastructure' },
   infrastructureProvider: { type: String },
   infrastructureName: { type: String },
@@ -18,14 +18,23 @@ var ProjectSchema = new Schema({
   persistent_volume_claim_templates: { type: Array, default: [] }
 });
 
-ProjectSchema.virtual('id').get(function () {
-  return this._id;
+/**
+ * Project Schema
+ * @type {mongoose.Schema}
+ */
+var ProjectSchema = new Schema({
+  infrastructure: { type: Number, ref: 'Infrastructure' },
+  projectTemplateIndex: { type: Number },
+  infrastructureProvider: { type: String },
+  infrastructureName: { type: String },
+  name: { type: String, required: true },
+  display_name: { type: String },
+  apps: { type: Array, default: [] },
+  persistent_volume_claim_templates: { type: Array, default: [] },
+  label: { type: String },
+  backgroundColor: { type: String },
+  image: { type: String }
 });
-
-ProjectSchema.set('toJSON', {
-  virtuals: true
-});
-ProjectSchema.plugin(autoIncrement.plugin, 'Project');
 
 /**
  * RoleBindingSchema
@@ -36,15 +45,6 @@ var RoleBindingSchema = new Schema({
   role: { type: String, required: true }
 });
 
-RoleBindingSchema.virtual('id').get(function () {
-  return this._id;
-});
-
-RoleBindingSchema.set('toJSON', {
-  virtuals: true
-});
-
-RoleBindingSchema.plugin(autoIncrement.plugin, 'RoleBinding');
 
 /**
  * StageSchema
@@ -55,7 +55,7 @@ var StageSchema = new Schema({
   index: { type: Number },
   project_role_bindings: [RoleBindingSchema],
   application_promoters: [],
-  projects: [],
+  projects: [ProjectSchema],
   x: { type: Number },
   y: { type: Number },
   invalid: { type: Boolean },
@@ -66,15 +66,6 @@ var StageSchema = new Schema({
   validConnectionTypes: []
 });
 
-StageSchema.virtual('id').get(function () {
-  return this._id;
-});
-
-StageSchema.set('toJSON', {
-  virtuals: true
-});
-StageSchema.plugin(autoIncrement.plugin, 'Stage');
-
 /**
  * Topology Schema
  * @type {mongoose.Schema}
@@ -83,9 +74,8 @@ var TopologySchema = new Schema(
   {
     name: { type: String, required: true },
     description: { type: String },
-    project_templates: [ProjectSchema],
+    project_templates: [ProjectTemplateSchema],
     promotion_process: [StageSchema],
-    engagement_id: { type: Number },
     version: { type: Number }
   },
   {

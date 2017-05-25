@@ -69,9 +69,6 @@
     if (data) {
       obj = obj || new exports();
 
-      if (data.hasOwnProperty('id')) {
-        obj.id = ApiClient.convertToType(data.id, 'Integer');
-      }
       if (data.hasOwnProperty('user')) {
         obj.user = User.constructFromObject(data.user);
       }
@@ -82,10 +79,6 @@
     return obj;
   };
 
-  /**
-   * @member {Integer} id
-   */
-  exports.prototype.id = undefined;
   /**
    * @member {module:model/User} user
    */

@@ -8,6 +8,7 @@ const toolboxItemSource = {
     return {
       itemClass: props.itemClass || defaultItemClass,
       itemAttributes: props.itemAttributes,
+      index: props.index,
       children: props.children
     };
   }
@@ -44,6 +45,8 @@ DraggableTopAlignedToolboxItem.PropTypes = {
   itemAttributes: PropTypes.string,
   /** the item key */
   key: PropTypes.string,
+  /** the item index */
+  index: PropTypes.number,
   /** drag operation has started */
   isDragging: PropTypes.bool,
   /** connects node to DnD backend as a drag source */

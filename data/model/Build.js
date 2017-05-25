@@ -97,15 +97,6 @@
           'Integer'
         );
       }
-      if (data.hasOwnProperty('ansible_tower_link')) {
-        obj.ansible_tower_link = ApiClient.convertToType(
-          data.ansible_tower_link,
-          'String'
-        );
-      }
-      if (data.hasOwnProperty('tower_job_id')) {
-        obj.tower_job_id = ApiClient.convertToType(data.tower_job_id, 'Number');
-      }
       if (data.hasOwnProperty('datetime_started')) {
         obj.datetime_started = ApiClient.convertToType(
           data.datetime_started,
@@ -121,8 +112,11 @@
       if (data.hasOwnProperty('status')) {
         obj.status = ApiClient.convertToType(data.status, 'String');
       }
-      if (data.hasOwnProperty('engagement')) {
-        obj.engagement = data.engagement;
+      if (data.hasOwnProperty('running_jobs')) {
+        obj.running_jobs = ApiClient.convertToType(data.running_jobs, [Object]);
+      }
+      if (data.hasOwnProperty('project_jobs')) {
+        obj.project_jobs = ApiClient.convertToType(data.project_jobs, Object);
       }
     }
     return obj;
@@ -153,14 +147,6 @@
    */
   exports.prototype.number_of_stages = undefined;
   /**
-   * @member {String} ansible_tower_link
-   */
-  exports.prototype.ansible_tower_link = undefined;
-  /**
-   * @member {Integer} tower_job_id
-   */
-  exports.prototype.tower_job_id = undefined;
-  /**
    * @member {Date} datetime_started
    */
   exports.prototype.datetime_started = undefined;
@@ -173,9 +159,13 @@
    */
   exports.prototype.status = undefined;
   /**
-   * @member {Object} engagement
+   * @member [Object]
    */
-  exports.prototype.engagement = undefined;
+  exports.prototype.running_jobs = undefined;
+  /**
+   * @member Object
+   */
+  exports.prototype.project_jobs = undefined;
 
   return exports;
 }));

@@ -10,9 +10,9 @@ var BuildSchema = new Schema(
     topology_version_key: { type: Number },
     number_of_projects: { type: Number, required: true },
     number_of_stages: { type: Number, required: true },
-    ansible_tower_link: { type: String },
     status: { type: String },
-    tower_job_id: { type: Number },
+    running_jobs: { type: Array },
+    project_jobs: { type: Object },
     datetime_started: { type: Date },
     datetime_completed: { type: Date }
   },

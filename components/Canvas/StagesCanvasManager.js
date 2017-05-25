@@ -94,6 +94,7 @@ class StagesCanvasManager extends React.Component {
       // handle any "instantiation" logic associated with project template to --> stage project here.
       const project = deepClone(containerNodeItem.itemAttributes);
       project.name += `-${this.state.nodes[index].name.toLowerCase()}`;
+      project.projectTemplateIndex = containerNodeItem.index;
       project.image = infraImage(project.infrastructureProvider);
       project.backgroundColor = CanvasConstants.STAGE_BACKGROUND_COLOR;
       project.label = project.infrastructureName;
@@ -171,6 +172,7 @@ class StagesCanvasManager extends React.Component {
 
   createNodesFromStages(stages, projects) {
     const additionalNodes = [];
+    let extended = [];
     if (!projects.length) {
       additionalNodes.push(emptyProjectNode);
     }
@@ -190,18 +192,23 @@ class StagesCanvasManager extends React.Component {
       };
       additionalNodes.push(emptyNode);
     }
+
+    if (projects.length) {
+      extended = stages.map(stage => ({
+        ...stage,
+        titleYOffset: CanvasConstants.STAGE_TITLE_Y_OFFSET,
+        width: CanvasConstants.STAGE_WIDTH,
+        height: CanvasConstants.STAGE_HEIGHT,
+        backgroundColor: CanvasConstants.STAGE_BACKGROUND_COLOR,
+        maxDisplayItems: CanvasConstants.STAGE_MAX_DISPLAY_ITEMS,
+        containerItems: stage.projects,
+        selected: false
+      }));
+    }
     // extend stages with UI specific properties
-    const extended = stages.map(stage => ({
-      ...stage,
-      titleYOffset: CanvasConstants.STAGE_TITLE_Y_OFFSET,
-      width: CanvasConstants.STAGE_WIDTH,
-      height: CanvasConstants.STAGE_HEIGHT,
-      backgroundColor: CanvasConstants.STAGE_BACKGROUND_COLOR,
-      maxDisplayItems: CanvasConstants.STAGE_MAX_DISPLAY_ITEMS,
-      containerItems: stage.projects,
-      selected: false
-    }));
-    this.setState({ nodes: [...extended, ...additionalNodes] });
+    this.setState({
+      nodes: [...extended, ...additionalNodes]
+    });
   }
 
   render() {
@@ -230,9 +237,11 @@ class StagesCanvasManager extends React.Component {
               projects.map((project, i) => (
                 <DraggableTopAlignedToolboxItem itemAttributes={project}
                   canvasSourceItemType={CanvasItemTypes.SCROLL_TOOLBOX_ITEM}
-                  key={`drag-item${i}`}>
+                  key={`drag-item${i}`}
+                  index={i}>
                   <div className="toolbox-item-container">
-                    <img src={infraImage(project.infrastructureProvider)} alt="provider"/>
+                    <img src={infraImage(project.infrastructureProvider)}
+                      alt="provider"/>
                     <span> {project.name} </span>
                     <button className="edit-btn icon"
                       onClick={(e) => {

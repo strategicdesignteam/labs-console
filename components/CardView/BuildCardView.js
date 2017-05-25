@@ -16,8 +16,18 @@ class BuildCardView extends React.Component {
     }
   }
 
+  deploying(projectIndex) {
+    const status = this.props.build.project_jobs[this.props.stage.name][
+      projectIndex
+    ].status;
+    return (
+      status === constants.ANSIBLE_JOB_STATUS.PENDING ||
+      status === constants.ANSIBLE_JOB_STATUS.RUNNING
+    );
+  }
+
   render() {
-    const { build, stage, deploying } = this.props;
+    const { build, stage } = this.props;
 
     return (
       <div className="row row-cards-pf" style={{ width: '100%' }}>
@@ -36,7 +46,7 @@ class BuildCardView extends React.Component {
                   {project.name}
                 </h2>
                 <div className="card-pf-items text-center">
-                  {deploying &&
+                  {this.deploying(i) &&
                     <div className="progress">
                       <div className="progress-bar progress-bar-striped active"
                         role="progressbar"
@@ -45,7 +55,7 @@ class BuildCardView extends React.Component {
                       </div>
                     </div>}
                 </div>
-                {!deploying &&
+                {!this.deploying(i) &&
                   <div className="card-pf-items text-center">
                     <div className="card-pf-item">
                       <span className="card-pf-item-text">
@@ -55,10 +65,10 @@ class BuildCardView extends React.Component {
                       </span>
                     </div>
                     <div className="card-pf-item">
-                      {build.status ===
+                      {build.project_jobs[stage.name][i].status ===
                         constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
                         <span className="fa fa-check"/>}
-                      {build.status !==
+                      {build.project_jobs[stage.name][i].status !==
                         constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
                         <span className="fa fa-times"/>}
                     </div>
@@ -70,26 +80,27 @@ class BuildCardView extends React.Component {
                       style={{ height: 22 }}
                       alt="ansible"/>
                   </div>
-                  <a href={build.ansible_tower_link}
+                  <a href={`https://tower.strategicdesign.io/#/workflows/${build.project_jobs[stage.name][i].jobId}`}
                     target="_blank"
                     rel="noopener noreferrer">
                     Link to Tower Job
                   </a>
                 </div>
-                {!deploying &&
-                  build.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
-                  <div className="card-pf-info">
-                    <div style={{ marginRight: 20, display: 'inline' }}>
-                      <img src="/img/OpenShift-logo.svg"
-                        style={{ height: 22 }}
-                        alt="openshift"/>
-                    </div>
-                    <a href={`https://openshift-master.strategicdesign.io/console/project/${project.name}/overview`}
-                      target="_blank"
-                      rel="noopener noreferrer">
+                {!this.deploying(i) &&
+                  build.project_jobs[stage.name][i].status ===
+                    constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
+                    <div className="card-pf-info">
+                      <div style={{ marginRight: 20, display: 'inline' }}>
+                        <img src="/img/OpenShift-logo.svg"
+                          style={{ height: 22 }}
+                          alt="openshift"/>
+                      </div>
+                      <a href={`https://openshift-master.strategicdesign.io/console/project/${project.name}/overview`}
+                        target="_blank"
+                        rel="noopener noreferrer">
                       Link to OpenShift project
                     </a>
-                  </div>}
+                    </div>}
               </div>
             </div>
           </div>

@@ -26,14 +26,12 @@ exports.addBuild = function (args, res, next) {
       // create Build
       newBuild.topology_version = topology.version;
       newBuild.topology_version_key = topology.__v;
-      newBuild.datetime_started = args.body.dateTimeStarted;
-      newBuild.status = constants.default.ANSIBLE_JOB_STATUS.PENDING;
-
-      // set tower link to job workflow id for now
-      newBuild.ansible_tower_link = `https://tower.strategicdesign.io/#/workflows/${args.body.towerJobId}#followAnchor`;
       newBuild.number_of_projects = topology.project_templates.length;
       newBuild.number_of_stages = topology.promotion_process.length;
-      newBuild.tower_job_id = args.body.towerJobId;
+      newBuild.status = args.body.status;
+      newBuild.running_jobs = args.body.runningJobs;
+      newBuild.project_jobs = args.body.projectJobs;
+      newBuild.datetime_started = args.body.dateTimeStarted;
 
       newBuild.save((err, build) => {
         if (err) return common.handleError(res, err);
@@ -53,6 +51,8 @@ exports.updateBuild = function (args, res, next) {
     if (build) {
       build.datetime_completed = args.body.datetime_completed;
       build.status = args.body.status;
+      build.running_jobs = args.body.running_jobs;
+      build.project_jobs = args.body.project_jobs;
 
       build.save((err) => {
         if (err) return validationError(res, err);

@@ -198,7 +198,7 @@
      * @param {String} error Error message, if any.
      * @param {Array.<module:model/Build>} data The data returned by the service call.
      * @param {String} response The complete HTTP response.
-     */
+    */
 
     /**
      * Gets &#x60;Build&#x60; objects.

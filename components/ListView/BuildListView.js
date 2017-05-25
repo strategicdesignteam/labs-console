@@ -60,7 +60,18 @@ class BuildListView extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ builds: deepClone(nextProps.builds) });
+    const updatedBuilds = deepClone(nextProps.builds);
+
+    // maintain the expanded state before updating
+    updatedBuilds.forEach((build, i) => {
+      updatedBuilds[i].active = this.state.builds[i].active;
+      updatedBuilds[i].topology.promotion_process.forEach((stage, j) => {
+        updatedBuilds[i].topology.promotion_process[
+          j
+        ].active = this.state.builds[i].topology.promotion_process[j].active;
+      });
+    });
+    this.setState({ builds: updatedBuilds });
   }
 
   handleBuild = (e, build) => {
@@ -69,10 +80,6 @@ class BuildListView extends React.Component {
 
   handleDelete = (e, build) => {
     this.props.handleDelete(e, build);
-  };
-
-  listItemClick = (e, i) => {
-    this.setState({ expandedItem: i });
   };
 
   buildClicked = (e, i) => {
@@ -233,11 +240,9 @@ class BuildListView extends React.Component {
                 </ListViewItemContainer>
                 <ListViewItemExpansion isActive={stage.active}>
                   <ListViewItemContainer>
-                    <BuildCardView build={build}
-                      stage={stage}
-                      deploying={
-                        build.status === constants.ANSIBLE_JOB_STATUS.PENDING
-                      }/>
+                    {build &&
+                      stage &&
+                      <BuildCardView build={build} stage={stage}/>}
                   </ListViewItemContainer>
                 </ListViewItemExpansion>
               </ListViewItemExpansion>
