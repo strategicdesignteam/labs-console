@@ -9,6 +9,7 @@
   "main": "server.js",
   "dependencies": {
     "babel-polyfill": "^6.9.1",
+    "basic-auth": "^1.1.0",
     "body-parser": "^1.15.2",
     "classnames": "^2.2.5",
     "cors": "^2.7.1",
@@ -27,7 +28,7 @@
     "mongoose-validator": "^1.2.5",
     "morgan": "^1.7.0",
     "object-assign": "4.1.0",
-    "patternfly": "^3.17.0",
+    "patternfly": "^3.24.0",
     "react": "^15.2.1",
     "react-dnd": "^2.3.0",
     "react-dnd-mouse-backend": "^0.1.1",
@@ -107,7 +108,130 @@
   },
   "eslintConfig": {
     "parser": "babel-eslint",
-    "extends": "airbnb"
+    "extends": "airbnb",
+    "rules": {
+      "array-callback-return": [
+        "off"
+      ],
+      "brace-style": [
+        "error",
+        "stroustrup"
+      ],
+      "camelcase": [
+        "off"
+      ],
+      "consistent-return": [
+        "off"
+      ],
+      "comma-dangle": [
+        "off"
+      ],
+      "eqeqeq": [
+        "error",
+        "always"
+      ],
+      "import/extensions": [
+        "off"
+      ],
+      "import/no-dynamic-require": [
+        "off"
+      ],
+      "import/no-extraneous-dependencies": [
+        "off"
+      ],
+      "import/prefer-default-export": [
+        "off"
+      ],
+      "jsx-a11y/href-no-hash": [
+        "off"
+      ],
+      "jsx-a11y/no-static-element-interactions": [
+        "off"
+      ],
+      "max-len": [
+        "error",
+        130
+      ],
+      "new-cap": [
+        "off"
+      ],
+      "no-bitwise": [
+        "off"
+      ],
+      "no-console": [
+        "off"
+      ],
+      "no-mixed-operators": [
+        "off"
+      ],
+      "no-new": [
+        "off"
+      ],
+      "no-param-reassign": [
+        "off"
+      ],
+      "no-plusplus": [
+        "off"
+      ],
+      "no-prototype-builtins": [
+        "off"
+      ],
+      "no-restricted-syntax": [
+        "off"
+      ],
+      "no-underscore-dangle": [
+        "off"
+      ],
+      "func-names": [
+        "off"
+      ],
+      "react/no-unescaped-entities": [
+        "off"
+      ],
+      "react/prefer-stateless-function": [
+        "off"
+      ],
+      "react/jsx-closing-bracket-location": [
+        "error",
+        "after-props"
+      ],
+      "react/forbid-prop-types": [
+        "off"
+      ],
+      "react/jsx-filename-extension": [
+        "off"
+      ],
+      "react/jsx-first-prop-new-line": [
+        "error",
+        "never"
+      ],
+      "react/jsx-no-bind": "off",
+      "react/jsx-indent": [
+        "error",
+        2
+      ],
+      "react/jsx-space-before-closing": [
+        "error",
+        "never"
+      ],
+      "react/prop-types": [
+        "off"
+      ]
+    },
+    "env": {
+      "jquery": true
+    },
+    "globals": {
+      "CustomEvent": true,
+      "document": true,
+      "Event": true,
+      "HTMLElement": true,
+      "location": true,
+      "MutationObserver": true,
+      "navigator": true,
+      "requestAnimationFrame": true,
+      "window": true
+    }
   },
   "stylelint": {
     "extends": "stylelint-config-standard",
@@ -116,10 +240,13 @@
     }
   },
   "jest": {
-    "testRegex": "(/test/.*\\.spec.js)$"
+    "testRegex": "(/test/.*\\.spec.js)$",
+    "moduleNameMapper": {
+      "^.+\\.(css|less)$": "<rootDir>/test/frontend/__mocks__/styleMock.js"
+    }
   },
   "scripts": {
-    "eslint": "eslint components core pages test utils main.js run.js webpack.config.js",
+    "eslint": "eslint components pages test main.js",
     "stylelint": "stylelint \"components/**/*.css\" \"pages/**/*.css\"",
     "lint": "npm run eslint && npm run stylelint",
     "test": "jest",

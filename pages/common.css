@@ -1,7 +1,7 @@
 @import './variables.css';
 
 .float_right {
-  display:inline-block;
+  display: inline-block;
   float: right;
 }
 
@@ -15,7 +15,7 @@
 }
 
 .slate_gray {
-  color:#9c9c9c;
+  color: #9c9c9c;
 }
 
 .space_inputs {

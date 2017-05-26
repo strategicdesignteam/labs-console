@@ -1,6 +1,6 @@
-import {default as tabTemplate} from './pf-tab.template';
-import {default as tabsTemplate} from './pf-tabs.template';
-import PfTab from './pf-tab.component';
+import { default as tabTemplate } from './pf-tab.template';
+import { default as tabsTemplate } from './pf-tabs.template';
+import './pf-tab.component';
 
 /**
  * <b>&lt;pf-tabs&gt;</b> element for Patternfly Web Components
@@ -20,7 +20,7 @@ export class PfTabs extends HTMLElement {
   /**
    * Called when an instance was inserted into the document
    */
-  attachedCallback () {
+  attachedCallback() {
     this.insertBefore(this._tabsTemplate.content, this.firstChild);
 
     this._makeTabsFromPfTab();
@@ -28,12 +28,18 @@ export class PfTabs extends HTMLElement {
     this.querySelector('ul').addEventListener('click', this);
 
     // Add the ul class if specified
-    this.querySelector('ul').className = this.attributes.class ?
-      this.attributes.class.value : 'nav nav-tabs';
+    this.querySelector('ul').className = this.attributes.class
+      ? this.attributes.class.value
+      : 'nav nav-tabs';
 
     if (!this.mutationObserver) {
-      this.mutationObserver = new MutationObserver(this._handleMutations.bind(this));
-      this.mutationObserver.observe(this, { childList: true, attributes: true });
+      this.mutationObserver = new MutationObserver(
+        this._handleMutations.bind(this)
+      );
+      this.mutationObserver.observe(this, {
+        childList: true,
+        attributes: true
+      });
     }
   }
 
@@ -44,9 +50,9 @@ export class PfTabs extends HTMLElement {
    * @param {string} oldValue The old attribute value
    * @param {string} newValue The new attribute value
    */
-  attributeChangedCallback (attrName, oldValue, newValue) {
+  attributeChangedCallback(attrName, oldValue, newValue) {
     if (attrName === 'class') {
-      let ul = this.querySelector('ul');
+      const ul = this.querySelector('ul');
       if (ul) {
         this.querySelector('ul').className = newValue;
       }
@@ -56,7 +62,7 @@ export class PfTabs extends HTMLElement {
   /**
    * Called when an instance of the element is created
    */
-  createdCallback () {
+  createdCallback() {
     this._tabsTemplate = document.createElement('template');
     this._tabsTemplate.innerHTML = tabsTemplate;
 
@@ -69,7 +75,7 @@ export class PfTabs extends HTMLElement {
   /**
    * Called when the element is removed from the DOM
    */
-  detachedCallback () {
+  detachedCallback() {
     this.querySelector('ul').removeEventListener('click', this);
   }
 
@@ -78,7 +84,7 @@ export class PfTabs extends HTMLElement {
    *
    * @param event {Event} Handle the tab change event
    */
-  handleEvent (event) {
+  handleEvent(event) {
     if (event.target.tagName === 'A') {
       this._setTabStatus(event.target.parentNode);
     }
@@ -90,64 +96,67 @@ export class PfTabs extends HTMLElement {
    * @param mutations
    * @private
    */
-  _handleMutations (mutations) {
-    let self = this;
-    let handlers = [];
-    mutations.forEach(function (mutationRecord) {
-      //child dom nodes have been added
-      if ( mutationRecord.type === 'childList' ) {
-        forEach.call(mutationRecord.addedNodes, function (node) {
+  _handleMutations(mutations) {
+    const self = this;
+    const handlers = [];
+    mutations.forEach((mutationRecord) => {
+      // child dom nodes have been added
+      if (mutationRecord.type === 'childList') {
+        Array.prototype.forEach.call(mutationRecord.addedNodes, (node) => {
           handlers.push(['add', node]);
         });
-        forEach.call(mutationRecord.removedNodes, function (node) {
+        Array.prototype.forEach.call(mutationRecord.removedNodes, (node) => {
           handlers.push(['remove', node]);
         });
-      }  else if (mutationRecord.type === 'attributes') {
-        //mutationRecord.attributeName contains changed attributes
-        //note: we can ignore this for attributes as the v1 spec of custom
-        //elements already provides attributeChangedCallback
+      }
+      else if (mutationRecord.type === 'attributes') {
+        // mutationRecord.attributeName contains changed attributes
+        // note: we can ignore this for attributes as the v1 spec of custom
+        // elements already provides attributeChangedCallback
       }
     });
     if (handlers.length) {
-      requestAnimationFrame(function () {
-        let ul = self.querySelector('ul');
-        handlers.forEach(function (notes) {
-          let action = notes[0];
-          let pfTab = notes[1];
+      requestAnimationFrame(() => {
+        const ul = self.querySelector('ul');
+        handlers.forEach((notes) => {
+          const action = notes[0];
+          const pfTab = notes[1];
           let tab;
 
-          //ignore Angular directive #text and #comment nodes
-          if (pfTab.nodeName !== "PF-TAB") {
+          // ignore Angular directive #text and #comment nodes
+          if (pfTab.nodeName !== 'PF-TAB') {
             return;
           }
 
           if (action === 'add') {
-            //add tab
+            // add tab
             tab = self._makeTab(pfTab);
             self.tabMap.set(tab, pfTab);
             self.panelMap.set(pfTab, tab);
 
-            //if active, deactivate others
+            // if active, deactivate others
             if (pfTab.attributes.active) {
-              self.tabMap.forEach(function (value, key) {
-                let fn = tab === key ? self._makeActive : self._makeInactive;
+              self.tabMap.forEach((value, key) => {
+                const fn = tab === key ? self._makeActive : self._makeInactive;
                 fn.call(self, key);
               });
-            } else {
+            }
+            else {
               self._makeInactive(tab);
             }
             ul.appendChild(tab);
-          } else {
-            //remove tab
+          }
+          else {
+            // remove tab
             tab = self.panelMap.get(pfTab);
             tab.parentNode.removeChild(tab);
             self.panelMap.delete(pfTab);
             self.tabMap.delete(tab);
             self.displayMap.delete(tab);
 
-            //we removed the active tab, make the last one active
+            // we removed the active tab, make the last one active
             if (pfTab.attributes.active) {
-              let last = ul.querySelector('li:last-child');
+              const last = ul.querySelector('li:last-child');
               self._setTabStatus(last);
             }
           }
@@ -160,12 +169,11 @@ export class PfTabs extends HTMLElement {
    * Handle the tabTitle change event
    *
    * @param panel {string} The tab panel
-   * @param tabTitle {string} The tab title
    */
-  handleTitle (panel, tabTitle) {
-    let tab = this.panelMap.get(panel);
-    //attribute changes may fire as Angular is rendering
-    //before this tab is in the panelMap, so check first
+  handleTitle(panel) {
+    const tab = this.panelMap.get(panel);
+    // attribute changes may fire as Angular is rendering
+    // before this tab is in the panelMap, so check first
     if (tab) {
       tab.textContent = panel.tabTitle;
     }
@@ -175,10 +183,12 @@ export class PfTabs extends HTMLElement {
    * Sets the active tab programmatically
    * @param tabTitle
    */
-  setActiveTab(tabTitle){
+  setActiveTab(tabTitle) {
     this.tabMap.forEach((value, key) => {
-      let tabtitle = value.attributes.tabtitle ? value.attributes.tabtitle.value : value.tabtitle;
-      if(tabtitle === tabTitle){
+      const tabtitle = value.attributes.tabtitle
+        ? value.attributes.tabtitle.value
+        : value.tabtitle;
+      if (tabtitle === tabTitle) {
         this._setTabStatus(key);
       }
     });
@@ -189,24 +199,25 @@ export class PfTabs extends HTMLElement {
    *
    * @private
    */
-  _makeTabsFromPfTab () {
-    let ul = this.querySelector('ul');
-    if(this.children && this.children.length){
-      let pfTabs = [].slice.call(this.children).filter(
-        (node) => { return node.nodeName === 'PF-TAB'}
-      );
-      [].forEach.call(pfTabs, function (pfTab, idx) {
-        let tab = this._makeTab(pfTab);
+  _makeTabsFromPfTab() {
+    const ul = this.querySelector('ul');
+    if (this.children && this.children.length) {
+      const pfTabs = [].slice
+        .call(this.children)
+        .filter(node => node.nodeName === 'PF-TAB');
+      [].forEach.call(pfTabs, (pfTab, idx) => {
+        const tab = this._makeTab(pfTab);
         ul.appendChild(tab);
         this.tabMap.set(tab, pfTab);
         this.panelMap.set(pfTab, tab);
 
         if (idx === 0) {
           this._makeActive(tab);
-        } else {
+        }
+        else {
           pfTab.style.display = 'none';
         }
-      }.bind(this));      
+      });
     }
   }
 
@@ -217,14 +228,15 @@ export class PfTabs extends HTMLElement {
    * @returns {PfTab} A new PfTab element
    * @private
    */
-  _makeTab (pfTab) {
-    let frag = document.createElement('template');
+  _makeTab(pfTab) {
+    const frag = document.createElement('template');
     frag.innerHTML = tabTemplate;
-    let tab = frag.content.firstElementChild;
-    let tabAnchor = tab.firstElementChild;
-    //React gives us a node with attributes, Angular adds it as a property
-    tabAnchor.innerHTML = pfTab.attributes && pfTab.attributes.tabTitle ?
-      pfTab.attributes.tabTitle.value : pfTab.tabTitle;
+    const tab = frag.content.firstElementChild;
+    const tabAnchor = tab.firstElementChild;
+    // React gives us a node with attributes, Angular adds it as a property
+    tabAnchor.innerHTML = pfTab.attributes && pfTab.attributes.tabTitle
+      ? pfTab.attributes.tabTitle.value
+      : pfTab.tabTitle;
     this.displayMap.set(pfTab, pfTab.style.display);
     return tab;
   }
@@ -235,12 +247,12 @@ export class PfTabs extends HTMLElement {
    * @param tab A PfTab element
    * @private
    */
-  _makeActive (tab) {
+  _makeActive(tab) {
     tab.classList.add('active');
-    let pfTab = this.tabMap.get(tab);
-    let naturalDisplay = this.displayMap.get(pfTab);
+    const pfTab = this.tabMap.get(tab);
+    const naturalDisplay = this.displayMap.get(pfTab);
     pfTab.style.display = naturalDisplay;
-    pfTab.setAttribute('active','');
+    pfTab.setAttribute('active', '');
   }
 
   /**
@@ -249,9 +261,9 @@ export class PfTabs extends HTMLElement {
    * @param tab A PfTab element
    * @private
    */
-  _makeInactive (tab) {
+  _makeInactive(tab) {
     tab.classList.remove('active');
-    let pfTab = this.tabMap.get(tab);
+    const pfTab = this.tabMap.get(tab);
     pfTab.style.display = 'none';
     pfTab.removeAttribute('active');
   }
@@ -263,24 +275,24 @@ export class PfTabs extends HTMLElement {
    * @param {string} tabtitle the tab title
    * @private
    */
-  _setTabStatus (active) {
+  _setTabStatus(active) {
     if (active === this.selected) {
       return;
     }
     this.selected = active;
 
     let activeTabTitle;
-    let tabs = this.querySelector('ul').children;
-    [].forEach.call(tabs, function (tab) {
-      if(active === tab){
+    const tabs = this.querySelector('ul').children;
+    [].forEach.call(tabs, (tab) => {
+      if (active === tab) {
         activeTabTitle = tab.querySelector('a').text;
       }
-      let fn = active === tab ? this._makeActive : this._makeInactive;
+      const fn = active === tab ? this._makeActive : this._makeInactive;
       fn.call(this, tab);
-    }.bind(this));
+    });
 
-    //dispatch the custom 'tabChanged' event for framework listeners
-    var eventObj = new CustomEvent('tabChanged', {
+    // dispatch the custom 'tabChanged' event for framework listeners
+    const eventObj = new CustomEvent('tabChanged', {
       detail: activeTabTitle
     });
     this.dispatchEvent(eventObj);

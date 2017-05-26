@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import './pf-tooltip.js';
 
 /**
@@ -22,7 +22,6 @@ import './pf-tooltip.js';
  *
  */
 class Tooltip extends React.Component {
-
   static propTypes = {
     animation: React.PropTypes.string,
     targetSelector: React.PropTypes.string,
@@ -32,31 +31,33 @@ class Tooltip extends React.Component {
     containerSelector: React.PropTypes.string
   };
 
+  componentDidMount() {
+    this.handleContentChanged();
+  }
+
   componentDidUpdate() {
     this.handleContentChanged();
   }
 
-  componentDidMount(){
-    this.handleContentChanged();
-  }
-
-  handleContentChanged(){
-    var event = new CustomEvent('handleContentChanged',{});
-    this.refs.pfTooltip.dispatchEvent(event);
+  handleContentChanged() {
+    const event = new CustomEvent('handleContentChanged', {});
+    this.pfTooltip.dispatchEvent(event);
   }
 
   render() {
     return (
-      <pf-tooltip ref="pfTooltip"
-                  animation={this.props.animation}
-                  targetSelector={this.props.targetSelector}
-                  placement={this.props.placement}
-                  delay={this.props.delay}
-                  duration={this.props.duration}
-                  containerSelector={this.props.containerSelector}>
+      <pf-tooltip ref={(t) => {
+        this.pfTooltip = t;
+      }}
+        animation={this.props.animation}
+        targetSelector={this.props.targetSelector}
+        placement={this.props.placement}
+        delay={this.props.delay}
+        duration={this.props.duration}
+        containerSelector={this.props.containerSelector}>
         {this.props.children}
       </pf-tooltip>
-    )
+    );
   }
 }
 

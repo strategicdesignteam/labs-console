@@ -1,4 +1,4 @@
 const PfTabsTemplate = `
 <ul role="tablist"></ul>
 `;
-export {PfTabsTemplate as default};
+export { PfTabsTemplate as default };

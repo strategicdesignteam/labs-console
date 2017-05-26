@@ -1,6 +1,6 @@
 /**
  * Red Hat Open Innovation Labs Console API
- * Specification for interaction between the Labs Console front-end and back-end. Additionally, this API will be used to experiment with new concepts in order to allow the Automation API (https://github.com/rht-labs/automation-api) to remain stable.
+ * Specification for interaction between the Labs Console front-end and back-end.
  *
  * OpenAPI spec version: 0.1.0
  * Contact: rhc-open-innovation-labs@redhat.com
@@ -22,16 +22,66 @@
  * limitations under the License.
  */
 
-(function(factory) {
+(function (factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('./ApiClient'), require('./model/ApplicationTemplate'), require('./model/ApplicationTopology'), require('./model/Body'), require('./model/Build'), require('./model/ClaimType'), require('./model/ErrorModel'), require('./model/LabelSelectorTemplate'), require('./model/PVCAssociationTemplate'), require('./model/PersistentVolumeClaimTemplate'), require('./model/Port'), require('./model/ProjectTemplate'), require('./model/RoleBinding'), require('./model/Route'), require('./model/Service'), require('./model/Stage'), require('./model/Job'), require('./model/User'), require('./model/Infrastructure'), require('./api/BuildApi'), require('./api/TopologyApi'), require('./api/UserApi'), require('./api/JobApi'), require('./api/InfrastructureApi'));
+    module.exports = factory(
+      require('./ApiClient'),
+      require('./model/ApplicationTemplate'),
+      require('./model/ApplicationTopology'),
+      require('./model/Body'),
+      require('./model/Build'),
+      require('./model/ClaimType'),
+      require('./model/ErrorModel'),
+      require('./model/LabelSelectorTemplate'),
+      require('./model/PVCAssociationTemplate'),
+      require('./model/PersistentVolumeClaimTemplate'),
+      require('./model/Port'),
+      require('./model/ProjectTemplate'),
+      require('./model/RoleBinding'),
+      require('./model/Route'),
+      require('./model/Service'),
+      require('./model/Stage'),
+      require('./model/Job'),
+      require('./model/User'),
+      require('./model/Infrastructure'),
+      require('./api/LoginApi'),
+      require('./api/BuildApi'),
+      require('./api/TopologyApi'),
+      require('./api/UserApi'),
+      require('./api/JobApi'),
+      require('./api/InfrastructureApi')
+    );
   }
-}(function(ApiClient, ApplicationTemplate, ApplicationTopology, Body, Build, ClaimType, ErrorModel, LabelSelectorTemplate, PVCAssociationTemplate, PersistentVolumeClaimTemplate, Port, ProjectTemplate, RoleBinding, Route, Service, Stage, Job, User, Infrastructure, BuildApi, TopologyApi, UserApi, JobApi, InfrastructureApi){
-  'use strict';
-
-  /**
-   * Specification_for_interaction_between_the_Labs_Console_front_end_and_back_end__Additionally_this_API_will_be_used_to_experiment_with_new_concepts_in_order_to_allow_the_Automation_API__httpsgithub_comrht_labsautomation_api_to_remain_stable_.<br>
+}(
+  (
+    ApiClient,
+    ApplicationTemplate,
+    ApplicationTopology,
+    Body,
+    Build,
+    ClaimType,
+    ErrorModel,
+    LabelSelectorTemplate,
+    PVCAssociationTemplate,
+    PersistentVolumeClaimTemplate,
+    Port,
+    ProjectTemplate,
+    RoleBinding,
+    Route,
+    Service,
+    Stage,
+    Job,
+    User,
+    Infrastructure,
+    LoginApi,
+    BuildApi,
+    TopologyApi,
+    UserApi,
+    JobApi,
+    InfrastructureApi
+  ) => {
+    /**
    * The <code>index</code> module provides access to constructors for all the classes which comprise the public API.
    * <p>
    * An AMD (recommended!) or CommonJS application will generally do something equivalent to the following:
@@ -61,123 +111,129 @@
    * @module index
    * @version 0.1.0
    */
-  var exports = {
-    /**
+    const exports = {
+      /**
      * The ApiClient constructor.
      * @property {module:ApiClient}
      */
-    ApiClient: ApiClient,
-    /**
+      ApiClient,
+      /**
      * The ApplicationTemplate model constructor.
      * @property {module:model/ApplicationTemplate}
      */
-    ApplicationTemplate: ApplicationTemplate,
-    /**
+      ApplicationTemplate,
+      /**
      * The ApplicationTopology model constructor.
      * @property {module:model/ApplicationTopology}
      */
-    ApplicationTopology: ApplicationTopology,
-    /**
+      ApplicationTopology,
+      /**
      * The Body model constructor.
      * @property {module:model/Body}
      */
-    Body: Body,
-    /**
+      Body,
+      /**
      * The Build model constructor.
      * @property {module:model/Build}
      */
-    Build: Build,
-    /**
+      Build,
+      /**
      * The ClaimType model constructor.
      * @property {module:model/ClaimType}
      */
-    ClaimType: ClaimType,
-    /**
+      ClaimType,
+      /**
      * The ErrorModel model constructor.
      * @property {module:model/ErrorModel}
      */
-    ErrorModel: ErrorModel,
-    /**
+      ErrorModel,
+      /**
      * The LabelSelectorTemplate model constructor.
      * @property {module:model/LabelSelectorTemplate}
      */
-    LabelSelectorTemplate: LabelSelectorTemplate,
-    /**
+      LabelSelectorTemplate,
+      /**
      * The PVCAssociationTemplate model constructor.
      * @property {module:model/PVCAssociationTemplate}
      */
-    PVCAssociationTemplate: PVCAssociationTemplate,
-    /**
+      PVCAssociationTemplate,
+      /**
      * The PersistentVolumeClaimTemplate model constructor.
      * @property {module:model/PersistentVolumeClaimTemplate}
      */
-    PersistentVolumeClaimTemplate: PersistentVolumeClaimTemplate,
-    /**
+      PersistentVolumeClaimTemplate,
+      /**
      * The Port model constructor.
      * @property {module:model/Port}
      */
-    Port: Port,
-    /**
+      Port,
+      /**
      * The ProjectTemplate model constructor.
      * @property {module:model/ProjectTemplate}
      */
-    ProjectTemplate: ProjectTemplate,
-    /**
+      ProjectTemplate,
+      /**
      * The RoleBinding model constructor.
      * @property {module:model/RoleBinding}
      */
-    RoleBinding: RoleBinding,
-    /**
+      RoleBinding,
+      /**
      * The Route model constructor.
      * @property {module:model/Route}
      */
-    Route: Route,
-    /**
+      Route,
+      /**
      * The Service model constructor.
      * @property {module:model/Service}
      */
-    Service: Service,
-    /**
+      Service,
+      /**
      * The Stage model constructor.
      * @property {module:model/Stage}
      */
-    Stage: Stage,
-    /**
+      Stage,
+      /**
      * The User model constructor.
      * @property {module:model/User}
      */
-    User: User,
-    /**
+      User,
+      /**
      * The Infrastructure model constructor.
      * @property {module:model/Infrastructure}
      */
-    Infrastructure: Infrastructure,    
-    /**
+      Infrastructure,
+      /**
+     * The LoginApi service constructor.
+     * @property {module:api/LoginApi}
+     */
+      LoginApi,
+      /**
      * The BuildApi service constructor.
      * @property {module:api/BuildApi}
      */
-    BuildApi: BuildApi,
-    /**
+      BuildApi,
+      /**
      * The TopologyApi service constructor.
      * @property {module:api/TopologyApi}
      */
-    TopologyApi: TopologyApi,
-    /**
+      TopologyApi,
+      /**
      * The UserApi service constructor.
      * @property {module:api/UserApi}
      */
-    UserApi: UserApi,
-    /**
+      UserApi,
+      /**
      * The JobApi service constructor
      * @property {module: api/JobApi}
      */
-    JobApi: JobApi,
-    /**
+      JobApi,
+      /**
      * The InfrastructureApi service constructor
      * @property {module: api/InfrastructureApi}
      */
-    InfrastructureApi: InfrastructureApi    
-  };
+      InfrastructureApi
+    };
 
-  return exports;
-}));
+    return exports;
+  }
+));

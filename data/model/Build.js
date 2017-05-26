@@ -1,6 +1,6 @@
 /**
  * Red Hat Open Innovation Labs Console API
- * Specification for interaction between the Labs Console front-end and back-end. Additionally, this API will be used to experiment with new concepts in order to allow the Automation API (https://github.com/rht-labs/automation-api) to remain stable.
+ * Specification for interaction between the Labs Console front-end and back-end.
  *
  * OpenAPI spec version: 0.1.0
  * Contact: rhc-open-innovation-labs@redhat.com
@@ -22,23 +22,25 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('../ApiClient'), require('./ApplicationTopology'));
-  } else {
+    module.exports = factory(
+      require('../ApiClient'),
+      require('./ApplicationTopology')
+    );
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.Build = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient, root.RedHatOpenInnovationLabsConsoleApi.ApplicationTopology);
+    root.RedHatOpenInnovationLabsConsoleApi.Build = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient,
+      root.RedHatOpenInnovationLabsConsoleApi.ApplicationTopology
+    );
   }
-}(this, function(ApiClient, ApplicationTopology) {
-  'use strict';
-
-
-
-
+}(this, (ApiClient, ApplicationTopology) => {
   /**
    * The Build model module.
    * @module model/Build
@@ -50,14 +52,8 @@
    * @alias module:model/Build
    * @class
    */
-  var exports = function() {
-    var _this = this;
-
-
-
-
-
-
+  const exports = function () {
+    const _this = this;
   };
 
   /**
@@ -67,101 +63,109 @@
    * @param {module:model/Build} obj Optional instance to populate.
    * @return {module:model/Build} The populated <code>Build</code> instance.
    */
-  exports.constructFromObject = function(data, obj) {
+  exports.constructFromObject = function (data, obj) {
     if (data) {
       obj = obj || new exports();
 
       if (data.hasOwnProperty('id')) {
-        obj['id'] = ApiClient.convertToType(data['id'], 'Integer');
+        obj.id = ApiClient.convertToType(data.id, 'Integer');
       }
       if (data.hasOwnProperty('topology')) {
-        obj['topology'] = ApplicationTopology.constructFromObject(data['topology']);
+        obj.topology = ApplicationTopology.constructFromObject(data.topology);
       }
       if (data.hasOwnProperty('topology_version')) {
-        obj['topology_version'] = ApiClient.convertToType(data['topology_version'], 'Integer');
+        obj.topology_version = ApiClient.convertToType(
+          data.topology_version,
+          'Integer'
+        );
       }
       if (data.hasOwnProperty('topology_version_key')) {
-        obj['topology_version_key'] = ApiClient.convertToType(data['topology_version_key'], 'Integer');
-      }      
+        obj.topology_version_key = ApiClient.convertToType(
+          data.topology_version_key,
+          'Integer'
+        );
+      }
       if (data.hasOwnProperty('number_of_projects')) {
-        obj['number_of_projects'] = ApiClient.convertToType(data['number_of_projects'], 'Integer');
+        obj.number_of_projects = ApiClient.convertToType(
+          data.number_of_projects,
+          'Integer'
+        );
       }
       if (data.hasOwnProperty('number_of_stages')) {
-        obj['number_of_stages'] = ApiClient.convertToType(data['number_of_stages'], 'Integer');
+        obj.number_of_stages = ApiClient.convertToType(
+          data.number_of_stages,
+          'Integer'
+        );
       }
-      if (data.hasOwnProperty('ansible_tower_link')) {
-        obj['ansible_tower_link'] = ApiClient.convertToType(data['ansible_tower_link'], 'String');
-      }
-      if (data.hasOwnProperty('tower_job_id')) {
-        obj['tower_job_id'] = ApiClient.convertToType(data['tower_job_id'], 'Number');
-      }      
       if (data.hasOwnProperty('datetime_started')) {
-        obj['datetime_started'] = ApiClient.convertToType(data['datetime_started'], 'String');
+        obj.datetime_started = ApiClient.convertToType(
+          data.datetime_started,
+          'String'
+        );
       }
       if (data.hasOwnProperty('datetime_completed')) {
-        obj['datetime_completed'] = ApiClient.convertToType(data['datetime_completed'], 'String');
+        obj.datetime_completed = ApiClient.convertToType(
+          data.datetime_completed,
+          'String'
+        );
       }
       if (data.hasOwnProperty('status')) {
-        obj['status'] = ApiClient.convertToType(data['status'], 'String');
+        obj.status = ApiClient.convertToType(data.status, 'String');
       }
-      if (data.hasOwnProperty('engagement')) {
-        obj['engagement'] = data['engagement'];
+      if (data.hasOwnProperty('running_jobs')) {
+        obj.running_jobs = ApiClient.convertToType(data.running_jobs, [Object]);
+      }
+      if (data.hasOwnProperty('project_jobs')) {
+        obj.project_jobs = ApiClient.convertToType(data.project_jobs, Object);
       }
     }
     return obj;
-  }
+  };
 
   /**
    * @member {Integer} id
    */
-  exports.prototype['id'] = undefined;
+  exports.prototype.id = undefined;
   /**
    * @member {module:model/ApplicationTopology} topology
    */
-  exports.prototype['topology'] = undefined;
+  exports.prototype.topology = undefined;
   /**
    * @member {Integer} topology_version
    */
-  exports.prototype['topology_version'] = undefined;
+  exports.prototype.topology_version = undefined;
   /**
    * @member {Integer} topology_version_key
    */
-  exports.prototype['topology_version_key'] = undefined;  
+  exports.prototype.topology_version_key = undefined;
   /**
    * @member {Integer} number_of_projects
    */
-  exports.prototype['number_of_projects'] = undefined;
+  exports.prototype.number_of_projects = undefined;
   /**
    * @member {Integer} number_of_stages
    */
-  exports.prototype['number_of_stages'] = undefined;
-  /**
-   * @member {String} ansible_tower_link
-   */
-  exports.prototype['ansible_tower_link'] = undefined;
-  /**
-   * @member {Integer} tower_job_id
-   */
-  exports.prototype['tower_job_id'] = undefined;  
+  exports.prototype.number_of_stages = undefined;
   /**
    * @member {Date} datetime_started
    */
-  exports.prototype['datetime_started'] = undefined;
+  exports.prototype.datetime_started = undefined;
   /**
    * @member {Date} datetime_completed
    */
-  exports.prototype['datetime_completed'] = undefined;  
+  exports.prototype.datetime_completed = undefined;
   /**
    * @member {String} status
    */
-  exports.prototype['status'] = undefined;
+  exports.prototype.status = undefined;
   /**
-   * @member {Object} engagement
+   * @member [Object]
    */
-  exports.prototype['engagement'] = undefined;
-
+  exports.prototype.running_jobs = undefined;
+  /**
+   * @member Object
+   */
+  exports.prototype.project_jobs = undefined;
 
   return exports;
 }));
-
-

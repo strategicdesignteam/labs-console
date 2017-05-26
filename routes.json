@@ -1,6 +1,11 @@
 [
   {
     "path": "/",
+    "page": "./pages/login",
+    "chunk": "main"
+  },
+  {
+    "path": "/welcome",
     "page": "./pages/welcome",
     "chunk": "main"
   },

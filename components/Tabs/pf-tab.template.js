@@ -3,4 +3,4 @@ const PfTabTemplate = `
   <a href="#" role="tab" data-toggle="tab"></a>
 </li>
 `;
-export {PfTabTemplate as default};
+export { PfTabTemplate as default };

@@ -1,6 +1,6 @@
 /**
  * Red Hat Open Innovation Labs Console API
- * Specification for interaction between the Labs Console front-end and back-end. Additionally, this API will be used to experiment with new concepts in order to allow the Automation API (https://github.com/rht-labs/automation-api) to remain stable.
+ * Specification for interaction between the Labs Console front-end and back-end.
  *
  * OpenAPI spec version: 0.1.0
  * Contact: rhc-open-innovation-labs@redhat.com
@@ -22,23 +22,27 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('../ApiClient'), require('./RoleBinding'), require('./User'));
-  } else {
+    module.exports = factory(
+      require('../ApiClient'),
+      require('./RoleBinding'),
+      require('./User')
+    );
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.Stage = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient, root.RedHatOpenInnovationLabsConsoleApi.RoleBinding, root.RedHatOpenInnovationLabsConsoleApi.User);
+    root.RedHatOpenInnovationLabsConsoleApi.Stage = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient,
+      root.RedHatOpenInnovationLabsConsoleApi.RoleBinding,
+      root.RedHatOpenInnovationLabsConsoleApi.User
+    );
   }
-}(this, function(ApiClient, RoleBinding, User) {
-  'use strict';
-
-
-
-
+}(this, (ApiClient, RoleBinding, User) => {
   /**
    * The Stage model module.
    * @module model/Stage
@@ -50,14 +54,8 @@
    * @alias module:model/Stage
    * @class
    */
-  var exports = function() {
-    var _this = this;
-
-
-
-
-
-
+  const exports = function () {
+    const _this = this;
   };
 
   /**
@@ -67,81 +65,87 @@
    * @param {module:model/Stage} obj Optional instance to populate.
    * @return {module:model/Stage} The populated <code>Stage</code> instance.
    */
-  exports.constructFromObject = function(data, obj) {
+  exports.constructFromObject = function (data, obj) {
     if (data) {
       obj = obj || new exports();
 
-      if (data.hasOwnProperty('id')) {
-        obj['id'] = ApiClient.convertToType(data['id'], 'Integer');
-      }
       if (data.hasOwnProperty('name')) {
-        obj['name'] = ApiClient.convertToType(data['name'], 'String');
+        obj.name = ApiClient.convertToType(data.name, 'String');
       }
       if (data.hasOwnProperty('index')) {
-        obj['index'] = ApiClient.convertToType(data['index'], 'Integer');
+        obj.index = ApiClient.convertToType(data.index, 'Integer');
       }
       if (data.hasOwnProperty('project_role_bindings')) {
-        obj['project_role_bindings'] = ApiClient.convertToType(data['project_role_bindings'], [RoleBinding]);
+        obj.project_role_bindings = ApiClient.convertToType(
+          data.project_role_bindings,
+          [RoleBinding]
+        );
       }
       if (data.hasOwnProperty('application_promoters')) {
-        obj['application_promoters'] = ApiClient.convertToType(data['application_promoters'], [User]);
+        obj.application_promoters = ApiClient.convertToType(
+          data.application_promoters,
+          [User]
+        );
       }
       /** added for new stage concepts */
       if (data.hasOwnProperty('projects')) {
-        obj['projects'] = ApiClient.convertToType(data['projects'], [Object]);
+        obj.projects = ApiClient.convertToType(data.projects, [Object]);
       }
       if (data.hasOwnProperty('x')) {
-        obj['x'] = ApiClient.convertToType(data['x'], 'Integer');
+        obj.x = ApiClient.convertToType(data.x, 'Integer');
       }
       if (data.hasOwnProperty('y')) {
-        obj['y'] = ApiClient.convertToType(data['y'], 'Integer');
+        obj.y = ApiClient.convertToType(data.y, 'Integer');
       }
       if (data.hasOwnProperty('invalid')) {
-        obj['invalid'] = ApiClient.convertToType(data['invalid'], 'Boolean');
+        obj.invalid = ApiClient.convertToType(data.invalid, 'Boolean');
       }
       if (data.hasOwnProperty('selected')) {
-        obj['selected'] = ApiClient.convertToType(data['selected'], 'Boolean');
+        obj.selected = ApiClient.convertToType(data.selected, 'Boolean');
       }
       if (data.hasOwnProperty('containerNode')) {
-        obj['containerNode'] = ApiClient.convertToType(data['containerNode'], 'Boolean');
+        obj.containerNode = ApiClient.convertToType(
+          data.containerNode,
+          'Boolean'
+        );
       }
       if (data.hasOwnProperty('containerNodeDropItemTypes')) {
-        obj['containerNodeDropItemTypes'] = ApiClient.convertToType(data['containerNodeDropItemTypes'], ['String']);
-      }   
+        obj.containerNodeDropItemTypes = ApiClient.convertToType(
+          data.containerNodeDropItemTypes,
+          ['String']
+        );
+      }
       if (data.hasOwnProperty('inputConnectors')) {
-        obj['inputConnectors'] = ApiClient.convertToType(data['inputConnectors'], [Object]);
+        obj.inputConnectors = ApiClient.convertToType(data.inputConnectors, [
+          Object
+        ]);
       }
       if (data.hasOwnProperty('validConnectionTypes')) {
-        obj['validConnectionTypes'] = ApiClient.convertToType(data['validConnectionTypes'], [Object]);
+        obj.validConnectionTypes = ApiClient.convertToType(
+          data.validConnectionTypes,
+          [Object]
+        );
       }
     }
     return obj;
-  }
+  };
 
-  /**
-   * @member {Integer} id
-   */
-  exports.prototype['id'] = undefined;
   /**
    * @member {String} name
    */
-  exports.prototype['name'] = undefined;
+  exports.prototype.name = undefined;
   /**
    * @member {Integer} index
    */
-  exports.prototype['index'] = undefined;
+  exports.prototype.index = undefined;
   /**
    * @member {Array.<module:model/RoleBinding>} project_role_bindings
    */
-  exports.prototype['project_role_bindings'] = undefined;
+  exports.prototype.project_role_bindings = undefined;
   /**
    * @member {Array.<module:model/User>} application_promoters
    */
-  exports.prototype['application_promoters'] = undefined;
-
-
+  exports.prototype.application_promoters = undefined;
 
   return exports;
 }));
-
-

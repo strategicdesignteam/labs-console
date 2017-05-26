@@ -2,10 +2,9 @@ import React, { PropTypes } from 'react';
 import history from '../../core/history';
 
 class Link extends React.Component {
-
   static propTypes = {
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-    onClick: PropTypes.func,
+    onClick: PropTypes.func
   };
 
   handleClick = (event) => {
@@ -29,21 +28,23 @@ class Link extends React.Component {
 
     if (this.props.to) {
       history.push(this.props.to);
-    } else {
+    }
+    else {
       history.push({
         pathname: event.currentTarget.pathname,
-        search: event.currentTarget.search,
+        search: event.currentTarget.search
       });
     }
   };
 
   render() {
     const { to, ...props } = this.props; // eslint-disable-line no-use-before-define
-    return <a href={history.createHref(to)} {...props} onClick={this.handleClick}>
-      { this.props.children }
-    </a>;
+    return (
+      <a href={history.createHref(to)} {...props} onClick={this.handleClick}>
+        {this.props.children}
+      </a>
+    );
   }
-
 }
 
 export default Link;

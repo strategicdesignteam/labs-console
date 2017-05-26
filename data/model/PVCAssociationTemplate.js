@@ -1,6 +1,6 @@
 /**
  * Red Hat Open Innovation Labs Console API
- * Specification for interaction between the Labs Console front-end and back-end. Additionally, this API will be used to experiment with new concepts in order to allow the Automation API (https://github.com/rht-labs/automation-api) to remain stable.
+ * Specification for interaction between the Labs Console front-end and back-end.
  *
  * OpenAPI spec version: 0.1.0
  * Contact: rhc-open-innovation-labs@redhat.com
@@ -22,23 +22,22 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
     module.exports = factory(require('../ApiClient'), require('./ClaimType'));
-  } else {
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.PVCAssociationTemplate = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient, root.RedHatOpenInnovationLabsConsoleApi.ClaimType);
+    root.RedHatOpenInnovationLabsConsoleApi.PVCAssociationTemplate = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient,
+      root.RedHatOpenInnovationLabsConsoleApi.ClaimType
+    );
   }
-}(this, function(ApiClient, ClaimType) {
-  'use strict';
-
-
-
-
+}(this, (ApiClient, ClaimType) => {
   /**
    * The PVCAssociationTemplate model module.
    * @module model/PVCAssociationTemplate
@@ -50,13 +49,8 @@
    * @alias module:model/PVCAssociationTemplate
    * @class
    */
-  var exports = function() {
-    var _this = this;
-
-
-
-
-
+  const exports = function () {
+    const _this = this;
   };
 
   /**
@@ -66,46 +60,45 @@
    * @param {module:model/PVCAssociationTemplate} obj Optional instance to populate.
    * @return {module:model/PVCAssociationTemplate} The populated <code>PVCAssociationTemplate</code> instance.
    */
-  exports.constructFromObject = function(data, obj) {
+  exports.constructFromObject = function (data, obj) {
     if (data) {
       obj = obj || new exports();
 
       if (data.hasOwnProperty('id')) {
-        obj['id'] = ApiClient.convertToType(data['id'], 'Integer');
+        obj.id = ApiClient.convertToType(data.id, 'Integer');
       }
       if (data.hasOwnProperty('name_template')) {
-        obj['name_template'] = ApiClient.convertToType(data['name_template'], 'String');
+        obj.name_template = ApiClient.convertToType(
+          data.name_template,
+          'String'
+        );
       }
       if (data.hasOwnProperty('mount_path')) {
-        obj['mount_path'] = ApiClient.convertToType(data['mount_path'], 'String');
+        obj.mount_path = ApiClient.convertToType(data.mount_path, 'String');
       }
       if (data.hasOwnProperty('claim_type')) {
-        obj['claim_type'] = ClaimType.constructFromObject(data['claim_type']);
+        obj.claim_type = ClaimType.constructFromObject(data.claim_type);
       }
     }
     return obj;
-  }
+  };
 
   /**
    * @member {Integer} id
    */
-  exports.prototype['id'] = undefined;
+  exports.prototype.id = undefined;
   /**
    * @member {String} name_template
    */
-  exports.prototype['name_template'] = undefined;
+  exports.prototype.name_template = undefined;
   /**
    * @member {String} mount_path
    */
-  exports.prototype['mount_path'] = undefined;
+  exports.prototype.mount_path = undefined;
   /**
    * @member {module:model/ClaimType} claim_type
    */
-  exports.prototype['claim_type'] = undefined;
-
-
+  exports.prototype.claim_type = undefined;
 
   return exports;
 }));
-
-

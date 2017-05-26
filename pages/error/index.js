@@ -16,7 +16,7 @@ class ErrorPage extends React.Component {
     document.body.style.backgroundColor = constants.bg_white;
   }
 
-  goBack = event => {
+  goBack = (event) => {
     event.preventDefault();
     history.goBack();
   };
@@ -35,7 +35,7 @@ class ErrorPage extends React.Component {
           <p className={s.title}>{title}</p>
           {code === '404' &&
             <p className={s.text}>
-              The page you're looking for does not exist or an another error occurred.
+              The page you&apos;re looking for does not exist or an another error occurred.
             </p>
           }
           <p className={s.text}>

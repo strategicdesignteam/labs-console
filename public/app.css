@@ -81,6 +81,53 @@ hr {
   border-top: #bbbbbb 1px solid;
 }
 
+/** list-pf overrides **/
+.list-pf {
+  margin-top: 30px;
+}
+.list-pf-title {
+  font-size: 14px;
+}
+.list-pf-additional-content {
+  justify-content: flex-start;
+}
+.list-pf-left .fa, .list-pf-left .pficon {
+  border-radius: 50%;
+  font-size: 1.4em;
+  text-align: center;
+}
+
+.list-pf-left .pficon.list-pf-icon-sm,
+.list-pf-left .fa.list-pf-icon-sm {
+  height: 30px;
+  line-height: 30px;
+  width: 30px;
+}
+.list-pf-left .pficon.list-pf-icon-sm:before,
+.list-pf-left .fa.list-pf-icon-sm:before {
+  display: block;
+  line-height: 30px;
+}
+
+.list-pf-left .pficon.list-pf-icon-success,
+.list-pf-left .fa.list-pf-icon-success {
+  background-color: #e9f4e9;
+  color: #3f9c35;
+}
+
+.list-pf-left .pficon.list-pf-icon-info,
+.list-pf-left .fa.list-pf-icon-info {
+  background-color: #f5f5f5;
+  color: #8b8d8f;
+}
+
+.list-pf-left .pficon.list-pf-icon-danger,
+.list-pf-left .fa.list-pf-icon-danger {
+  background-color: #ffe6e6;
+  color: #cc0000;
+}
+
+
 /** center align alert text */
 .alert {
   text-align: center;
@@ -110,6 +157,10 @@ select.selectpicker {
 
 .card-pf-body .card-pf-title.blue-text {
   cursor: pointer;
+}
+
+.card-pf-view .card-pf-item .fa-times {
+  color: #cc0000;
 }
 
 /** Dual Pane Selector CSS **/

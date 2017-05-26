@@ -1,6 +1,6 @@
 /**
  * Red Hat Open Innovation Labs Console API
- * Specification for interaction between the Labs Console front-end and back-end. Additionally, this API will be used to experiment with new concepts in order to allow the Automation API (https://github.com/rht-labs/automation-api) to remain stable.
+ * Specification for interaction between the Labs Console front-end and back-end.
  *
  * OpenAPI spec version: 0.1.0
  * Contact: rhc-open-innovation-labs@redhat.com
@@ -22,23 +22,22 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
     module.exports = factory(require('../ApiClient'), require('./Port'));
-  } else {
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.Service = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient, root.RedHatOpenInnovationLabsConsoleApi.Port);
+    root.RedHatOpenInnovationLabsConsoleApi.Service = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient,
+      root.RedHatOpenInnovationLabsConsoleApi.Port
+    );
   }
-}(this, function(ApiClient, Port) {
-  'use strict';
-
-
-
-
+}(this, (ApiClient, Port) => {
   /**
    * The Service model module.
    * @module model/Service
@@ -50,11 +49,8 @@
    * @alias module:model/Service
    * @class
    */
-  var exports = function() {
-    var _this = this;
-
-
-
+  const exports = function () {
+    const _this = this;
   };
 
   /**
@@ -64,32 +60,28 @@
    * @param {module:model/Service} obj Optional instance to populate.
    * @return {module:model/Service} The populated <code>Service</code> instance.
    */
-  exports.constructFromObject = function(data, obj) {
+  exports.constructFromObject = function (data, obj) {
     if (data) {
       obj = obj || new exports();
 
       if (data.hasOwnProperty('name')) {
-        obj['name'] = ApiClient.convertToType(data['name'], 'String');
+        obj.name = ApiClient.convertToType(data.name, 'String');
       }
       if (data.hasOwnProperty('ports')) {
-        obj['ports'] = ApiClient.convertToType(data['ports'], [Port]);
+        obj.ports = ApiClient.convertToType(data.ports, [Port]);
       }
     }
     return obj;
-  }
+  };
 
   /**
    * @member {String} name
    */
-  exports.prototype['name'] = undefined;
+  exports.prototype.name = undefined;
   /**
    * @member {Array.<module:model/Port>} ports
    */
-  exports.prototype['ports'] = undefined;
-
-
+  exports.prototype.ports = undefined;
 
   return exports;
 }));
-
-

@@ -1,6 +1,6 @@
 /**
  * Red Hat Open Innovation Labs Console API
- * Specification for interaction between the Labs Console front-end and back-end. Additionally, this API will be used to experiment with new concepts in order to allow the Automation API (https://github.com/rht-labs/automation-api) to remain stable.
+ * Specification for interaction between the Labs Console front-end and back-end.
  *
  * OpenAPI spec version: 0.1.0
  * Contact: rhc-open-innovation-labs@redhat.com
@@ -22,23 +22,27 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('../ApiClient'), require('./ProjectTemplate'), require('./Stage'));
-  } else {
+    module.exports = factory(
+      require('../ApiClient'),
+      require('./ProjectTemplate'),
+      require('./Stage')
+    );
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.ApplicationTopology = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient, root.RedHatOpenInnovationLabsConsoleApi.ProjectTemplate, root.RedHatOpenInnovationLabsConsoleApi.Stage);
+    root.RedHatOpenInnovationLabsConsoleApi.ApplicationTopology = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient,
+      root.RedHatOpenInnovationLabsConsoleApi.ProjectTemplate,
+      root.RedHatOpenInnovationLabsConsoleApi.Stage
+    );
   }
-}(this, function(ApiClient, ProjectTemplate, Stage) {
-  'use strict';
-
-
-
-
+}(this, (ApiClient, ProjectTemplate, Stage) => {
   /**
    * The ApplicationTopology model module.
    * @module model/ApplicationTopology
@@ -50,17 +54,8 @@
    * @alias module:model/ApplicationTopology
    * @class
    */
-  var exports = function() {
-    var _this = this;
-
-
-
-
-
-
-
-
-
+  const exports = function () {
+    const _this = this;
   };
 
   /**
@@ -70,75 +65,83 @@
    * @param {module:model/ApplicationTopology} obj Optional instance to populate.
    * @return {module:model/ApplicationTopology} The populated <code>ApplicationTopology</code> instance.
    */
-  exports.constructFromObject = function(data, obj) {
+  exports.constructFromObject = function (data, obj) {
     if (data) {
       obj = obj || new exports();
 
       if (data.hasOwnProperty('id')) {
-        obj['id'] = ApiClient.convertToType(data['id'], 'Integer');
+        obj.id = ApiClient.convertToType(data.id, 'Integer');
       }
       if (data.hasOwnProperty('project_templates')) {
-        obj['project_templates'] = ApiClient.convertToType(data['project_templates'], [ProjectTemplate]);
+        obj.project_templates = ApiClient.convertToType(
+          data.project_templates,
+          [ProjectTemplate]
+        );
       }
       if (data.hasOwnProperty('promotion_process')) {
-        obj['promotion_process'] = ApiClient.convertToType(data['promotion_process'], [Stage]);
+        obj.promotion_process = ApiClient.convertToType(
+          data.promotion_process,
+          [Stage]
+        );
       }
       if (data.hasOwnProperty('version')) {
-        obj['version'] = ApiClient.convertToType(data['version'], 'Integer');
+        obj.version = ApiClient.convertToType(data.version, 'Integer');
       }
       if (data.hasOwnProperty('datetime_created')) {
-        obj['datetime_created'] = ApiClient.convertToType(data['datetime_created'], 'String');
+        obj.datetime_created = ApiClient.convertToType(
+          data.datetime_created,
+          'String'
+        );
       }
       if (data.hasOwnProperty('datetime_modified')) {
-        obj['datetime_modified'] = ApiClient.convertToType(data['datetime_modified'], 'String');
+        obj.datetime_modified = ApiClient.convertToType(
+          data.datetime_modified,
+          'String'
+        );
       }
       if (data.hasOwnProperty('name')) {
-        obj['name'] = ApiClient.convertToType(data['name'], 'String');
+        obj.name = ApiClient.convertToType(data.name, 'String');
       }
       if (data.hasOwnProperty('description')) {
-        obj['description'] = ApiClient.convertToType(data['description'], 'String');
+        obj.description = ApiClient.convertToType(data.description, 'String');
       }
     }
     return obj;
-  }
+  };
 
   /**
    * @member {Integer} id
    */
-  exports.prototype['id'] = undefined;
+  exports.prototype.id = undefined;
   /**
    * @member {Array.<module:model/ProjectTemplate>} project_templates
    */
-  exports.prototype['project_templates'] = undefined;
+  exports.prototype.project_templates = undefined;
   /**
    * @member {Array.<module:model/Stage>} promotion_process
    */
-  exports.prototype['promotion_process'] = undefined;
+  exports.prototype.promotion_process = undefined;
   /**
    * application topology version
    * @member {Integer} version
    */
-  exports.prototype['version'] = undefined;
+  exports.prototype.version = undefined;
   /**
    * @member {Date} datetime_created
    */
-  exports.prototype['datetime_created'] = undefined;
+  exports.prototype.datetime_created = undefined;
   /**
    * @member {Date} datetime_modified
    */
-  exports.prototype['datetime_modified'] = undefined;
+  exports.prototype.datetime_modified = undefined;
   /**
    * @member {String} name
    */
-  exports.prototype['name'] = undefined;
+  exports.prototype.name = undefined;
   /**
    * @member {String} description
    */
-  exports.prototype['description'] = undefined;
-
-
+  exports.prototype.description = undefined;
 
   return exports;
 }));
-
-

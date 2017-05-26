@@ -62,6 +62,26 @@ $ npm install                   # Install project dependencies listed in package
  ```
 Alternatively, you can use Homebrew to install Mongo DB on Mac OSX. Guide [here](http://treehouse.github.io/installation-guides/mac/mongo-mac.html)
 
+If running labs-console locally, you'll need to export the variables below before starting the front and back end services. For more information on what they mean and how you need to change them look at the variables section below.
+
+```shell
+cat << EOF > ~/labs-console-setvars.rc
+export TOWER_URL=https://username:password@tower.domain.com/
+export NODE_TLS_REJECT_UNAUTHORIZED=0
+export ADD_INFRA_WORKFLOW_ID=89
+export DESTROY_INFRA_WORKFLOW_ID=171
+export ADD_PROJECT_WORKFLOW_ID=325
+EOF
+```
+
+Then source the file and ensure your environment variables are set
+
+```shell
+$ . ~/labs-console-setvars.rc
+$ env |grep TOWER
+ .... Should return the environment variable ....
+```
+
 **Step 3**. Build the front end UI
 ```shell
 $ node run build
@@ -97,6 +117,8 @@ The following environment variables should be set in [OCP](https://www.openshift
 | Key | Value | Description |
 | --- | --- | --- |
 | OPENSHIFT_MONGODB_DB_URL | mongodb://`[user]`:`[pw]`@mongodb.`[project]`.svc.cluster.local/`[db]` | Mongo CN |
+| ADMIN_USER | admin | Default admin login |
+| ADMIN_PASS | password | Default admin password |
 | TOWER_URL | https://`[user]`:`[password]`@`[tower.yourdomain.io]`/ | Ansible Tower instance |
 | ADD_INFRA_WORKFLOW_ID | 0 | Tower Add Infra Workflow ID |
 | DESTROY_INFRA_WORKFLOW_ID | 0 | Tower Delete Infra Workflow ID |

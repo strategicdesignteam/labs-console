@@ -7,7 +7,8 @@ function decodeParam(val) {
 
   try {
     return decodeURIComponent(val);
-  } catch (err) {
+  }
+  catch (err) {
     if (err instanceof URIError) {
       err.message = `Failed to decode param '${val}'`;
       err.status = 400;
@@ -30,7 +31,9 @@ function matchURI(route, path) {
   const params = Object.create(null);
 
   for (let i = 1; i < match.length; i++) {
-    params[route.keys[i - 1].name] = match[i] !== undefined ? decodeParam(match[i]) : undefined;
+    params[route.keys[i - 1].name] = match[i] !== undefined
+      ? decodeParam(match[i])
+      : undefined;
   }
 
   return params;
@@ -53,23 +56,32 @@ function resolve(routes, context) {
       const keys = Object.keys(route.data);
       return Promise.all([
         route.load(),
-        ...keys.map(key => {
+        ...keys.map((key) => {
           const query = route.data[key];
           const method = query.substring(0, query.indexOf(' ')); // GET
-          let url = query.substr(query.indexOf(' ') + 1);      // /api/tasks/$id
+          let url = query.substr(query.indexOf(' ') + 1); // /api/tasks/$id
           // TODO: Optimize
           Object.keys(params).forEach((k) => {
             url = url.replace(`${k}`, params[k]);
           });
           return fetch(url, { method }).then(resp => resp.json());
-        }),
+        })
       ]).then(([Page, ...data]) => {
-        const props = keys.reduce((result, key, i) => ({ ...result, [key]: data[i] }), {});
-        return <Page route={{ ...route, params }} error={context.error} {...props} />;
+        const props = keys.reduce(
+          (result, key, i) => ({ ...result, [key]: data[i] }),
+          {}
+        );
+        return (
+          <Page route={{ ...route, params }} error={context.error} {...props}/>
+        );
       });
     }
 
-    return route.load().then(Page => <Page route={{ ...route, params }} error={context.error} />);
+    return route
+      .load()
+      .then(Page => (
+        <Page route={{ ...route, params }} error={context.error}/>
+      ));
   }
 
   const error = new Error('Page not found');

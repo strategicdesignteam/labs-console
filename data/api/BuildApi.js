@@ -1,6 +1,6 @@
 /**
  * Red Hat Open Innovation Labs Console API
- * Specification for interaction between the Labs Console front-end and back-end. Additionally, this API will be used to experiment with new concepts in order to allow the Automation API (https://github.com/rht-labs/automation-api) to remain stable.
+ * Specification for interaction between the Labs Console front-end and back-end.
  *
  * OpenAPI spec version: 0.1.0
  * Contact: rhc-open-innovation-labs@redhat.com
@@ -22,20 +22,29 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
-    module.exports = factory(require('../ApiClient'), require('../model/ErrorModel'), require('../model/Body'), require('../model/Build'));
-  } else {
+    module.exports = factory(
+      require('../ApiClient'),
+      require('../model/ErrorModel'),
+      require('../model/Body'),
+      require('../model/Build')
+    );
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.BuildApi = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient, root.RedHatOpenInnovationLabsConsoleApi.ErrorModel, root.RedHatOpenInnovationLabsConsoleApi.Body, root.RedHatOpenInnovationLabsConsoleApi.Build);
+    root.RedHatOpenInnovationLabsConsoleApi.BuildApi = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient,
+      root.RedHatOpenInnovationLabsConsoleApi.ErrorModel,
+      root.RedHatOpenInnovationLabsConsoleApi.Body,
+      root.RedHatOpenInnovationLabsConsoleApi.Build
+    );
   }
-}(this, function(ApiClient, ErrorModel, Body, Build) {
-  'use strict';
-
+}(this, (ApiClient, ErrorModel, Body, Build) => {
   /**
    * Build service.
    * @module api/BuildApi
@@ -43,15 +52,14 @@
    */
 
   /**
-   * Constructs a new BuildApi. 
+   * Constructs a new BuildApi.
    * @alias module:api/BuildApi
    * @class
    * @param {module:ApiClient} apiClient Optional API client implementation to use,
    * default to {@link module:ApiClient#instance} if unspecified.
    */
-  var exports = function(apiClient) {
+  const exports = function (apiClient) {
     this.apiClient = apiClient || ApiClient.instance;
-
 
     /**
      * Callback function to receive the result of the addBuild operation.
@@ -63,112 +71,126 @@
 
     /**
      * Add a new build
-     * 
+     *
      * @param {Object} opts Optional parameters
      * @param {module:model/Body} opts.body Build object that needs to be added to the store
      * @param {module:api/BuildApi~addBuildCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    this.addBuild = function(opts, callback) {
+    this.addBuild = function (opts, callback) {
       opts = opts || {};
-      var postBody = opts['body'];
+      const postBody = opts.body;
 
+      const pathParams = {};
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = ['application/json'];
-      var accepts = ['application/json'];
-      var returnType = Object;
+      const authNames = [];
+      const contentTypes = ['application/json'];
+      const accepts = ['application/json'];
+      const returnType = Object;
 
       return this.apiClient.callApi(
-        '/builds', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/builds',
+        'POST',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
 
     /**
      * Update an existing build
-     * 
+     *
      * @param {Integer} id Build ID
      * @param {Object} opts Optional parameters
      * @param {module:model/Build} opts.body User object that needs to be updated in the store
      * @param {module:api/BuildApi~updateBuildCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    this.updateBuild = function(id, opts, callback) {
+    this.updateBuild = function (id, opts, callback) {
       opts = opts || {};
-      var postBody = opts['body'];
+      const postBody = opts.body;
 
       // verify the required parameter 'id' is set
       if (id == undefined || id == null) {
         throw "Missing the required parameter 'id' when calling updateBuild";
       }
 
+      const pathParams = {
+        id
+      };
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-        'id': id
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = ['application/json'];
-      var accepts = ['application/json'];
-      var returnType = null;
+      const authNames = [];
+      const contentTypes = ['application/json'];
+      const accepts = ['application/json'];
+      const returnType = null;
 
       return this.apiClient.callApi(
-        '/builds/{id}', 'PUT',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/builds/{id}',
+        'PUT',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
     /**
      * Deletes a build
-     * 
+     *
      * @param {Integer} id Build id to delete
      * @param {module:api/BuildApi~deleteBuildCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    this.deleteBuild = function(id, callback) {
-      var postBody = null;
+    this.deleteBuild = function (id, callback) {
+      const postBody = null;
 
       // verify the required parameter 'id' is set
       if (id == undefined || id == null) {
         throw "Missing the required parameter 'id' when calling deleteBuild";
       }
 
+      const pathParams = {
+        id
+      };
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-        'id': id
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = [];
-      var accepts = ['application/json'];
-      var returnType = null;
+      const authNames = [];
+      const contentTypes = [];
+      const accepts = ['application/json'];
+      const returnType = null;
 
       return this.apiClient.callApi(
-        '/builds/{id}', 'DELETE',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/builds/{id}',
+        'DELETE',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
 
     /**
      * Callback function to receive the result of the buildsGet operation.
@@ -176,37 +198,41 @@
      * @param {String} error Error message, if any.
      * @param {Array.<module:model/Build>} data The data returned by the service call.
      * @param {String} response The complete HTTP response.
-     */
+    */
 
     /**
-     * Gets &#x60;Build&#x60; objects. 
+     * Gets &#x60;Build&#x60; objects.
      * @param {module:api/BuildApi~buildsGetCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link Array.<module:model/Build>}
      */
-    this.buildsGet = function(callback) {
-      var postBody = null;
+    this.buildsGet = function (callback) {
+      const postBody = null;
 
+      const pathParams = {};
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = [];
-      var accepts = [];
-      var returnType = [Build];
+      const authNames = [];
+      const contentTypes = [];
+      const accepts = [];
+      const returnType = [Build];
 
       return this.apiClient.callApi(
-        '/builds', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/builds',
+        'GET',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
+    };
 
     /**
      * Callback function to receive the result of the buildsIdGet operation.
@@ -217,86 +243,46 @@
      */
 
     /**
-     * Gets a &#x60;Build&#x60; object by ID. 
+     * Gets a &#x60;Build&#x60; object by ID.
      * @param {Integer} id Build ID
      * @param {module:api/BuildApi~buildsIdGetCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/Build}
      */
-    this.buildsIdGet = function(id, callback) {
-      var postBody = null;
+    this.buildsIdGet = function (id, callback) {
+      const postBody = null;
 
       // verify the required parameter 'id' is set
       if (id == undefined || id == null) {
         throw "Missing the required parameter 'id' when calling buildsIdGet";
       }
 
+      const pathParams = {
+        id
+      };
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
 
-      var pathParams = {
-        'id': id
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = [];
-      var accepts = [];
-      var returnType = Build;
+      const authNames = [];
+      const contentTypes = [];
+      const accepts = [];
+      const returnType = Build;
 
       return this.apiClient.callApi(
-        '/builds/{id}', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
+        '/builds/{id}',
+        'GET',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
       );
-    }
-
-    /**
-     * Callback function to receive the result of the downloadEngagement operation.
-     * @callback module:api/BuildApi~downloadEngagementCallback
-     * @param {String} error Error message, if any.
-     * @param {module:model/Build} data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Gets a &#x60;Build&#x60; object by ID. 
-     * @param {Integer} id Topology ID
-     * @param {module:api/BuildApi~downloadEngagementCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link module:Object}
-     */
-    this.downloadEngagement = function(id, callback) {
-      var postBody = null;
-
-      // verify the required parameter 'id' is set
-      if (id == undefined || id == null) {
-        throw "Missing the required parameter 'id' when calling downloadEngagement";
-      }
-
-
-      var pathParams = {
-        'id': id
-      };
-      var queryParams = {
-      };
-      var headerParams = {
-      };
-      var formParams = {
-      };
-
-      var authNames = [];
-      var contentTypes = [];
-      var accepts = [];
-      var returnType = Object;
-
-      return this.apiClient.callApi(
-        '/downloadEngagement/{id}', 'GET',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, callback
-      );
-    }
+    };
   };
 
   return exports;

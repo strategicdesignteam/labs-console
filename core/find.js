@@ -1,8 +1,7 @@
-//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find polyfill
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find polyfill
 if (!Array.prototype.find) {
-  Object.defineProperty(Array.prototype, "find", {
-    value: function(predicate) {
-      'use strict';
+  Object.defineProperty(Array.prototype, 'find', {
+    value(predicate) {
       if (this == null) {
         throw new TypeError('Array.prototype.find called on null or undefined');
       }
@@ -25,13 +24,14 @@ if (!Array.prototype.find) {
   });
 }
 
-//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex polyfill
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex polyfill
 if (!Array.prototype.findIndex) {
   Object.defineProperty(Array.prototype, 'findIndex', {
-    value: function(predicate) {
-      'use strict';
+    value(predicate) {
       if (this == null) {
-        throw new TypeError('Array.prototype.findIndex called on null or undefined');
+        throw new TypeError(
+          'Array.prototype.findIndex called on null or undefined'
+        );
       }
       if (typeof predicate !== 'function') {
         throw new TypeError('predicate must be a function');

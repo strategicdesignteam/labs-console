@@ -1,6 +1,6 @@
 /**
  * Red Hat Open Innovation Labs Console API
- * Specification for interaction between the Labs Console front-end and back-end. Additionally, this API will be used to experiment with new concepts in order to allow the Automation API (https://github.com/rht-labs/automation-api) to remain stable.
+ * Specification for interaction between the Labs Console front-end and back-end.
  *
  * OpenAPI spec version: 0.1.0
  * Contact: rhc-open-innovation-labs@redhat.com
@@ -22,23 +22,21 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
     module.exports = factory(require('../ApiClient'));
-  } else {
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.ErrorModel = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient);
+    root.RedHatOpenInnovationLabsConsoleApi.ErrorModel = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient
+    );
   }
-}(this, function(ApiClient) {
-  'use strict';
-
-
-
-
+}(this, (ApiClient) => {
   /**
    * The ErrorModel model module.
    * @module model/ErrorModel
@@ -49,14 +47,14 @@
    * Constructs a new <code>ErrorModel</code>.
    * @alias module:model/ErrorModel
    * @class
-   * @param message {String} 
-   * @param code {Integer} 
+   * @param message {String}
+   * @param code {Integer}
    */
-  var exports = function(message, code) {
-    var _this = this;
+  const exports = function (message, code) {
+    const _this = this;
 
-    _this['message'] = message;
-    _this['code'] = code;
+    _this.message = message;
+    _this.code = code;
   };
 
   /**
@@ -66,32 +64,28 @@
    * @param {module:model/ErrorModel} obj Optional instance to populate.
    * @return {module:model/ErrorModel} The populated <code>ErrorModel</code> instance.
    */
-  exports.constructFromObject = function(data, obj) {
+  exports.constructFromObject = function (data, obj) {
     if (data) {
       obj = obj || new exports();
 
       if (data.hasOwnProperty('message')) {
-        obj['message'] = ApiClient.convertToType(data['message'], 'String');
+        obj.message = ApiClient.convertToType(data.message, 'String');
       }
       if (data.hasOwnProperty('code')) {
-        obj['code'] = ApiClient.convertToType(data['code'], 'Integer');
+        obj.code = ApiClient.convertToType(data.code, 'Integer');
       }
     }
     return obj;
-  }
+  };
 
   /**
    * @member {String} message
    */
-  exports.prototype['message'] = undefined;
+  exports.prototype.message = undefined;
   /**
    * @member {Integer} code
    */
-  exports.prototype['code'] = undefined;
-
-
+  exports.prototype.code = undefined;
 
   return exports;
 }));
-
-

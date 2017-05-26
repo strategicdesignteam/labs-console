@@ -1,6 +1,6 @@
 /**
  * Red Hat Open Innovation Labs Console API
- * Specification for interaction between the Labs Console front-end and back-end. Additionally, this API will be used to experiment with new concepts in order to allow the Automation API (https://github.com/rht-labs/automation-api) to remain stable.
+ * Specification for interaction between the Labs Console front-end and back-end.
  *
  * OpenAPI spec version: 0.1.0
  * Contact: rhc-open-innovation-labs@redhat.com
@@ -22,23 +22,21 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
     module.exports = factory(require('../ApiClient'));
-  } else {
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.LabelSelectorTemplate = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient);
+    root.RedHatOpenInnovationLabsConsoleApi.LabelSelectorTemplate = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient
+    );
   }
-}(this, function(ApiClient) {
-  'use strict';
-
-
-
-
+}(this, (ApiClient) => {
   /**
    * The LabelSelectorTemplate model module.
    * @module model/LabelSelectorTemplate
@@ -50,10 +48,8 @@
    * @alias module:model/LabelSelectorTemplate
    * @class
    */
-  var exports = function() {
-    var _this = this;
-
-
+  const exports = function () {
+    const _this = this;
   };
 
   /**
@@ -63,25 +59,24 @@
    * @param {module:model/LabelSelectorTemplate} obj Optional instance to populate.
    * @return {module:model/LabelSelectorTemplate} The populated <code>LabelSelectorTemplate</code> instance.
    */
-  exports.constructFromObject = function(data, obj) {
+  exports.constructFromObject = function (data, obj) {
     if (data) {
       obj = obj || new exports();
 
       if (data.hasOwnProperty('match_label_templates')) {
-        obj['match_label_templates'] = ApiClient.convertToType(data['match_label_templates'], {'String': 'String'});
+        obj.match_label_templates = ApiClient.convertToType(
+          data.match_label_templates,
+          { String: 'String' }
+        );
       }
     }
     return obj;
-  }
+  };
 
   /**
    * @member {Object.<String, String>} match_label_templates
    */
-  exports.prototype['match_label_templates'] = undefined;
-
-
+  exports.prototype.match_label_templates = undefined;
 
   return exports;
 }));
-
-

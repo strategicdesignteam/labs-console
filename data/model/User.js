@@ -1,6 +1,6 @@
 /**
  * Red Hat Open Innovation Labs Console API
- * Specification for interaction between the Labs Console front-end and back-end. Additionally, this API will be used to experiment with new concepts in order to allow the Automation API (https://github.com/rht-labs/automation-api) to remain stable.
+ * Specification for interaction between the Labs Console front-end and back-end.
  *
  * OpenAPI spec version: 0.1.0
  * Contact: rhc-open-innovation-labs@redhat.com
@@ -22,23 +22,21 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
     module.exports = factory(require('../ApiClient'));
-  } else {
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.User = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient);
+    root.RedHatOpenInnovationLabsConsoleApi.User = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient
+    );
   }
-}(this, function(ApiClient) {
-  'use strict';
-
-
-
-
+}(this, (ApiClient) => {
   /**
    * The User model module.
    * @module model/User
@@ -49,23 +47,22 @@
    * Constructs a new <code>User</code>.
    * @alias module:model/User
    * @class
-   * @param id {Integer} 
-   * @param firstName {String} 
-   * @param lastName {String} 
-   * @param userName {String} 
-   * @param password {String} 
-   * @param email {String} 
+   * @param id {Integer}
+   * @param firstName {String}
+   * @param lastName {String}
+   * @param userName {String}
+   * @param password {String}
+   * @param email {String}
    */
-  var exports = function(id, firstName, lastName, userName, password, email) {
-    var _this = this;
+  const exports = function (id, firstName, lastName, userName, password, email) {
+    const _this = this;
 
-    _this['id'] = id;
-    _this['first_name'] = firstName;
-    _this['last_name'] = lastName;
-    _this['user_name'] = userName;
-    _this['password'] = password;
-    _this['email'] = email;
-
+    _this.id = id;
+    _this.first_name = firstName;
+    _this.last_name = lastName;
+    _this.user_name = userName;
+    _this.password = password;
+    _this.email = email;
   };
 
   /**
@@ -75,67 +72,66 @@
    * @param {module:model/User} obj Optional instance to populate.
    * @return {module:model/User} The populated <code>User</code> instance.
    */
-  exports.constructFromObject = function(data, obj) {
+  exports.constructFromObject = function (data, obj) {
     if (data) {
       obj = obj || new exports();
 
       if (data.hasOwnProperty('id')) {
-        obj['id'] = ApiClient.convertToType(data['id'], 'Integer');
+        obj.id = ApiClient.convertToType(data.id, 'Integer');
       }
       if (data.hasOwnProperty('first_name')) {
-        obj['first_name'] = ApiClient.convertToType(data['first_name'], 'String');
+        obj.first_name = ApiClient.convertToType(data.first_name, 'String');
       }
       if (data.hasOwnProperty('last_name')) {
-        obj['last_name'] = ApiClient.convertToType(data['last_name'], 'String');
+        obj.last_name = ApiClient.convertToType(data.last_name, 'String');
       }
       if (data.hasOwnProperty('user_name')) {
-        obj['user_name'] = ApiClient.convertToType(data['user_name'], 'String');
+        obj.user_name = ApiClient.convertToType(data.user_name, 'String');
       }
       if (data.hasOwnProperty('password')) {
-        obj['password'] = ApiClient.convertToType(data['password'], 'String');
+        obj.password = ApiClient.convertToType(data.password, 'String');
       }
       if (data.hasOwnProperty('email')) {
-        obj['email'] = ApiClient.convertToType(data['email'], 'String');
+        obj.email = ApiClient.convertToType(data.email, 'String');
       }
       if (data.hasOwnProperty('ssh_public_key')) {
-        obj['ssh_public_key'] = ApiClient.convertToType(data['ssh_public_key'], 'String');
+        obj.ssh_public_key = ApiClient.convertToType(
+          data.ssh_public_key,
+          'String'
+        );
       }
     }
     return obj;
-  }
+  };
 
   /**
    * @member {Integer} id
    */
-  exports.prototype['id'] = undefined;
+  exports.prototype.id = undefined;
   /**
    * @member {String} first_name
    */
-  exports.prototype['first_name'] = undefined;
+  exports.prototype.first_name = undefined;
   /**
    * @member {String} last_name
    */
-  exports.prototype['last_name'] = undefined;
+  exports.prototype.last_name = undefined;
   /**
    * @member {String} user_name
    */
-  exports.prototype['user_name'] = undefined;
+  exports.prototype.user_name = undefined;
   /**
    * @member {String} password
    */
-  exports.prototype['password'] = undefined;
+  exports.prototype.password = undefined;
   /**
    * @member {String} email
    */
-  exports.prototype['email'] = undefined;
+  exports.prototype.email = undefined;
   /**
    * @member {String} ssh_public_key
    */
-  exports.prototype['ssh_public_key'] = undefined;
-
-
+  exports.prototype.ssh_public_key = undefined;
 
   return exports;
 }));
-
-

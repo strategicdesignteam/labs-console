@@ -1,6 +1,6 @@
 /**
  * Red Hat Open Innovation Labs Console API
- * Specification for interaction between the Labs Console front-end and back-end. Additionally, this API will be used to experiment with new concepts in order to allow the Automation API (https://github.com/rht-labs/automation-api) to remain stable.
+ * Specification for interaction between the Labs Console front-end and back-end.
  *
  * OpenAPI spec version: 0.1.0
  * Contact: rhc-open-innovation-labs@redhat.com
@@ -22,23 +22,21 @@
  * limitations under the License.
  */
 
-(function(root, factory) {
+(function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // CommonJS-like environments that support module.exports, like Node.
     module.exports = factory(require('../ApiClient'));
-  } else {
+  }
+  else {
     // Browser globals (root is window)
     if (!root.RedHatOpenInnovationLabsConsoleApi) {
       root.RedHatOpenInnovationLabsConsoleApi = {};
     }
-    root.RedHatOpenInnovationLabsConsoleApi.Port = factory(root.RedHatOpenInnovationLabsConsoleApi.ApiClient);
+    root.RedHatOpenInnovationLabsConsoleApi.Port = factory(
+      root.RedHatOpenInnovationLabsConsoleApi.ApiClient
+    );
   }
-}(this, function(ApiClient) {
-  'use strict';
-
-
-
-
+}(this, (ApiClient) => {
   /**
    * The Port model module.
    * @module model/Port
@@ -49,16 +47,16 @@
    * Constructs a new <code>Port</code>.
    * @alias module:model/Port
    * @class
-   * @param port {Integer} 
-   * @param protocol {String} 
-   * @param targetPort {Integer} 
+   * @param port {Integer}
+   * @param protocol {String}
+   * @param targetPort {Integer}
    */
-  var exports = function(port, protocol, targetPort) {
-    var _this = this;
+  const exports = function (port, protocol, targetPort) {
+    const _this = this;
 
-    _this['port'] = port;
-    _this['protocol'] = protocol;
-    _this['target_port'] = targetPort;
+    _this.port = port;
+    _this.protocol = protocol;
+    _this.target_port = targetPort;
   };
 
   /**
@@ -68,39 +66,35 @@
    * @param {module:model/Port} obj Optional instance to populate.
    * @return {module:model/Port} The populated <code>Port</code> instance.
    */
-  exports.constructFromObject = function(data, obj) {
+  exports.constructFromObject = function (data, obj) {
     if (data) {
       obj = obj || new exports();
 
       if (data.hasOwnProperty('port')) {
-        obj['port'] = ApiClient.convertToType(data['port'], 'Integer');
+        obj.port = ApiClient.convertToType(data.port, 'Integer');
       }
       if (data.hasOwnProperty('protocol')) {
-        obj['protocol'] = ApiClient.convertToType(data['protocol'], 'String');
+        obj.protocol = ApiClient.convertToType(data.protocol, 'String');
       }
       if (data.hasOwnProperty('target_port')) {
-        obj['target_port'] = ApiClient.convertToType(data['target_port'], 'Integer');
+        obj.target_port = ApiClient.convertToType(data.target_port, 'Integer');
       }
     }
     return obj;
-  }
+  };
 
   /**
    * @member {Integer} port
    */
-  exports.prototype['port'] = undefined;
+  exports.prototype.port = undefined;
   /**
    * @member {String} protocol
    */
-  exports.prototype['protocol'] = undefined;
+  exports.prototype.protocol = undefined;
   /**
    * @member {Integer} target_port
    */
-  exports.prototype['target_port'] = undefined;
-
-
+  exports.prototype.target_port = undefined;
 
   return exports;
 }));
-
-
