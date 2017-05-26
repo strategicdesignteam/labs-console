@@ -2,7 +2,8 @@
 
 A web interface to drive openshift-ansible-contrib via Ansible Tower. Built with [patternfly](https://github.com/patternfly/patternfly) and [react-static-boilerplate](https://github.com/kriasoft/react-static-boilerplate).
 
-![Overview Diagram](https://github.com/strategicdesignteam/labs-console/blob/master/docs/diagrams/Overview_diagram.png)
+![Console](https://github.com/strategicdesignteam/labs-console/blob/master/docs/diagrams/console.png)
+
 
 ### Directory Layout
 
@@ -44,6 +45,10 @@ A web interface to drive openshift-ansible-contrib via Ansible Tower. Built with
 │── server.js                   # Node.js Express server
 └── webpack.config.js           # Bundling and optimization settings for Webpack
 ```
+
+### Overview
+
+![Overview Diagram](https://github.com/strategicdesignteam/labs-console/blob/master/docs/diagrams/Overview_diagram.png)
 
 
 ### Getting Started
