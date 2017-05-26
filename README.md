@@ -2,7 +2,7 @@
 
 A web interface to drive openshift-ansible-contrib via Ansible Tower. Built with [patternfly](https://github.com/patternfly/patternfly) and [react-static-boilerplate](https://github.com/kriasoft/react-static-boilerplate).
 
-![Console](https://github.com/strategicdesignteam/labs-console/blob/master/docs/diagrams/console.png)
+![Console](https://github.com/strategicdesignteam/labs-console/blob/master/docs/diagrams/Console.png)
 
 
 ### Directory Layout
