@@ -22,11 +22,11 @@ class Header extends React.Component {
           </button>
           <a href="/" className="navbar-brand">
             <img className={cx(s.labs_logo, 'navbar-brand-icon')}
-              src="/img/labs-logo-icon.svg"
+              src="/img/magnet-bank-logo.svg"
               alt=""/>
             <img className={cx(s.labs_brand, 'navbar-brand-name')}
-              src="/img/labs-logo-text.svg"
-              alt="Red Hat Open Innovation Labs"/>
+              src="/img/magnet-bank.svg"
+              alt="Magnet Bank"/>
           </a>
         </div>
         <nav className="collapse navbar-collapse">

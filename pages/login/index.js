@@ -42,15 +42,14 @@ class LoginPage extends React.Component {
       <div>
         <span id="badge">
           <img style={{ height: 69 }}
-            src="/img/labs-logo-icon.svg"
+            src="/img/magnet-bank-logo.svg"
             alt="logo"/>
         </span>
         <div className="container">
           <div className="row">
             <div className="col-sm-12">
               <div id="brand">
-                <img src="/img/labs-logo-text.svg"
-                  alt="Red Hat Open Innovation Labs"/>
+                <img src="/img/magnet-bank.svg" alt="Magnet Bank"/>
               </div>
             </div>
             <div className="col-sm-7 col-md-6 col-lg-5 login">
@@ -117,9 +116,11 @@ class LoginPage extends React.Component {
               </form>
             </div>
             <div className="col-sm-5 col-md-6 col-lg-7 details">
-              <p><strong>Welcome to Red Hat Innovation Labs</strong></p>
+              <p><strong>Welcome to Magnet Bank Console</strong></p>
               <p>
-                Labs Console is a web interface to drive Push Button Infrastructure.
+                The Magnet Bank Console UI allows you to define and build an infrastructure pipeline
+                <br/>
+                and then deploy applications on top of Red Hat OpenShift at each stage in the pipeline.
               </p>
             </div>
           </div>

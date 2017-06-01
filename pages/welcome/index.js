@@ -36,9 +36,9 @@ class WelcomePage extends React.Component {
           <div className="blank-slate-pf-icon">
             <i className="fa fa-rocket"/>
           </div>
-          <h1>Welcome to Red Hat Open Innovation Labs</h1>
+          <h1>Welcome to Magnet Bank</h1>
           <p>
-            The Labs Console serves as a starting point to developing your Open Shift applications.
+            The Magnet Bank Console serves as a starting point to developing your Open Shift applications.
           </p>
           <p>
             To begin, create an infrastructure for hosting your application topologies.
