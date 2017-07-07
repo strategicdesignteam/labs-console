@@ -11,8 +11,7 @@ class ToastNotificationService {
     this.monitorNotifications = (notifications, callback) => {
       if (
         constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD & notifications ||
-        constants.NOTIFICATION_TYPES.INFRASTRUCTURE_DESTROY_BUILD &
-          notifications
+        constants.NOTIFICATION_TYPES.INFRASTRUCTURE_DESTROY_BUILD & notifications
       ) {
         this.infrastructureCallbacks.push(callback);
         // if we aren't yet polling, start polling for this notification type
@@ -24,8 +23,7 @@ class ToastNotificationService {
     this.unregisterNotifications = (notifications, callback) => {
       if (
         constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD & notifications ||
-        constants.NOTIFICATION_TYPES.INFRASTRUCTURE_DESTROY_BUILD &
-          notifications
+        constants.NOTIFICATION_TYPES.INFRASTRUCTURE_DESTROY_BUILD & notifications
       ) {
         for (let i = 0; i < this.infrastructureCallbacks.length; i++) {
           if (this.infrastructureCallbacks[i] === callback) {
@@ -57,54 +55,39 @@ class ToastNotificationService {
                   job.status === constants.ANSIBLE_JOB_STATUS.FAILED ||
                   job.status === constants.ANSIBLE_JOB_STATUS.CANCELLED
                 ) {
-                  if (
-                    infrastructure.destroy_started &&
-                    job.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL
-                  ) {
+                  if (infrastructure.destroy_started && job.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL) {
                     // this was a destroy job, delete the infra from the list
-                    infrastructureApi.deleteInfrastructure(
-                      infrastructure.id,
-                      () => {
-                        that.infrastructureCallbacks.forEach((callback) => {
-                          callback({
-                            notification_type: constants.NOTIFICATION_TYPES
-                              .INFRASTRUCTURE_DESTROY_BUILD,
-                            data: infrastructure,
-                            job
-                          });
+                    infrastructureApi.deleteInfrastructure(infrastructure.id, () => {
+                      that.infrastructureCallbacks.forEach((callback) => {
+                        callback({
+                          notification_type: constants.NOTIFICATION_TYPES.INFRASTRUCTURE_DESTROY_BUILD,
+                          data: infrastructure,
+                          job
                         });
-                      }
-                    );
+                      });
+                    });
                   }
                   else {
                     infrastructure.datetime_completed = job.finished;
                     infrastructure.status = job.status;
 
-                    infrastructureApi.updateInfrastructure(
-                      infrastructure.id,
-                      { body: infrastructure },
-                      (e) => {
-                        // todo: display an error
-                        if (e) console.error(e);
-                        // notify all toast listeners w/ registered callbacks
-                        that.infrastructureCallbacks.forEach((callback) => {
-                          callback({
-                            notification_type: constants.NOTIFICATION_TYPES
-                              .INFRASTRUCTURE_BUILD,
-                            data: infrastructure,
-                            job
-                          });
+                    infrastructureApi.updateInfrastructure(infrastructure.id, { body: infrastructure }, (e) => {
+                      // todo: display an error
+                      if (e) console.error(e);
+                      // notify all toast listeners w/ registered callbacks
+                      that.infrastructureCallbacks.forEach((callback) => {
+                        callback({
+                          notification_type: constants.NOTIFICATION_TYPES.INFRASTRUCTURE_BUILD,
+                          data: infrastructure,
+                          job
                         });
-                      }
-                    );
+                      });
+                    });
                   }
                 }
               });
             }
           });
-        }
-        else {
-          totalInfras = 0;
         }
       });
     };

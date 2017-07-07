@@ -120,6 +120,9 @@
       if (data.hasOwnProperty('project_jobs')) {
         obj.project_jobs = ApiClient.convertToType(data.project_jobs, Object);
       }
+      if (data.hasOwnProperty('ansible_tower_url')) {
+        obj.ansible_tower_url = ApiClient.convertToType(data.ansible_tower_url, 'String');
+      }
     }
     return obj;
   };
@@ -168,6 +171,10 @@
    * @member Object
    */
   exports.prototype.project_jobs = undefined;
+  /**
+   * @member {String} ansible_tower_url
+   */
+  exports.prototype.ansible_tower_url = undefined;
 
   return exports;
 }));

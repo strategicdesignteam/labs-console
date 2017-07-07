@@ -87,7 +87,8 @@ exports.updateInfrastructure = function (args, res, next) {
             RedHatInsightsService.getInsightsReportForGroup(
               infrastructure,
               (err, report) => {
-                if (err) return common.handleError(res, err);
+                if (err) console.log(err);
+                console.log(report);
                 infrastructure.rh_insights_report = report;
                 saveInfra(infrastructure);
               }

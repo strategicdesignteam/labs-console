@@ -30,6 +30,7 @@ exports.getInsightsReportForGroup = function (infrastructure, callback) {
 function getInsightsGroupForInfrastructure(infrastructure, callback) {
   if (process.env.INSIGHTS_URL && process.env.INSIGHTS_AUTH) {
     get('groups', (err, groups) => {
+      if(err) return callback(err);
       var found = false;
       if (groups && groups.length) {
         groups.forEach((group) => {
@@ -55,7 +56,8 @@ function getInsightsGroupForInfrastructure(infrastructure, callback) {
 function getSystemsForGroup(groupId, callback) {
   if (process.env.INSIGHTS_URL && process.env.INSIGHTS_AUTH) {
     get(`systems?group=${groupId}`, (err, data) => {
-      if (data && data.resources && data.resources.length) {
+      if(err) callback(err);
+      else if (data && data.resources && data.resources.length) {
         callback(null, data.resources);
       }
       else {
@@ -83,7 +85,8 @@ function getSystemsReports(systems, callback) {
 function getSystem(systemId, callback) {
   if (process.env.INSIGHTS_URL && process.env.INSIGHTS_AUTH) {
     get(`systems/${systemId}/reports`, (err, system) => {
-      if (system) {
+      if(err) callback(err);
+      else if (system) {
         callback(null, system);
       }
       else {
@@ -113,8 +116,6 @@ function parseSystemReportCategories(systemReports, categories) {
 }
 
 function get(url, callback) {
-  console.log(process.env.INSIGHTS_URL + url);
-  console.log(process.env.INSIGHTS_URL + url);
   superagent
     .get(process.env.INSIGHTS_URL + url)
     .set({
@@ -123,8 +124,19 @@ function get(url, callback) {
     })
     .on('error', err => callback(err))
     .end((err, response) => {
-      if (err) callback(err);
-      var data = JSON.parse(response.text);
-      callback(null, data);
+      if (err) {
+        if(response && response.status === 401){
+          console.log('401: Unable to authenticate with Red Hat Insights API. Check INSIGHTS_AUTH.');
+        }
+        callback(err);
+      }
+      else if(response.text){
+        console.log(process.env.INSIGHTS_URL + url);
+        // console.log(JSON.stringify(response.text));
+        var data = JSON.parse(response.text);
+        callback(null, data);
+      } else {
+        return callback('Error. Unable to retrieve Red Hat Insights reports.');
+      }
     });
 }

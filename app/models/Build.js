@@ -14,7 +14,8 @@ var BuildSchema = new Schema(
     running_jobs: { type: Array },
     project_jobs: { type: Object },
     datetime_started: { type: Date },
-    datetime_completed: { type: Date }
+    datetime_completed: { type: Date },
+    ansible_tower_url: { type: String }
   },
   {
     // http://mongoosejs.com/docs/guide.html#timestamps

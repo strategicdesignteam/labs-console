@@ -34,14 +34,21 @@ class InfrastructureListView extends React.Component {
 
   static insightsRunning(infrastructure) {
     return (
-      infrastructure.rh_insights_status ===
-        constants.ANSIBLE_JOB_STATUS.RUNNING ||
+      infrastructure.rh_insights_status === constants.ANSIBLE_JOB_STATUS.RUNNING ||
       infrastructure.rh_insights_status === constants.ANSIBLE_JOB_STATUS.PENDING
     );
   }
 
+  static getInsightsReportCount = (report) => {
+    let count = 0;
+    Object.keys(report).map((item) => {
+      count += report[item];
+    });
+    return count;
+  };
+
   static formatInsightsChart(infrastructure) {
-    let chartData = {
+    const chartData = {
       columns: [],
       legend: { show: true, position: 'right' },
       size: { width: 210, height: 115 },
@@ -56,17 +63,12 @@ class InfrastructureListView extends React.Component {
             if (!(d[i] && (d[i].value || d[i].value === 0))) {
               continue;
             }
-            text =
-              `<table class='${$$.CLASS.tooltip}'>` +
-              `<tr><th colspan='2'>${d[i].name}</th></tr>`;
-            value = defaultValueFormat(
-              d[i].value,
-              d[i].ratio,
-              d[i].id,
-              d[i].index
-            );
+            text = `<table class='${$$.CLASS.tooltip}'>` + `<tr><th colspan='2'>${d[i].name}</th></tr>`;
+            value = defaultValueFormat(d[i].value, d[i].ratio, d[i].id, d[i].index);
             text += `<tr class='${$$.CLASS.tooltipName}-${d[i].id}'>`;
-            text += `<td class='name'><span style='background-color:${color(d[i].id)}'></span>${d[i].value}${d[i].value == 1 ? ' report' : ' reports'}</td>`;
+            text += `<td class='name'><span style='background-color:${color(d[i].id)}'></span>${d[i].value}${d[i].value == 1
+              ? ' report'
+              : ' reports'}</td>`;
             text += `<td class='value'>${value}</td>`;
             text += '</tr>';
           }
@@ -74,7 +76,7 @@ class InfrastructureListView extends React.Component {
         }
       }
     };
-    for (var prop in infrastructure.rh_insights_report) {
+    for (const prop in infrastructure.rh_insights_report) {
       chartData.columns.push([prop, infrastructure.rh_insights_report[prop]]);
     }
     return chartData;
@@ -91,7 +93,7 @@ class InfrastructureListView extends React.Component {
   render() {
     return (
       <ListGroupExpansionView key="list-expansion-view">
-        {this.props.infrastructures.map((infrastructure, i) => (
+        {this.props.infrastructures.map((infrastructure, i) =>
           <div className="infra-group-item list-group-item list-view-pf-stacked list-view-pf-top-align"
             key={i}
             onClick={e => this.listItemClick(e, i)}>
@@ -104,9 +106,7 @@ class InfrastructureListView extends React.Component {
                   !InfrastructureListView.insightsRunning(infrastructure) &&
                   infrastructure.rh_insights_report &&
                   Object.keys(infrastructure.rh_insights_report).length > 0 &&
-                  <button onClick={e =>
-                      this.props.handleInsightsRemediate(e, infrastructure)}
-                    className="btn btn-default">
+                  <button onClick={e => this.props.handleInsightsRemediate(e, infrastructure)} className="btn btn-default">
                     Remediate
                   </button>}
                 {infrastructure.rh_insights_enabled &&
@@ -126,29 +126,20 @@ class InfrastructureListView extends React.Component {
                     aria-expanded="false">
                     <span className="fa fa-ellipsis-v"/>
                   </button>
-                  <ul className="dropdown-menu dropdown-menu-right"
-                    aria-labelledby="dropupKebabRight2">
+                  <ul className="dropdown-menu dropdown-menu-right" aria-labelledby="dropupKebabRight2">
                     <li>
-                      <a onClick={e =>
-                          this.props.handleView(e, infrastructure.id)}>
-                        View
-                      </a>
+                      <a onClick={e => this.props.handleView(e, infrastructure.id)}>View</a>
                     </li>
                     <li role="separator" className="divider"/>
                     <li>
-                      <a onClick={e =>
-                          this.props.handleDelete(e, infrastructure)}>
-                        Delete
-                      </a>
+                      <a onClick={e => this.props.handleDelete(e, infrastructure)}>Delete</a>
                     </li>
                   </ul>
                 </div>
               </div>
               <div className="list-view-pf-main-info">
                 <div className="list-view-pf-left">
-                  <span className={InfrastructureListView.getIcon(
-                      infrastructure.status
-                    )}/>
+                  <span className={InfrastructureListView.getIcon(infrastructure.status)}/>
                   <img style={{
                     height: 40,
                     marginRight: 15,
@@ -161,113 +152,87 @@ class InfrastructureListView extends React.Component {
                 <div className="list-view-pf-body">
                   <div className="list-view-pf-description">
                     <div className="list-group-item-heading">
-                      <span>{infrastructure.name}</span>
+                      <span>
+                        {infrastructure.name}
+                      </span>
                     </div>
                     <div className="list-group-item-text">
                       {(() => {
                         const content = [];
                         if (
-                          infrastructure.status ===
-                            constants.ANSIBLE_JOB_STATUS.SUCCESSFUL ||
-                          infrastructure.status ===
-                            constants.ANSIBLE_JOB_STATUS.FAILED ||
-                          infrastructure.status ===
-                            constants.ANSIBLE_JOB_STATUS.CANCELLED
+                          infrastructure.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL ||
+                          infrastructure.status === constants.ANSIBLE_JOB_STATUS.FAILED ||
+                          infrastructure.status === constants.ANSIBLE_JOB_STATUS.CANCELLED
                         ) {
-                          content.push(
-                            <strong key="finished">Finished: </strong>
-                          );
-                          content.push(
-                            moment(infrastructure.datetime_completed).fromNow()
-                          );
+                          content.push(<strong key="finished">Finished: </strong>);
+                          content.push(moment(infrastructure.datetime_completed).fromNow());
                         }
                         else if (
-                          infrastructure.status ===
-                            constants.ANSIBLE_JOB_STATUS.PENDING ||
-                          infrastructure.status ===
-                            constants.ANSIBLE_JOB_STATUS.RUNNING
+                          infrastructure.status === constants.ANSIBLE_JOB_STATUS.PENDING ||
+                          infrastructure.status === constants.ANSIBLE_JOB_STATUS.RUNNING
                         ) {
-                          content.push(
-                            <strong key="started">Started: </strong>
-                          );
-                          content.push(
-                            moment(infrastructure.datetime_started).fromNow()
-                          );
+                          content.push(<strong key="started">Started: </strong>);
+                          content.push(moment(infrastructure.datetime_started).fromNow());
                         }
                         return content;
                       })()}
                     </div>
                   </div>
                   <div className="list-view-pf-additional-info">
-                    {(infrastructure.status ===
-                      constants.ANSIBLE_JOB_STATUS.PENDING ||
-                      infrastructure.status ===
-                        constants.ANSIBLE_JOB_STATUS.RUNNING) &&
-                        <div className="list-view-pf-additional-info-item">
-                          <div className="progress"
-                            style={{ width: 200, margin: 'auto' }}>
-                            {infrastructure.destroy_started &&
+                    {(infrastructure.status === constants.ANSIBLE_JOB_STATUS.PENDING ||
+                      infrastructure.status === constants.ANSIBLE_JOB_STATUS.RUNNING) &&
+                      <div className="list-view-pf-additional-info-item">
+                        <div className="progress" style={{ width: 200, margin: 'auto' }}>
+                          {infrastructure.destroy_started &&
                             <div className="progress-bar progress-bar-danger progress-bar-striped active"
                               role="progressbar"
                               style={{ width: '100%' }}>
                               <span>Deleting...</span>
                             </div>}
-                            {!infrastructure.destroy_started &&
+                          {!infrastructure.destroy_started &&
                             <div className="progress-bar progress-bar-striped active"
                               role="progressbar"
                               style={{ width: '100%' }}>
                               <span>Deploying...</span>
                             </div>}
-
+                        </div>
+                      </div>}
+                    {(infrastructure.status === constants.ANSIBLE_JOB_STATUS.FAILED ||
+                      infrastructure.status === constants.ANSIBLE_JOB_STATUS.CANCELLED) &&
+                      <div className="list-view-pf-additional-info-item">
+                        <div className="progress" style={{ width: 200, margin: 'auto' }}>
+                          <div className="progress-bar progress-bar-danger" role="progressbar" style={{ width: '100%' }}>
+                            <span>Error</span>
                           </div>
-                        </div>}
-                    {(infrastructure.status ===
-                      constants.ANSIBLE_JOB_STATUS.FAILED ||
-                      infrastructure.status ===
-                        constants.ANSIBLE_JOB_STATUS.CANCELLED) &&
-                        <div className="list-view-pf-additional-info-item">
-                          <div className="progress"
-                            style={{ width: 200, margin: 'auto' }}>
-                            <div className="progress-bar progress-bar-danger"
-                              role="progressbar"
-                              style={{ width: '100%' }}>
-                              <span>Error</span>
-                            </div>
-                          </div>
-                        </div>}
-                    {infrastructure.status ===
-                      constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
+                        </div>
+                      </div>}
+                    {infrastructure.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
                       <div className="list-view-pf-additional-info-item">
                         <span className="pficon pficon-cluster"/>
-                        <strong>{infrastructure.master_nodes}</strong>
-                        {infrastructure.master_nodes === 1
-                          ? 'master node'
-                          : 'master nodes'}
+                        <strong>
+                          {infrastructure.master_nodes}
+                        </strong>
+                        {infrastructure.master_nodes === 1 ? 'master node' : 'master nodes'}
                       </div>}
-                    {infrastructure.status ===
-                      constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
+                    {infrastructure.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
                       <div className="list-view-pf-additional-info-item">
                         <span className="pficon pficon-container-node"/>
-                        <strong>{infrastructure.compute_nodes}</strong>
-                        {infrastructure.compute_nodes === 1
-                          ? 'compute node'
-                          : 'compute nodes'}
+                        <strong>
+                          {infrastructure.compute_nodes}
+                        </strong>
+                        {infrastructure.compute_nodes === 1 ? 'compute node' : 'compute nodes'}
                       </div>}
                     {infrastructure.rh_insights_enabled &&
                       infrastructure.rh_insights_report &&
-                      Object.keys(infrastructure.rh_insights_report).length >
-                        0 &&
-                        <div className="list-view-pf-additional-info-item">
-                          <span className="pficon pficon-warning-triangle-o"/>
-                          <strong>
-                            {' '}
-                            {
-                            Object.keys(infrastructure.rh_insights_report)
-                              .length
-                          }
-                            {' '}
-                          </strong>
-                        Insights actions
+                      Object.keys(infrastructure.rh_insights_report).length > 0 &&
+                      <div className="list-view-pf-additional-info-item">
+                        <span className="pficon pficon-warning-triangle-o"/>
+                        <strong>
+                          {' '}{InfrastructureListView.getInsightsReportCount(infrastructure.rh_insights_report)}{' '}
+                        </strong>
+                        {InfrastructureListView.getInsightsReportCount(infrastructure.rh_insights_report) == 1
+                          ? 'Insights report'
+                          : 'Insights reports'}
                       </div>}
                   </div>
                 </div>
@@ -281,32 +246,26 @@ class InfrastructureListView extends React.Component {
                   <dl className="dl-horizontal">
                     <dt>Ansible</dt>
                     <dd>
-                      <a href={infrastructure.ansible_tower_link}
-                        target="_blank"
-                        rel="noopener noreferrer">
+                      <a href={infrastructure.ansible_tower_link} target="_blank" rel="noopener noreferrer">
                         Tower Job
                       </a>
                     </dd>
                     <dt>Public Hosted Zone</dt>
-                    <dd>{infrastructure.public_hosted_zone}</dd>
+                    <dd>
+                      {infrastructure.public_hosted_zone}
+                    </dd>
                   </dl>
                 </div>
                 <div className="col-xs-12 col-sm-6 col-md-4">
                   <dl className="dl-horizontal">
                     <dt>Started</dt>
                     <dd>
-                      {moment(infrastructure.datetime_started).format(
-                        'MMM Do YYYY, h:mm:ss a'
-                      )}
+                      {moment(infrastructure.datetime_started).format('MMM Do YYYY, h:mm:ss a')}
                     </dd>
-                    {infrastructure.status !==
-                      constants.ANSIBLE_JOB_STATUS.PENDING && <dt>Finished</dt>}
-                    {infrastructure.status !==
-                      constants.ANSIBLE_JOB_STATUS.PENDING &&
+                    {infrastructure.status !== constants.ANSIBLE_JOB_STATUS.PENDING && <dt>Finished</dt>}
+                    {infrastructure.status !== constants.ANSIBLE_JOB_STATUS.PENDING &&
                       <dd>
-                        {moment(infrastructure.datetime_completed).format(
-                          'MMM Do YYYY, h:mm:ss a'
-                        )}
+                        {moment(infrastructure.datetime_completed).format('MMM Do YYYY, h:mm:ss a')}
                       </dd>}
                   </dl>
                 </div>
@@ -314,12 +273,10 @@ class InfrastructureListView extends React.Component {
                   <dl className="dl-horizontal">
                     <dt>Status</dt>
                     <dd className={cx({
-                      'text-danger': infrastructure.status ===
-                          constants.ANSIBLE_JOB_STATUS.FAILED ||
-                          infrastructure.status ===
-                            constants.ANSIBLE_JOB_STATUS.CANCELLED,
-                      'text-success': infrastructure.status ===
-                          constants.ANSIBLE_JOB_STATUS.SUCCESSFUL
+                      'text-danger':
+                          infrastructure.status === constants.ANSIBLE_JOB_STATUS.FAILED ||
+                          infrastructure.status === constants.ANSIBLE_JOB_STATUS.CANCELLED,
+                      'text-success': infrastructure.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL
                     })}>
                       {infrastructure.status}
                     </dd>
@@ -331,65 +288,59 @@ class InfrastructureListView extends React.Component {
                   <dl className="dl-horizontal">
                     <dt>PaaS</dt>
                     <dd>
-                      {infrastructure.status ===
-                        constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
-                      <a href="#" target="_blank" rel="noopener noreferrer">
-                        OpenShift Container Platform
-                      </a>
-                      }
-                      <img src="/img/OpenShift-logo.svg"
-                        style={{ height: 100 }}
-                        alt="openshift"/>
+                      {infrastructure.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
+                        <a href="#" target="_blank" rel="noopener noreferrer">
+                          OpenShift Container Platform
+                        </a>}
+                      <img src="/img/OpenShift-logo.svg" style={{ height: 100 }} alt="openshift"/>
                     </dd>
                   </dl>
                 </div>
                 <div className="col-xs-12 col-sm-6 col-md-4">
                   <dl className="dl-horizontal">
                     {infrastructure.rh_cloudforms_enabled &&
-                      infrastructure.status ===
-                        constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
-                        <dt>Red Hat CloudForms</dt>}
+                      infrastructure.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
+                      <dt>Red Hat CloudForms</dt>}
                     {infrastructure.rh_cloudforms_enabled &&
-                      infrastructure.status ===
-                        constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
-                        <dd>
-                          <a href="#" target="_blank" rel="noopener noreferrer">
+                      infrastructure.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
+                      <dd>
+                        <a href="#" target="_blank" rel="noopener noreferrer">
                           Manage Infrastructure
                         </a>
-                        </dd>}
+                      </dd>}
                     <dt>Provider Platform</dt>
-                    <dd>{infrastructure.provider}</dd>
-                    {infrastructure.provider ===
-                      constants.INFRASTRUCTURE_TYPES.AWS.KEY && <dt>Region</dt>}
-                    {infrastructure.provider ===
-                      constants.INFRASTRUCTURE_TYPES.AWS.KEY &&
-                      <dd>{infrastructure.aws_region}</dd>}
+                    <dd>
+                      {infrastructure.provider}
+                    </dd>
+                    {infrastructure.provider === constants.INFRASTRUCTURE_TYPES.AWS.KEY && <dt>Region</dt>}
+                    {infrastructure.provider === constants.INFRASTRUCTURE_TYPES.AWS.KEY &&
+                      <dd>
+                        {infrastructure.aws_region}
+                      </dd>}
                   </dl>
                 </div>
                 <div className="col-xs-12 col-sm-6 col-md-4">
                   <dl className="dl-horizontal">
                     {infrastructure.rh_insights_enabled &&
-                      infrastructure.status ===
-                        constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
-                        <dt>Red Hat Insights</dt>}
+                      infrastructure.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
+                      <dt>Red Hat Insights</dt>}
                     {infrastructure.rh_insights_enabled &&
                       InfrastructureListView.insightsRunning(infrastructure) &&
-                      <dd> <a href="#">Remediation Job</a></dd>}
+                      <dd>
+                        {' '}<a href="#">Remediation Job</a>
+                      </dd>}
                     {infrastructure.rh_insights_enabled &&
                       !InfrastructureListView.insightsRunning(infrastructure) &&
                       infrastructure.rh_insights_report &&
                       <dd>
-                        <Chart data={InfrastructureListView.formatInsightsChart(
-                            infrastructure
-                          )}
-                          type="pie"/>
+                        <Chart data={InfrastructureListView.formatInsightsChart(infrastructure)} type="pie"/>
                       </dd>}
                   </dl>
                 </div>
               </div>
             </ListGroupExpansionContainer>
           </div>
-        ))}
+        )}
       </ListGroupExpansionView>
     );
   }

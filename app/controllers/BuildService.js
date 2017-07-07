@@ -36,7 +36,7 @@ exports.addBuild = function (args, res, next) {
         newBuild.running_jobs = args.body.runningJobs;
         newBuild.project_jobs = args.body.projectJobs;
         newBuild.datetime_started = args.body.dateTimeStarted;
-
+        newBuild.ansible_tower_url = `https://${process.env.TOWER_HOSTNAME}/#/workflows/`;
         newBuild.save((err, build) => {
           if (err) return common.handleError(res, err);
           res.json({ build });

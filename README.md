@@ -82,7 +82,7 @@ export DESTROY_INFRA_WORKFLOW_ID=171
 export ADD_PROJECT_WORKFLOW_ID=325
 export REMEDIATE_INSIGHTS_WORKFLOW_ID=0
 export INSIGHTS_URL=https://access.redhat.com/r/insights/v3/
-export INSIGHTS_AUTH=Basic cmhuLWVuZ2l==
+export INSIGHTS_AUTH="Basic cmhuLWVuZ2l=="
 export NODE_TLS_REJECT_UNAUTHORIZED=0
 EOF
 ```
