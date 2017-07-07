@@ -140,6 +140,10 @@ The following environment variables should be set in [OCP](https://www.openshift
 | INSIGHTS_AUTH | Basic cmhuLWVuZ2l== | Red Hat Insights Auth Header |
 | NODE_TLS_REJECT_UNAUTHORIZED | 0 | Ignore self signed cert errors with Tower |
 
+To get INSIGHTS_AUTH value you will need to run your RH customer portal username and password through base64 encoding like so:
+
+``` $ echo -n 'username:password' | base64 ```
+
 ### How to Test
 
 The unit tests are powered by [jest](https://facebook.github.io/jest/).
