@@ -83,7 +83,7 @@ class BuildCardView extends React.Component {
                       style={{ height: 22 }}
                       alt="ansible"/>
                   </div>
-                  <a href={`https://tower.strategicdesign.io/#/workflows/${build.project_jobs[stage.name][i].jobId}`}
+                  <a href={`https://tower2.strategicdesign.io/#/workflows/${build.project_jobs[stage.name][i].jobId}`}
                     target="_blank"
                     rel="noopener noreferrer">
                     Link to Tower Job

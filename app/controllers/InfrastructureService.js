@@ -58,7 +58,7 @@ exports.updateInfrastructure = function (args, res, next) {
       infrastructure.status = args.body.status;
       infrastructure.datetime_completed = args.body.datetime_completed;
       infrastructure.destroy_started = args.body.destroy_started;
-      infrastructure.ansible_tower_link = `https://tower.strategicdesign.io/#/workflows/${args.body.tower_job_id}#followAnchor`;
+      infrastructure.ansible_tower_link =  `https://${process.env.TOWER_HOSTNAME}/#/workflows/${args.body.tower_job_id}#followAnchor`;
       infrastructure.tower_job_id = args.body.tower_job_id;
       infrastructure.rh_insights_status = args.body.rh_insights_status;
       if (
@@ -77,7 +77,7 @@ exports.updateInfrastructure = function (args, res, next) {
             args.body.rh_insights_tower_job_id;
           infrastructure.rh_insights_tower_job_link = args.body
             .rh_insights_tower_job_id
-            ? `https://tower.strategicdesign.io/#/workflows/${args.body.rh_insights_tower_job_id}#followAnchor`
+            ? `https://${process.env.TOWER_HOSTNAME}/#/workflows/${args.body.rh_insights_tower_job_id}#followAnchor`
             : '';
           saveInfra(infrastructure);
         }

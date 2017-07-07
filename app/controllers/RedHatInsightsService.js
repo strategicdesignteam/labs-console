@@ -113,7 +113,8 @@ function parseSystemReportCategories(systemReports, categories) {
 }
 
 function get(url, callback) {
-  console.log(url);
+  console.log(process.env.INSIGHTS_URL + url);
+  console.log(process.env.INSIGHTS_URL + url);
   superagent
     .get(process.env.INSIGHTS_URL + url)
     .set({
