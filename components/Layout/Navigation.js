@@ -6,7 +6,7 @@ import './PfBreakpoints';
 import './PfVerticalNavigation';
 
 class Navigation extends React.Component {
-  state = { topologyTabActive: false, explicitCollapse: false };
+  state = { explicitCollapse: false };
 
   componentWillMount() {
     const location = history.getCurrentLocation();
@@ -19,9 +19,9 @@ class Navigation extends React.Component {
   }
 
   checkRoutes(location) {
-    const topologyRoutes = ['/topologies', '/topology'];
+    const infrastructurePipelineRoutes = ['/infrastructure-pipeline'];
     this.setState({
-      topologyTabActive: topologyRoutes.some(
+      infrastructurePipelineTabActive: infrastructurePipelineRoutes.some(
         route => location.pathname.indexOf(route) > -1
       )
     });
@@ -43,12 +43,22 @@ class Navigation extends React.Component {
               <span className="list-group-item-value">Infrastructures</span>
             </Link>
           </li>
-          <li className={`list-group-item${this.state.topologyTabActive ? ' active' : ''}`}>
-            <Link to="/topologies">
-              <span className="pficon pficon-topology"
+          <li className={`list-group-item${this.state.infrastructurePipelineTabActive ? ' active' : ''}`}>
+            <Link to="/infrastructure-pipelines">
+              <span className="pficon pficon-equalizer"
                 data-toggle="tooltip"
-                title="Topology"/>
-              <span className="list-group-item-value">Topologies</span>
+                title="Infrastructure Pipelines"/>
+              <span className="list-group-item-value">
+                Pipelines
+              </span>
+            </Link>
+          </li>
+          <li className={`list-group-item${location.pathname.indexOf('/project-templates') >= 0 ? ' active' : ''}`}>
+            <Link to="/project-templates">
+              <span className="pficon pficon-image"
+                data-toggle="tooltip"
+                title="Project Templates"/>
+              <span className="list-group-item-value">Project Templates</span>
             </Link>
           </li>
           <li className={`list-group-item${location.pathname === '/builds' ? ' active' : ''}`}>

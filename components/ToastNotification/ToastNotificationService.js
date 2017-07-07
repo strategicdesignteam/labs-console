@@ -6,6 +6,7 @@ class ToastNotificationService {
   constructor() {
     this.infrastructureCallbacks = [];
     this.pollingInfrastructures = [];
+    this.pollingInfraInterval = null;
 
     this.monitorNotifications = (notifications, callback) => {
       if (
@@ -38,26 +39,18 @@ class ToastNotificationService {
   pollRunningInfraBuilds = () => {
     const infrastructureApi = new labsApi.InfrastructureApi();
     const jobApi = new labsApi.JobApi();
+
     const that = this;
-
-    infrastructureApi.infrastructuresGet((error, infrastructures) => {
-      if (infrastructures && infrastructures.length) {
-        infrastructures.forEach((infrastructure) => {
-          if (
-            infrastructure.status === constants.ANSIBLE_JOB_STATUS.PENDING ||
-            infrastructure.status === constants.ANSIBLE_JOB_STATUS.RUNNING
-          ) {
-            // do not poll the same infrastructure twice
-            const polled = this.pollingInfrastructures.find(
-              infra => infra.id === infrastructure.id
-            );
-            if (polled) return;
-
-            // poll the infra and add it to the list
-            this.pollingInfrastructures.push(infrastructure);
-            let interval;
-            const checkJobs = () => {
-              clearInterval(interval);
+    const checkInfrastructures = () => {
+      // ideally we modify this query to only return running infras in this instance, but this works for now
+      infrastructureApi.infrastructuresGet((error, infrastructures) => {
+        if (infrastructures && infrastructures.length) {
+          infrastructures.forEach((infrastructure) => {
+            if (
+              infrastructure.status === constants.ANSIBLE_JOB_STATUS.PENDING ||
+              infrastructure.status === constants.ANSIBLE_JOB_STATUS.RUNNING
+            ) {
+              // check if job is now complete since last update
               jobApi.jobsIdGet(infrastructure.tower_job_id, (err, job) => {
                 if (
                   job.status === constants.ANSIBLE_JOB_STATUS.SUCCESSFUL ||
@@ -86,6 +79,7 @@ class ToastNotificationService {
                   else {
                     infrastructure.datetime_completed = job.finished;
                     infrastructure.status = job.status;
+
                     infrastructureApi.updateInfrastructure(
                       infrastructure.id,
                       { body: infrastructure },
@@ -105,17 +99,19 @@ class ToastNotificationService {
                     );
                   }
                 }
-                else {
-                  // poll running jobs every 10 sec, once they complete, update them & update state
-                  interval = setInterval(checkJobs, 10000);
-                }
               });
-            };
-            checkJobs();
-          }
-        });
-      }
-    });
+            }
+          });
+        }
+        else {
+          totalInfras = 0;
+        }
+      });
+    };
+    // poll every 8 seconds endlessly as these could get added or removed at any point
+    if (this.pollingInfraInterval === null) {
+      this.pollingInfraInterval = setInterval(checkInfrastructures, 8000);
+    }
   };
 }
 

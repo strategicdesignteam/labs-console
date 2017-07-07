@@ -42,14 +42,14 @@ class LoginPage extends React.Component {
       <div>
         <span id="badge">
           <img style={{ height: 69 }}
-            src="/img/magnet-bank-logo.svg"
+            src="/img/magnet-bank-logo2.svg"
             alt="logo"/>
         </span>
         <div className="container">
           <div className="row">
             <div className="col-sm-12">
               <div id="brand">
-                <img src="/img/magnet-bank.svg" alt="Magnet Bank"/>
+                <img src="/img/magnet-bank2.svg" alt="Magnet Bank"/>
               </div>
             </div>
             <div className="col-sm-7 col-md-6 col-lg-5 login">

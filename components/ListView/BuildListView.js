@@ -65,10 +65,14 @@ class BuildListView extends React.Component {
     // maintain the expanded state before updating
     updatedBuilds.forEach((build, i) => {
       updatedBuilds[i].active = this.state.builds[i].active;
-      updatedBuilds[i].topology.promotion_process.forEach((stage, j) => {
-        updatedBuilds[i].topology.promotion_process[
+      updatedBuilds[
+        i
+      ].infrastructurePipeline.promotion_process.forEach((stage, j) => {
+        updatedBuilds[i].infrastructurePipeline.promotion_process[
           j
-        ].active = this.state.builds[i].topology.promotion_process[j].active;
+        ].active = this.state.builds[
+          i
+        ].infrastructurePipeline.promotion_process[j].active;
       });
     });
     this.setState({ builds: updatedBuilds });
@@ -101,12 +105,12 @@ class BuildListView extends React.Component {
       update(prevState, {
         builds: {
           [i]: {
-            topology: {
+            infrastructurePipeline: {
               promotion_process: {
                 [j]: {
                   active: {
-                    $set: !prevState.builds[i].topology.promotion_process[j]
-                      .active
+                    $set: !prevState.builds[i].infrastructurePipeline
+                      .promotion_process[j].active
                   }
                 }
               }
@@ -136,7 +140,7 @@ class BuildListView extends React.Component {
                 <div className="list-pf-main-content"
                   style={{ flexBasis: '60%' }}>
                   <div className="list-pf-title">
-                    {build.topology.name}
+                    {build.infrastructurePipeline.name}
                   </div>
                   <div className="list-pf-description">
                     {(() => {
@@ -174,7 +178,7 @@ class BuildListView extends React.Component {
                   <div className="list-view-pf-additional-info-item">
                     <span className="fa fa-code-fork"/>
                     Version &nbsp;
-                    <strong>{build.topology_version}</strong>
+                    <strong>{build.infrastructurePipeline_version}</strong>
                   </div>
                 </div>
               </div>
@@ -203,7 +207,7 @@ class BuildListView extends React.Component {
               </div>
 
             </ListViewItemContainer>
-            {build.topology.promotion_process.map((stage, j) => (
+            {build.infrastructurePipeline.promotion_process.map((stage, j) => (
               <ListViewItemExpansion isActive={build.active}>
                 <ListViewItemContainer isExpansionItem
                   isActive={stage.active}

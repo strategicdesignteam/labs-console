@@ -5,17 +5,12 @@ var autoIncrement = require('mongoose-auto-increment');
 var Builds = require('./Build');
 
 /**
- * Project Template Schema
+ * RoleBindingSchema
  * @type {mongoose.Schema}
  */
-var ProjectTemplateSchema = new Schema({
-  infrastructure: { type: Number, ref: 'Infrastructure' },
-  infrastructureProvider: { type: String },
-  infrastructureName: { type: String },
-  name: { type: String, required: true },
-  display_name: { type: String },
-  apps: { type: Array, default: [] },
-  persistent_volume_claim_templates: { type: Array, default: [] }
+var RoleBindingSchema = new Schema({
+  user: { type: Object, required: true },
+  role: { type: String, required: true }
 });
 
 /**
@@ -23,10 +18,7 @@ var ProjectTemplateSchema = new Schema({
  * @type {mongoose.Schema}
  */
 var ProjectSchema = new Schema({
-  infrastructure: { type: Number, ref: 'Infrastructure' },
-  projectTemplateIndex: { type: Number },
-  infrastructureProvider: { type: String },
-  infrastructureName: { type: String },
+  projectTemplate: { type: Number, ref: 'ProjectTemplate' },
   name: { type: String, required: true },
   display_name: { type: String },
   apps: { type: Array, default: [] },
@@ -37,22 +29,15 @@ var ProjectSchema = new Schema({
 });
 
 /**
- * RoleBindingSchema
- * @type {mongoose.Schema}
- */
-var RoleBindingSchema = new Schema({
-  user: { type: Object, required: true },
-  role: { type: String, required: true }
-});
-
-
-/**
  * StageSchema
  * @type {mongoose.Schema}
  */
 var StageSchema = new Schema({
   name: { type: String, required: true },
   index: { type: Number },
+  infrastructure: { type: Number, ref: 'Infrastructure' },
+  infrastructureProvider: { type: String },
+  infrastructureName: { type: String },
   project_role_bindings: [RoleBindingSchema],
   application_promoters: [],
   projects: [ProjectSchema],
@@ -67,14 +52,12 @@ var StageSchema = new Schema({
 });
 
 /**
- * Topology Schema
+ * InfrastructurePipelineSchema
  * @type {mongoose.Schema}
  */
-var TopologySchema = new Schema(
+var InfrastructurePipelineSchema = new Schema(
   {
     name: { type: String, required: true },
-    description: { type: String },
-    project_templates: [ProjectTemplateSchema],
     promotion_process: [StageSchema],
     version: { type: Number }
   },
@@ -87,17 +70,23 @@ var TopologySchema = new Schema(
   }
 );
 
-TopologySchema.virtual('id').get(function () {
+InfrastructurePipelineSchema.virtual('id').get(function () {
   return this._id;
 });
 
-TopologySchema.set('toJSON', {
+InfrastructurePipelineSchema.set('toJSON', {
   virtuals: true
 });
 
-TopologySchema.pre('remove', function (next) {
-  Builds.remove({ topology: this._id }, next);
+InfrastructurePipelineSchema.pre('remove', function (next) {
+  Builds.remove({ infrastructurePipeline: this._id }, next);
 });
 
-TopologySchema.plugin(autoIncrement.plugin, 'Topology');
-module.exports = mongoose.model('Topology', TopologySchema);
+InfrastructurePipelineSchema.plugin(
+  autoIncrement.plugin,
+  'InfrastructurePipeline'
+);
+module.exports = mongoose.model(
+  'InfrastructurePipeline',
+  InfrastructurePipelineSchema
+);

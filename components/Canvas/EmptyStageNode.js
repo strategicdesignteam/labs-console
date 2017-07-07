@@ -1,7 +1,7 @@
 export const emptyStageNode = {
   name: 'Add Promotion Stage',
   titleYOffset: 24,
-  label: 'Add a promotion stage for your topology projects.',
+  label: 'Add a promotion stage for your infrastructure pipeline projects.',
   labelYOffset: 180,
   labelWidth: 200,
   icon: 'pficon pficon pficon-add-circle-o',

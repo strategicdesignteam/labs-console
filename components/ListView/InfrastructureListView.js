@@ -5,11 +5,13 @@ import { infraImage } from '../Canvas/CanvasHelpers';
 import ListGroupExpansionView from './ListGroupExpansionView';
 import ListGroupExpansionContainer from './ListGroupExpansionContainer';
 import constants from '../../core/constants';
+import Chart from '../Charts/Chart';
 
 class InfrastructureListView extends React.Component {
   static propTypes = {
     handleView: React.PropTypes.func,
     handleDelete: React.PropTypes.func,
+    handleInsightsRemediate: React.PropTypes.func,
     infrastructures: React.PropTypes.array
   };
 
@@ -28,6 +30,54 @@ class InfrastructureListView extends React.Component {
       default:
         return 'pficon pficon-info list-view-pf-icon-sm list-view-pf-icon-info';
     }
+  }
+
+  static insightsRunning(infrastructure) {
+    return (
+      infrastructure.rh_insights_status ===
+        constants.ANSIBLE_JOB_STATUS.RUNNING ||
+      infrastructure.rh_insights_status === constants.ANSIBLE_JOB_STATUS.PENDING
+    );
+  }
+
+  static formatInsightsChart(infrastructure) {
+    let chartData = {
+      columns: [],
+      legend: { show: true, position: 'right' },
+      size: { width: 210, height: 115 },
+      tooltip: {
+        contents(d, defaultTitleFormat, defaultValueFormat, color) {
+          let $$ = this,
+            config = $$.config,
+            text,
+            i,
+            value;
+          for (i = 0; i < d.length; i++) {
+            if (!(d[i] && (d[i].value || d[i].value === 0))) {
+              continue;
+            }
+            text =
+              `<table class='${$$.CLASS.tooltip}'>` +
+              `<tr><th colspan='2'>${d[i].name}</th></tr>`;
+            value = defaultValueFormat(
+              d[i].value,
+              d[i].ratio,
+              d[i].id,
+              d[i].index
+            );
+            text += `<tr class='${$$.CLASS.tooltipName}-${d[i].id}'>`;
+            text += `<td class='name'><span style='background-color:${color(d[i].id)}'></span>${d[i].value}${d[i].value == 1 ? ' report' : ' reports'}</td>`;
+            text += `<td class='value'>${value}</td>`;
+            text += '</tr>';
+          }
+          return `${text}</table>`;
+        }
+      }
+    };
+    for (var prop in infrastructure.rh_insights_report) {
+      chartData.columns.push([prop, infrastructure.rh_insights_report[prop]]);
+    }
+    return chartData;
   }
 
   state = {
@@ -50,6 +100,23 @@ class InfrastructureListView extends React.Component {
                 <span className="fa fa-angle-right"/>
               </div>
               <div className="list-view-pf-actions">
+                {infrastructure.rh_insights_enabled &&
+                  !InfrastructureListView.insightsRunning(infrastructure) &&
+                  infrastructure.rh_insights_report &&
+                  Object.keys(infrastructure.rh_insights_report).length > 0 &&
+                  <button onClick={e =>
+                      this.props.handleInsightsRemediate(e, infrastructure)}
+                    className="btn btn-default">
+                    Remediate
+                  </button>}
+                {infrastructure.rh_insights_enabled &&
+                  InfrastructureListView.insightsRunning(infrastructure) &&
+                  <div style={{
+                    display: 'inline-block',
+                    marginRight: 10,
+                    marginTop: 4
+                  }}
+                    className="spinner spinner-sm"/>}
                 <div className="dropdown pull-right dropdown-kebab-pf">
                   <button className="btn btn-link dropdown-toggle"
                     type="button"
@@ -186,6 +253,22 @@ class InfrastructureListView extends React.Component {
                           ? 'compute node'
                           : 'compute nodes'}
                       </div>}
+                    {infrastructure.rh_insights_enabled &&
+                      infrastructure.rh_insights_report &&
+                      Object.keys(infrastructure.rh_insights_report).length >
+                        0 &&
+                        <div className="list-view-pf-additional-info-item">
+                          <span className="pficon pficon-warning-triangle-o"/>
+                          <strong>
+                            {' '}
+                            {
+                            Object.keys(infrastructure.rh_insights_report)
+                              .length
+                          }
+                            {' '}
+                          </strong>
+                        Insights actions
+                      </div>}
                   </div>
                 </div>
               </div>
@@ -248,6 +331,12 @@ class InfrastructureListView extends React.Component {
                   <dl className="dl-horizontal">
                     <dt>PaaS</dt>
                     <dd>
+                      {infrastructure.status ===
+                        constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
+                      <a href="#" target="_blank" rel="noopener noreferrer">
+                        OpenShift Container Platform
+                      </a>
+                      }
                       <img src="/img/OpenShift-logo.svg"
                         style={{ height: 100 }}
                         alt="openshift"/>
@@ -256,6 +345,18 @@ class InfrastructureListView extends React.Component {
                 </div>
                 <div className="col-xs-12 col-sm-6 col-md-4">
                   <dl className="dl-horizontal">
+                    {infrastructure.rh_cloudforms_enabled &&
+                      infrastructure.status ===
+                        constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
+                        <dt>Red Hat CloudForms</dt>}
+                    {infrastructure.rh_cloudforms_enabled &&
+                      infrastructure.status ===
+                        constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
+                        <dd>
+                          <a href="#" target="_blank" rel="noopener noreferrer">
+                          Manage Infrastructure
+                        </a>
+                        </dd>}
                     <dt>Provider Platform</dt>
                     <dd>{infrastructure.provider}</dd>
                     {infrastructure.provider ===
@@ -265,8 +366,27 @@ class InfrastructureListView extends React.Component {
                       <dd>{infrastructure.aws_region}</dd>}
                   </dl>
                 </div>
+                <div className="col-xs-12 col-sm-6 col-md-4">
+                  <dl className="dl-horizontal">
+                    {infrastructure.rh_insights_enabled &&
+                      infrastructure.status ===
+                        constants.ANSIBLE_JOB_STATUS.SUCCESSFUL &&
+                        <dt>Red Hat Insights</dt>}
+                    {infrastructure.rh_insights_enabled &&
+                      InfrastructureListView.insightsRunning(infrastructure) &&
+                      <dd> <a href="#">Remediation Job</a></dd>}
+                    {infrastructure.rh_insights_enabled &&
+                      !InfrastructureListView.insightsRunning(infrastructure) &&
+                      infrastructure.rh_insights_report &&
+                      <dd>
+                        <Chart data={InfrastructureListView.formatInsightsChart(
+                            infrastructure
+                          )}
+                          type="pie"/>
+                      </dd>}
+                  </dl>
+                </div>
               </div>
-
             </ListGroupExpansionContainer>
           </div>
         ))}

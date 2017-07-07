@@ -13,26 +13,51 @@
     "path": "/infrastructures",
     "page": "./pages/infrastructures",
     "chunk": "infrastructures"
-  },  
+  },
   {
     "path": "/infrastructures/create",
     "page": "./pages/infrastructures/create",
     "chunk": "infrastructures"
-  },  
+  },
   {
     "path": "/infrastructures/:id",
     "page": "./pages/infrastructures/create",
     "chunk": "infrastructures"
-  },  
-  {
-    "path": "/topologies",
-    "page": "./pages/topologies",
-    "chunk": "topology"
   },
   {
-    "path": "/topology/:id",
-    "page": "./pages/topology",
-    "chunk": "topology"
+    "path": "/infrastructure-pipelines",
+    "page": "./pages/infrastructure-pipelines",
+    "chunk": "infrastructurepipelines"
+  },
+  {
+    "path": "/infrastructure-pipelines/create",
+    "page": "./pages/infrastructure-pipelines/create",
+    "chunk": "infrastructurepipelines"
+  },
+  {
+    "path": "/infrastructure-pipelines/:id",
+    "page": "./pages/infrastructure-pipelines/create",
+    "chunk": "infrastructurepipelines"
+  },
+  {
+    "path": "/infrastructure-pipeline/:id",
+    "page": "./pages/infrastructure-pipeline",
+    "chunk": "infrastructurepipelines"
+  },
+  {
+    "path": "/project-templates",
+    "page": "./pages/project-templates",
+    "chunk": "projecttemplates"
+  },
+  {
+    "path": "/project-templates/create",
+    "page": "./pages/project-templates/create",
+    "chunk": "projecttemplates"
+  },
+  {
+    "path": "/project-templates/:id",
+    "page": "./pages/project-templates/create",
+    "chunk": "projecttemplates"
   },
   {
     "path": "/error",

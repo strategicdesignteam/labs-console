@@ -73,11 +73,16 @@ If running labs-console locally, you'll need to export the variables below befor
 
 ```shell
 cat << EOF > ~/labs-console-setvars.rc
+export ADMIN_USER=admin
+export ADMIN_PASS=password
 export TOWER_URL=https://username:password@tower.domain.com/
-export NODE_TLS_REJECT_UNAUTHORIZED=0
 export ADD_INFRA_WORKFLOW_ID=89
 export DESTROY_INFRA_WORKFLOW_ID=171
 export ADD_PROJECT_WORKFLOW_ID=325
+export REMEDIATE_INSIGHTS_WORKFLOW_ID=0
+export INSIGHTS_URL=https://access.redhat.com/r/insights/v3/
+export INSIGHTS_AUTH=Basic cmhuLWVuZ2l==
+export NODE_TLS_REJECT_UNAUTHORIZED=0
 EOF
 ```
 
@@ -130,6 +135,9 @@ The following environment variables should be set in [OCP](https://www.openshift
 | ADD_INFRA_WORKFLOW_ID | 0 | Tower Add Infra Workflow ID |
 | DESTROY_INFRA_WORKFLOW_ID | 0 | Tower Delete Infra Workflow ID |
 | ADD_PROJECT_WORKFLOW_ID | 0 | Tower Add Project Workflow ID |
+| REMEDIATE_INSIGHTS_WORKFLOW_ID | 0 | Tower Remediate Red Hat Insights Workflow ID |
+| INSIGHTS_URL | https://access.redhat.com/r/insights/v3/ | Red Hat Insights API URL |
+| INSIGHTS_AUTH | Basic cmhuLWVuZ2l== | Red Hat Insights Auth Header |
 | NODE_TLS_REJECT_UNAUTHORIZED | 0 | Ignore self signed cert errors with Tower |
 
 ### How to Test

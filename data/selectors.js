@@ -5,14 +5,12 @@ import constants from '../core/constants';
 
 const selectors = {
   /**
-   * Check topology for at least one stage with projects
+   * Check infrastructure pipeline for at least one stage with projects
    */
-  hasStageProjects(topology) {
+  hasStageProjects(infrastructurePipeline) {
     let stageProjects = false;
-    if (
-      topology.project_templates.length && topology.promotion_process.length
-    ) {
-      topology.promotion_process.map((stages) => {
+    if (infrastructurePipeline.promotion_process.length) {
+      infrastructurePipeline.promotion_process.map((stages) => {
         if (stages.projects.length) {
           stageProjects = true;
         }
@@ -21,29 +19,21 @@ const selectors = {
     return stageProjects;
   },
   /**
-   * Check topology for any stage projects w/ non ready infra
+   * Check infrastructure pipeline for any stage projects w/ non ready infra
    */
-  missingInfra(topology, infrastructures) {
+  missingInfra(infrastructurePipeline, infrastructures) {
     const missingInfra = [];
-    if (
-      topology.project_templates.length && topology.promotion_process.length
-    ) {
-      topology.promotion_process.map((stage) => {
-        if (stage.projects.length) {
-          stage.projects.map((stageProject) => {
-            const infra = infrastructures.find(
-              infra => infra.id == stageProject.infrastructure
-            );
-            if (
-              infra && infra.status !== constants.ANSIBLE_JOB_STATUS.SUCCESSFUL
-            ) {
-              missingInfra.push({ stage, stageProject });
-            }
-            else if (!infra) {
-              // infra has been deleted
-              missingInfra.push({ stage, stageProject });
-            }
-          });
+    if (infrastructurePipeline.promotion_process.length) {
+      infrastructurePipeline.promotion_process.map((stage) => {
+        const infra = infrastructures.find(
+          infra => infra.id == stage.infrastructure
+        );
+        if (infra && infra.status !== constants.ANSIBLE_JOB_STATUS.SUCCESSFUL) {
+          missingInfra.push({ stage });
+        }
+        else if (!infra) {
+          // infra has been deleted
+          missingInfra.push({ stage });
         }
       });
     }

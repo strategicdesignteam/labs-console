@@ -94,7 +94,6 @@ class ProjectCanvasManager extends React.Component {
   render() {
     const {
       project,
-      infrastructures,
       handleProjectChange,
       handleAppChange,
       canvasClicked,
@@ -141,8 +140,7 @@ class ProjectCanvasManager extends React.Component {
           <CanvasPanel panelTitle={selectedNodeIndex < 0 ? 'Project' : 'Application'}>
             {selectedNodeIndex < 0 &&
               <ProjectPanel handleChange={handleProjectChange}
-                value={project}
-                infrastructures={infrastructures}/>}
+                value={project}/>}
             {selectedNodeIndex >= 0 &&
               <ApplicationPanel handleChange={handleAppChange}
                 value={JSON.stringify(nodes[selectedNodeIndex], null, 2)}/>}

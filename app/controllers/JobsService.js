@@ -36,6 +36,18 @@ exports.addProjectJob = function (args, res, next) {
   }
 };
 
+exports.insightsRemediateJob = function (args, res, next) {
+  console.log(args.body.infrastructureId);
+  if (process.env.TOWER_URL) {
+    var url = `${process.env.TOWER_URL}api/v1/workflow_job_templates/${process.env.REMEDIATE_INSIGHTS_WORKFLOW_ID}/launch/`;
+    post(url, args, res, next);
+  }
+  else {
+    // return dummy response for UI if TOWER_URL not configured...
+    res.json(mockAddJob.mock);
+  }
+};
+
 function post(url, args, res, next) {
   superagent
     .post(url)

@@ -47,7 +47,7 @@ exports.updateUser = function (args, res, next) {
       user.ssh_public_key = args.body.ssh_public_key;
 
       user.save((err) => {
-        if (err) return validationError(res, err);
+        if (err) return common.handleError(res, err);
         res.send(200);
       });
     }

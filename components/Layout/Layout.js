@@ -15,7 +15,8 @@ class Layout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      explicitCollapse: location.pathname.indexOf('/topology') > -1
+      explicitCollapse: location.pathname.indexOf('/infrastructure-pipeline/') >
+        -1
     };
   }
 

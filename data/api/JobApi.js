@@ -173,6 +173,51 @@
     };
 
     /**
+     * Callback function to receive the result of the addInsightsRemediateJob operation.
+     * @callback module:api/JobApi~addInsightsRemediateJobCallback
+     * @param {String} error Error message, if any.
+     * @param data This operation does not return a value.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Add a new project Job
+     *
+     * @param {Object} opts Optional parameters
+     * @param {module:model/Body} opts.body Job object that needs to be added to the store
+     * @param {module:api/JobApi~addInsightsRemediateJobCallback} callback The callback function, accepting three arguments: error, data, response
+     */
+    this.addInsightsRemediateJob = function (opts, callback) {
+      opts = opts || {};
+      const postBody = opts.body;
+
+      const pathParams = {};
+      const queryParams = {};
+      const headerParams = {};
+      const formParams = {};
+
+      const authNames = [];
+      const contentTypes = ['application/json'];
+      const accepts = ['application/json'];
+      const returnType = Object;
+
+      return this.apiClient.callApi(
+        '/jobs/insightsRemediate',
+        'POST',
+        pathParams,
+        queryParams,
+        headerParams,
+        formParams,
+        postBody,
+        authNames,
+        contentTypes,
+        accepts,
+        returnType,
+        callback
+      );
+    };
+
+    /**
      * Callback function to receive the result of the JobsIdGet operation.
      * @callback module:api/JobApi~JobsIdGetCallback
      * @param {String} error Error message, if any.

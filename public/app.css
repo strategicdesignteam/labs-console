@@ -777,3 +777,10 @@ pf-tooltip {
   display: inline-block; 
   vertical-align: middle;
 }
+
+/** 
+  C3 Chart Styles 
+*/
+.c3-tooltip {
+  width: 150px;
+}

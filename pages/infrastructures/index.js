@@ -81,6 +81,32 @@ class InfrastructurePage extends React.Component {
     this.setState({ alertDismissed: true });
   };
 
+  handleInsightsRemediate = (event, infrastructure) => {
+    event.preventDefault();
+
+    const infrastructureApi = new labsApi.InfrastructureApi();
+    const jobApi = new labsApi.JobApi();
+
+    jobApi.addInsightsRemediateJob(
+      { body: { infrastructureId: infrastructure.id } },
+      (e, job) => {
+        if (e) console.error(e);
+        infrastructure.rh_insights_status = job.status;
+        infrastructure.rh_insights_tower_job_id = job.id;
+
+        infrastructureApi.updateInfrastructure(
+          infrastructure.id,
+          { body: infrastructure },
+          (e) => {
+            // todo: display an error
+            if (e) console.error(e);
+            this.getInfrastructures();
+          }
+        );
+      }
+    );
+  };
+
   render() {
     return (
       <Layout className="container-fluid container-pf-nav-pf-vertical" nav>
@@ -125,6 +151,7 @@ class InfrastructurePage extends React.Component {
               <InfrastructureListView infrastructures={this.state.infrastructures}
                 handleView={this.handleViewInfrastructure}
                 handleDelete={this.handleDeleteInfrastructure}
+                handleInsightsRemediate={this.handleInsightsRemediate}
                 key="infrastructures-list-view"/>
             );
           }
@@ -135,8 +162,8 @@ class InfrastructurePage extends React.Component {
               </h4>
             );
             content.push(
-              <p key="infrastructures-no-topology-message">
-                An application topology requires an infrastructure. Create an infrastructure to begin.
+              <p key="infrastructures-no-infrastructure-pipeline-message">
+                An infrastructure pipeline requires an infrastructure. Create an infrastructure to begin.
               </p>
             );
           }

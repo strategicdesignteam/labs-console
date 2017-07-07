@@ -18,7 +18,8 @@ class CreateInfrastructureForm extends React.Component {
   state = {
     newInfrastructure: {},
     showClientSecret: false,
-    isNew: false
+    isNew: false,
+    advancedOptions: false
   };
 
   componentWillMount() {
@@ -28,6 +29,7 @@ class CreateInfrastructureForm extends React.Component {
     if (isNew) {
       newInfrastructure.master_nodes = 1;
       newInfrastructure.compute_nodes = 3;
+      newInfrastructure.authenication_provider = 'HTTPD';
     }
     this.setState({ newInfrastructure, isNew });
     this.checkCreateEnabled(newInfrastructure, isNew);
@@ -48,18 +50,28 @@ class CreateInfrastructureForm extends React.Component {
 
       const infra = Object.assign({}, this.state.newInfrastructure);
 
-      // call the JobsApi to create the Job in Tower, and associate Job ID
-      jobApi.addInfrastructureJob({ body: {} }, (error, job) => {
-        infra.status = job.status;
-        infra.tower_job_id = job.id;
-        infra.datetime_started = job.created;
-
-        infrastructureApi.addInfrastructure({ body: infra }, (e) => {
-          // todo: display an error
-          if (e) console.error(e);
-          this.props.handleSubmit(event);
-        });
-      });
+      // create the infrastructure first so we can pass its ID to the Job
+      infrastructureApi.addInfrastructure(
+        { body: infra },
+        (e, data, response) => {
+          let infrastructure = response.body.infrastructure;
+          // call the JobsApi to create the Job in Tower, and associate Job ID
+          jobApi.addInfrastructureJob({ body: infrastructure }, (e, job) => {
+            // update the infras status and job id
+            infrastructure.status = job.status;
+            infrastructure.tower_job_id = job.id;
+            infrastructure.datetime_started = job.created;
+            infrastructureApi.updateInfrastructure(
+              infrastructure.id,
+              { body: infrastructure },
+              (e) => {
+                if (e) console.error(e);
+                this.props.handleSubmit(event);
+              }
+            );
+          });
+        }
+      );
     }
     event.preventDefault();
   };
@@ -124,6 +136,12 @@ class CreateInfrastructureForm extends React.Component {
       showClientSecret: !prevState.showClientSecret
     }));
   }
+
+  advancedOptionsClick = () => {
+    this.setState(prevState => ({
+      advancedOptions: !prevState.advancedOptions
+    }));
+  };
 
   render() {
     return (
@@ -274,140 +292,192 @@ class CreateInfrastructureForm extends React.Component {
               disabled={!this.state.isNew}/>
           </div>
         </div>
-        <div className="form-group">
-          <label htmlFor="authenication_provider"
-            className="col-sm-2 control-label required-pf">
-            Authenication Provider
-          </label>
-          <div className="col-sm-8 col-md-6">
-            <select id="authenication_provider"
-              value={this.state.newInfrastructure.authenication_provider}
-              className="selectpicker form-control"
-              onChange={(e) => {
-                this.handleChange(e, 'authenication_provider');
-              }}
-              disabled={!this.state.isNew}>
-              <option/>
-              <option>GitHub</option>
-              <option>HTTPD</option>
-            </select>
-          </div>
-        </div>
-        {this.state.newInfrastructure.authenication_provider === 'GitHub' &&
-          <div className="form-group">
-            <label htmlFor="github_client_id"
-              className="col-sm-2 control-label required-pf">
-              GitHub Client ID
-            </label>
-            <div className="col-sm-8 col-md-6">
-              <input type="text"
-                className="form-control"
-                id="github_client_id"
-                required=""
-                placeholder=""
-                value={this.state.newInfrastructure.github_client_id}
-                onChange={(e) => {
-                  this.handleChange(e, 'github_client_id');
-                }}
-                disabled={!this.state.isNew}/>
+
+        <fieldset className="fields-section-pf">
+          <legend className="fields-section-header-pf"
+            aria-expanded={this.state.advancedOptions}>
+            <span className={cx(
+                'fa',
+                'fa-angle-right',
+              {
+                'fa-angle-down': this.state.advancedOptions
+              },
+                'field-section-toggle-pf'
+              )}
+              onClick={this.advancedOptionsClick}/>
+            <a href="#"
+              className="field-section-toggle-pf"
+              onClick={this.advancedOptionsClick}>
+              Advanced Options
+            </a>
+          </legend>
+        </fieldset>
+        {this.state.advancedOptions &&
+          <div>
+            <div className="form-group">
+              <label htmlFor="authenication_provider"
+                className="col-sm-2 control-label required-pf">
+                Authenication Provider
+              </label>
+              <div className="col-sm-8 col-md-6">
+                <select id="authenication_provider"
+                  value={this.state.newInfrastructure.authenication_provider}
+                  className="selectpicker form-control"
+                  onChange={(e) => {
+                    this.handleChange(e, 'authenication_provider');
+                  }}
+                  disabled={!this.state.isNew}>
+                  <option>HTTPD</option>
+                  <option>GitHub</option>
+                </select>
+              </div>
+            </div>
+            {this.state.newInfrastructure.authenication_provider === 'GitHub' &&
+              <div className="form-group">
+                <label htmlFor="github_client_id"
+                  className="col-sm-2 control-label required-pf">
+                  GitHub Client ID
+                </label>
+                <div className="col-sm-8 col-md-6">
+                  <input type="text"
+                    className="form-control"
+                    id="github_client_id"
+                    required=""
+                    placeholder=""
+                    value={this.state.newInfrastructure.github_client_id}
+                    onChange={(e) => {
+                      this.handleChange(e, 'github_client_id');
+                    }}
+                    disabled={!this.state.isNew}/>
+                </div>
+              </div>}
+            {this.state.newInfrastructure.authenication_provider === 'GitHub' &&
+              <div className="form-group">
+                <label htmlFor="github_client_secret"
+                  className="col-sm-2 control-label required-pf">
+                  GitHub Client Secret
+                </label>
+                <div className="col-sm-8 col-md-6">
+                  <input type={this.state.showClientSecret ? 'text' : 'password'}
+                    className="form-control"
+                    id="github_client_secret"
+                    required=""
+                    placeholder=""
+                    value={this.state.newInfrastructure.github_client_secret}
+                    onChange={(e) => {
+                      this.handleChange(e, 'github_client_secret');
+                    }}
+                    disabled={!this.state.isNew}/>
+                </div>
+                <div className="col-sm-2">
+                  <button className={cx('btn', {
+                    'btn-default': !this.state.showClientSecret,
+                    'btn-danger': this.state.showClientSecret
+                  })}
+                    onClick={(e) => {
+                      this.showClientSecretClick(e);
+                    }}>
+                    {this.state.showClientSecret ? 'Hide' : 'Show'}
+                  </button>
+                </div>
+              </div>}
+            {this.state.newInfrastructure.authenication_provider === 'GitHub' &&
+              <div className="form-group">
+                <label htmlFor="github_organization"
+                  className="col-sm-2 control-label required-pf">
+                  GitHub Organization
+                </label>
+                <div className="col-sm-8 col-md-6">
+                  <input type="text"
+                    className="form-control"
+                    id="github_organization"
+                    required=""
+                    placeholder=""
+                    value={this.state.newInfrastructure.github_organization}
+                    onChange={(e) => {
+                      this.handleChange(e, 'github_organization');
+                    }}
+                    disabled={!this.state.isNew}/>
+                </div>
+              </div>}
+
+            <div className="form-group">
+              <label className="col-sm-2 control-label"
+                htmlFor="redhat_insights">
+                Integrated Services
+              </label>
+              <div className="col-sm-10">
+                <label className="checkbox-inline" htmlFor="redhat_insights">
+                  <input type="checkbox"
+                    id="redhat_insights"
+                    checked={this.state.newInfrastructure.rh_insights_enabled}
+                    onChange={(e) => {
+                      this.handleCheckChanged(e, 'rh_insights_enabled');
+                    }}/> Enable Red Hat Insights
+                </label>
+              </div>
+              <div className="col-sm-2 control-label"/>
+              <div className="col-sm-10">
+                <label className="checkbox-inline" htmlFor="redhat_cloudforms">
+                  <input type="checkbox"
+                    id="redhat_cloudforms"
+                    checked={this.state.newInfrastructure.rh_cloudforms_enabled}
+                    onChange={(e) => {
+                      this.handleCheckChanged(e, 'rh_cloudforms_enabled');
+                    }}/> Enable Red Hat CloudForms
+                </label>
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="col-sm-2 control-label" id="compute_nodes_label">
+                <label htmlFor="compute_nodes" className="tooltip-label">
+                  Compute Nodes
+                </label>
+                <span id="compute_nodes_tooltip"
+                  className="pficon pficon-info tooltip-info"/>
+                <Tooltip placement="right"
+                  targetSelector="#compute_nodes_label">
+                  Number of compute nodes available to the OCP cluster.
+                </Tooltip>
+              </div>
+              <div className="col-xs-2">
+                <input type="number"
+                  className="form-control"
+                  id="compute_nodes"
+                  placeholder=""
+                  min="0"
+                  max="10"
+                  value={this.state.newInfrastructure.compute_nodes}
+                  onChange={(e) => {
+                    this.handleChange(e, 'compute_nodes');
+                  }}
+                  disabled={!this.state.isNew}/>
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="col-sm-2 control-label"
+                id="highly_available_label">
+                <label htmlFor="highly_available" className="tooltip-label">
+                  Highly Available
+                </label>
+                <span id="highly_available_tooltip"
+                  className="pficon pficon-info tooltip-info"/>
+                <Tooltip placement="right"
+                  targetSelector="#highly_available_label">
+                  Highly available OCP clusters have three master nodes as opposed to one.
+                </Tooltip>
+              </div>
+              <div className="col-xs-2">
+                <input type="checkbox"
+                  id="highly_available"
+                  checked={this.state.newInfrastructure.highly_available}
+                  onChange={(e) => {
+                    this.handleCheckChanged(e, 'highly_available');
+                  }}
+                  disabled={!this.state.isNew}/>
+              </div>
             </div>
           </div>}
-        {this.state.newInfrastructure.authenication_provider === 'GitHub' &&
-          <div className="form-group">
-            <label htmlFor="github_client_secret"
-              className="col-sm-2 control-label required-pf">
-              GitHub Client Secret
-            </label>
-            <div className="col-sm-8 col-md-6">
-              <input type={this.state.showClientSecret ? 'text' : 'password'}
-                className="form-control"
-                id="github_client_secret"
-                required=""
-                placeholder=""
-                value={this.state.newInfrastructure.github_client_secret}
-                onChange={(e) => {
-                  this.handleChange(e, 'github_client_secret');
-                }}
-                disabled={!this.state.isNew}/>
-            </div>
-            <div className="col-sm-2">
-              <button className={cx('btn', {
-                'btn-default': !this.state.showClientSecret,
-                'btn-danger': this.state.showClientSecret
-              })}
-                onClick={(e) => {
-                  this.showClientSecretClick(e);
-                }}>
-                {this.state.showClientSecret ? 'Hide' : 'Show'}
-              </button>
-            </div>
-          </div>}
-        {this.state.newInfrastructure.authenication_provider === 'GitHub' &&
-          <div className="form-group">
-            <label htmlFor="github_organization"
-              className="col-sm-2 control-label required-pf">
-              GitHub Organization
-            </label>
-            <div className="col-sm-8 col-md-6">
-              <input type="text"
-                className="form-control"
-                id="github_organization"
-                required=""
-                placeholder=""
-                value={this.state.newInfrastructure.github_organization}
-                onChange={(e) => {
-                  this.handleChange(e, 'github_organization');
-                }}
-                disabled={!this.state.isNew}/>
-            </div>
-          </div>}
-        <hr/>
-        <div className="form-group">
-          <div className="col-sm-2 control-label" id="compute_nodes_label">
-            <label htmlFor="compute_nodes" className="tooltip-label">
-              Compute Nodes
-            </label>
-            <span id="compute_nodes_tooltip"
-              className="pficon pficon-info tooltip-info"/>
-            <Tooltip placement="right" targetSelector="#compute_nodes_label">
-              Number of compute nodes available to the OCP cluster.
-            </Tooltip>
-          </div>
-          <div className="col-xs-2">
-            <input type="number"
-              className="form-control"
-              id="compute_nodes"
-              placeholder=""
-              min="0"
-              max="10"
-              value={this.state.newInfrastructure.compute_nodes}
-              onChange={(e) => {
-                this.handleChange(e, 'compute_nodes');
-              }}
-              disabled={!this.state.isNew}/>
-          </div>
-        </div>
-        <div className="form-group">
-          <div className="col-sm-2 control-label" id="highly_available_label">
-            <label htmlFor="highly_available" className="tooltip-label">
-              Highly Available
-            </label>
-            <span id="highly_available_tooltip"
-              className="pficon pficon-info tooltip-info"/>
-            <Tooltip placement="right" targetSelector="#highly_available_label">
-              Highly available OCP clusters have three master nodes as opposed to one.
-            </Tooltip>
-          </div>
-          <div className="col-xs-2">
-            <input type="checkbox"
-              id="highly_available"
-              checked={this.state.newInfrastructure.highly_available}
-              onChange={(e) => {
-                this.handleCheckChanged(e, 'highly_available');
-              }}
-              disabled={!this.state.isNew}/>
-          </div>
-        </div>
 
         {this.state.isNew &&
           <div className="form-group">
@@ -420,25 +490,28 @@ class CreateInfrastructureForm extends React.Component {
                 {' '}
                 will start the automations to deploy Red Hat OpenShift Container Platform on the selected
                 {' '}
-                provider platform. This platform will be then be available to your topology projects.
+                provider platform. This platform will be then be available to your infrastructure pipelines.
               </p>
             </div>
           </div>}
 
         {this.state.isNew &&
-          <div className="form-group text-center">
-            <button type="submit"
-              className="btn btn-primary"
-              disabled={!this.state.createEnabled}
-              onClick={this.handleSubmit}>
-              Create
-            </button>
-            &nbsp;&nbsp;
-            <button type="submit"
-              className="btn btn-default"
-              onClick={this.props.handleCancel}>
-              Cancel
-            </button>
+          <div className="form-group">
+            <div className="col-sm-2"/>
+            <div className="col-sm-8">
+              <button type="submit"
+                className="btn btn-primary"
+                disabled={!this.state.createEnabled}
+                onClick={this.handleSubmit}>
+                Create
+              </button>
+              &nbsp;&nbsp;
+              <button type="submit"
+                className="btn btn-default"
+                onClick={this.props.handleCancel}>
+                Cancel
+              </button>
+            </div>
           </div>}
       </form>
     );

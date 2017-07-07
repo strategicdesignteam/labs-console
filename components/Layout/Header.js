@@ -22,10 +22,10 @@ class Header extends React.Component {
           </button>
           <a href="/" className="navbar-brand">
             <img className={cx(s.labs_logo, 'navbar-brand-icon')}
-              src="/img/magnet-bank-logo.svg"
+              src="/img/magnet-bank-logo2.svg"
               alt=""/>
             <img className={cx(s.labs_brand, 'navbar-brand-name')}
-              src="/img/magnet-bank.svg"
+              src="/img/magnet-bank2.svg"
               alt="Magnet Bank"/>
           </a>
         </div>

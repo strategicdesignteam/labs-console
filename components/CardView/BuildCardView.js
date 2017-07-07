@@ -1,5 +1,4 @@
 import React from 'react';
-import { infraImage } from '../Canvas/CanvasHelpers';
 import constants from '../../core/constants';
 
 class BuildCardView extends React.Component {
@@ -38,7 +37,11 @@ class BuildCardView extends React.Component {
               <div className="card-pf-body">
                 <div className="card-pf-top-element"
                   style={{ textAlign: 'center' }}>
-                  <img src={infraImage(project.infrastructureProvider)}
+                  <img src={
+                      project.apps &&
+                        project.apps.length &&
+                        project.apps[0].image
+                    }
                     style={{ height: 60 }}
                     alt="provider"/>
                 </div>

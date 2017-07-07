@@ -153,8 +153,8 @@ class BuildsPage extends React.Component {
           else {
             content.push(<h4 key="builds-no-builds">No current builds.</h4>);
             content.push(
-              <p key="builds-no-topology-message">
-                You must create an application topology first before running a build.
+              <p key="builds-no-infrastructure-pipeline-message">
+                You must create an infrastructure pipelie first before running a build.
               </p>
             );
           }
@@ -164,12 +164,14 @@ class BuildsPage extends React.Component {
                 handleClose={this.handleCloseStart.bind(this)}
                 key="builds-modal">
                 <div className="text-center">
-                  <h3>Build Application Topology</h3>
+                  <h3>Build Infrastructure Pipeline</h3>
                   <div className={c.spacing}>
                     <i className="fa fa-rocket fa-3x"/>
                   </div>
                   <div className={c.spacing}>
-                    <strong>Topology:</strong> {this.state.build.topology.name}
+                    <strong>Infrastructure Pipeline:</strong>
+                    {' '}
+                    {this.state.build.infrastructurePipeline.name}
                   </div>
                   <p>Are you sure?</p>
                   <div className={c.spacing}>

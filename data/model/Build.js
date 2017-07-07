@@ -27,7 +27,7 @@
     // CommonJS-like environments that support module.exports, like Node.
     module.exports = factory(
       require('../ApiClient'),
-      require('./ApplicationTopology')
+      require('./InfrastructurePipeline')
     );
   }
   else {
@@ -37,10 +37,10 @@
     }
     root.RedHatOpenInnovationLabsConsoleApi.Build = factory(
       root.RedHatOpenInnovationLabsConsoleApi.ApiClient,
-      root.RedHatOpenInnovationLabsConsoleApi.ApplicationTopology
+      root.RedHatOpenInnovationLabsConsoleApi.InfrastructurePipeline
     );
   }
-}(this, (ApiClient, ApplicationTopology) => {
+}(this, (ApiClient, InfrastructurePipeline) => {
   /**
    * The Build model module.
    * @module model/Build
@@ -70,18 +70,20 @@
       if (data.hasOwnProperty('id')) {
         obj.id = ApiClient.convertToType(data.id, 'Integer');
       }
-      if (data.hasOwnProperty('topology')) {
-        obj.topology = ApplicationTopology.constructFromObject(data.topology);
+      if (data.hasOwnProperty('infrastructurePipeline')) {
+        obj.infrastructurePipeline = InfrastructurePipeline.constructFromObject(
+          data.infrastructurePipeline
+        );
       }
-      if (data.hasOwnProperty('topology_version')) {
-        obj.topology_version = ApiClient.convertToType(
-          data.topology_version,
+      if (data.hasOwnProperty('infrastructurePipeline_version')) {
+        obj.infrastructurePipeline_version = ApiClient.convertToType(
+          data.infrastructurePipeline_version,
           'Integer'
         );
       }
-      if (data.hasOwnProperty('topology_version_key')) {
-        obj.topology_version_key = ApiClient.convertToType(
-          data.topology_version_key,
+      if (data.hasOwnProperty('infrastructurePipeline_version_key')) {
+        obj.infrastructurePipeline_version_key = ApiClient.convertToType(
+          data.infrastructurePipeline_version_key,
           'Integer'
         );
       }
@@ -127,17 +129,17 @@
    */
   exports.prototype.id = undefined;
   /**
-   * @member {module:model/ApplicationTopology} topology
+   * @member {module:model/InfrastructurePipeline} infrastructurePipeline
    */
-  exports.prototype.topology = undefined;
+  exports.prototype.infrastructurePipeline = undefined;
   /**
-   * @member {Integer} topology_version
+   * @member {Integer} infrastructurePipeline_version
    */
-  exports.prototype.topology_version = undefined;
+  exports.prototype.infrastructurePipeline_version = undefined;
   /**
-   * @member {Integer} topology_version_key
+   * @member {Integer} infrastructurePipeline_version_key
    */
-  exports.prototype.topology_version_key = undefined;
+  exports.prototype.infrastructurePipeline_version_key = undefined;
   /**
    * @member {Integer} number_of_projects
    */

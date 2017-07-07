@@ -3,8 +3,7 @@ import React from 'react';
 class ProjectPanel extends React.Component {
   static propTypes = {
     handleChange: React.PropTypes.func,
-    value: React.PropTypes.object,
-    infrastructures: React.PropTypes.array
+    value: React.PropTypes.object
   };
 
   render() {
@@ -35,23 +34,6 @@ class ProjectPanel extends React.Component {
             onChange={(e) => {
               handleChange(e, 'display_name');
             }}/>
-        </div>
-        <div className="form-group">
-          <label htmlFor="infrastructure" className="required-pf">
-            Infrastructure
-          </label>
-          <br/>
-          <select value={value.infrastructure}
-            id="infrastructure"
-            className="selectpicker form-control"
-            onChange={(e) => {
-              handleChange(e, 'infrastructure');
-            }}>
-            <option/>
-            {this.props.infrastructures.map((infra, i) => (
-              <option value={infra.id} key={i}>{infra.name}</option>
-            ))}
-          </select>
         </div>
       </form>
     );

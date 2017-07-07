@@ -28,7 +28,6 @@
     module.exports = factory(
       require('./ApiClient'),
       require('./model/ApplicationTemplate'),
-      require('./model/ApplicationTopology'),
       require('./model/Body'),
       require('./model/Build'),
       require('./model/ClaimType'),
@@ -46,18 +45,18 @@
       require('./model/User'),
       require('./model/Infrastructure'),
       require('./api/LoginApi'),
+      require('./api/ProjectTemplateApi'),
       require('./api/BuildApi'),
-      require('./api/TopologyApi'),
       require('./api/UserApi'),
       require('./api/JobApi'),
-      require('./api/InfrastructureApi')
+      require('./api/InfrastructureApi'),
+      require('./api/InfrastructurePipelineApi')
     );
   }
 }(
   (
     ApiClient,
     ApplicationTemplate,
-    ApplicationTopology,
     Body,
     Build,
     ClaimType,
@@ -75,11 +74,12 @@
     User,
     Infrastructure,
     LoginApi,
+    ProjectTemplateApi,
     BuildApi,
-    TopologyApi,
     UserApi,
     JobApi,
-    InfrastructureApi
+    InfrastructureApi,
+    InfrastructurePipelineApi
   ) => {
     /**
    * The <code>index</code> module provides access to constructors for all the classes which comprise the public API.
@@ -122,11 +122,6 @@
      * @property {module:model/ApplicationTemplate}
      */
       ApplicationTemplate,
-      /**
-     * The ApplicationTopology model constructor.
-     * @property {module:model/ApplicationTopology}
-     */
-      ApplicationTopology,
       /**
      * The Body model constructor.
      * @property {module:model/Body}
@@ -208,15 +203,15 @@
      */
       LoginApi,
       /**
+     * The ProjectTemplateApi service constructor.
+     * @property {module:api/ProjectTemplateApi}
+     */
+      ProjectTemplateApi,
+      /**
      * The BuildApi service constructor.
      * @property {module:api/BuildApi}
      */
       BuildApi,
-      /**
-     * The TopologyApi service constructor.
-     * @property {module:api/TopologyApi}
-     */
-      TopologyApi,
       /**
      * The UserApi service constructor.
      * @property {module:api/UserApi}
@@ -231,7 +226,12 @@
      * The InfrastructureApi service constructor
      * @property {module: api/InfrastructureApi}
      */
-      InfrastructureApi
+      InfrastructureApi,
+      /**
+     * The InfrastructurePipelineApi service constructor
+     * @property {module: api/InfrastructurePipelineApi}
+     */
+      InfrastructurePipelineApi
     };
 
     return exports;

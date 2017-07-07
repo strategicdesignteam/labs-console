@@ -1,11 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 import EmptyState from '../EmptyState/EmptyState';
-import Link from '../Link';
 import TableSelectionView from '../TableView/TableSelectionView';
 import CreateUserForm from '../Forms/CreateUserForm';
-import CanvasConstants from '../Canvas/CanvasConstants';
-import CanvasItemTypes from '../Canvas/CanvasItemTypes';
 import labsApi from '../../data/index';
 import Stage from '../../data/model/Stage';
 import User from '../../data/model/User';
@@ -15,8 +12,9 @@ class CreateStageForm extends React.Component {
   static propTypes = {
     handleSubmit: React.PropTypes.func,
     handleCancel: React.PropTypes.func,
-    topology: React.PropTypes.object,
-    value: React.PropTypes.object
+    infrastructurePipeline: React.PropTypes.object,
+    value: React.PropTypes.object,
+    infrastructures: React.PropTypes.array
   };
 
   state = {
@@ -41,14 +39,25 @@ class CreateStageForm extends React.Component {
   }
 
   handleSubmit = (event) => {
-    const topologyApi = new labsApi.TopologyApi();
-    const topology = Object.assign({}, this.props.topology);
+    const infrastructurePipeline = Object.assign(
+      {},
+      this.props.infrastructurePipeline
+    );
+    infrastructurePipeline.promotion_process = infrastructurePipeline.promotion_process || [
+    ];
     const users = this.tableSelectiveView.selections();
     const project_role_bindings = [];
     const application_promoters = [];
 
     users.forEach((user) => {
-      const u = new User(user.id, user.first_name, user.last_name, user.user_name, user.password, user.email);
+      const u = new User(
+        user.id,
+        user.first_name,
+        user.last_name,
+        user.user_name,
+        user.password,
+        user.email
+      );
       if (user.role) {
         project_role_bindings.push({ user: u, role: user.role });
       }
@@ -57,42 +66,45 @@ class CreateStageForm extends React.Component {
       }
     });
 
-    if (this.state.newStage.id) {
-      const index = topology.promotion_process.findIndex(s => s.id === this.state.newStage.id);
-      if (index > -1) {
-        // edit existing stage and change its properties in the stage form
-        topology.promotion_process[index].name = this.state.newStage.name;
-        topology.promotion_process[index].project_role_bindings = project_role_bindings;
-        topology.promotion_process[index].application_promoters = application_promoters;
-      }
+    const index = this.state.newStage.index || -1;
+
+    if (index > -1) {
+      // edit existing stage and change its properties in the stage form
+      infrastructurePipeline.promotion_process[
+        index
+      ].name = this.state.newStage.name;
+      infrastructurePipeline.promotion_process[
+        index
+      ].project_role_bindings = project_role_bindings;
+      infrastructurePipeline.promotion_process[
+        index
+      ].application_promoters = application_promoters;
+      infrastructurePipeline.promotion_process[
+        index
+      ].infrastructure = this.state.newStage.infrastructure;
+      infrastructurePipeline.promotion_process[
+        index
+      ].infrastructureName = this.state.newStage.infrastructureName;
+      infrastructurePipeline.promotion_process[
+        index
+      ].infrastructureProvider = this.state.newStage.infrastructureProvider;
     }
     else {
       // create new stage and set initial stage attributes for the canvas
       const stage = new Stage();
+      stage.index = infrastructurePipeline.promotion_process.length;
       stage.name = this.state.newStage.name;
       stage.project_role_bindings = project_role_bindings;
       stage.application_promoters = application_promoters;
-      const rows = Math.floor((topology.promotion_process.length) / (CanvasConstants.MAX_STAGES_IN_ROW));
-      stage.index = topology.promotion_process.length;
+      stage.infrastructure = this.state.newStage.infrastructure;
+      stage.infrastructureName = this.state.newStage.infrastructureName;
+      stage.infrastructureProvider = this.state.newStage.infrastructureProvider;
       stage.projects = [];
-      stage.x = ((stage.index % CanvasConstants.MAX_STAGES_IN_ROW) * CanvasConstants.STAGE_WIDTH)
-        + (((stage.index % CanvasConstants.MAX_STAGES_IN_ROW) + 1) * CanvasConstants.STAGE_PADDING_X);
-      stage.y = (rows * CanvasConstants.STAGE_HEIGHT) + ((rows + 1) * CanvasConstants.STAGE_PADDING_Y);
-      stage.invalid = false;
-      stage.selected = false;
-      stage.containerNode = true;
-      stage.containerNodeDropItemTypes = [CanvasItemTypes.SCROLL_TOOLBOX_ITEM];
-      stage.inputConnectors = [];
-      stage.validConnectionTypes = [];
 
-      topology.promotion_process.push(stage);
+      infrastructurePipeline.promotion_process.push(stage);
     }
 
-    topologyApi.updateTopology(topology.id, { body: topology }, (e) => {
-      if (e) console.log(e); // todo: handle error
-      this.props.handleSubmit(event);
-    });
-    event.preventDefault();
+    this.props.handleSubmit(event, infrastructurePipeline);
   };
 
   handleCancel = (event) => {
@@ -102,6 +114,14 @@ class CreateStageForm extends React.Component {
   handleChange = (e, prop) => {
     const o = Object.assign({}, this.state.newStage);
     o[prop] = e.target.value;
+
+    if (prop === 'infrastructure') {
+      const infra = this.props.infrastructures.find(
+        infrastructure => infrastructure.id === e.target.value
+      );
+      o.infrastructureProvider = infra.provider;
+      o.infrastructureName = infra.name;
+    }
     this.setState({ newStage: o });
   };
 
@@ -109,7 +129,6 @@ class CreateStageForm extends React.Component {
     this.setState({ user: {}, createUserView: true, createStageView: false });
     event.preventDefault();
   };
-
 
   handleCreateUserSubmit = (event, u) => {
     const userApi = new labsApi.UserApi();
@@ -161,28 +180,34 @@ class CreateStageForm extends React.Component {
     if (this.state.createStageView) {
       return (
         <form role="form">
-          <div className="page-header" key="define-stages-page-header">
-            <ol className="breadcrumb">
-              <li>
-                <Link to="/topologies">Topologies</Link>
-              </li>
-              <li>
-                <a href="#" onClick={this.handleCancel}>
-                  {this.props.topology.name}
-                </a>
-              </li>
-              <li className="active">
-                  Define Promotion Stage
-                </li>
-            </ol>
-          </div>
           <div className="form-group">
             <label htmlFor="input1">Stage Name</label>
-            <input type="text" className="form-control" id="input1" required="" placeholder="stage-name"
+            <input type="text"
+              className="form-control"
+              id="input1"
+              required=""
+              placeholder="stage-name"
               value={this.state.newStage.name}
               onChange={(e) => {
                 this.handleChange(e, 'name');
               }}/>
+          </div>
+          <div className="form-group">
+            <label htmlFor="infrastructure" className="required-pf">
+              Infrastructure
+            </label>
+            <br/>
+            <select value={this.state.newStage.infrastructure}
+              id="infrastructure"
+              className="selectpicker form-control"
+              onChange={(e) => {
+                this.handleChange(e, 'infrastructure');
+              }}>
+              <option/>
+              {this.props.infrastructures.map((infra, i) => (
+                <option value={infra.id} key={i}>{infra.name}</option>
+              ))}
+            </select>
           </div>
           <br/>
           <div className="form-group">
@@ -190,35 +215,56 @@ class CreateStageForm extends React.Component {
               <span id="usersLabel">Users and Roles</span>
             </label>
             {(() => {
-              if (this.state.users.length) {
+              if (this.state.users && this.state.users.length) {
                 return [
                   <div className={cx(c.float_right)}>
-                    <button type="submit" className="btn btn-default" onClick={this.handleCreateUser}>Create</button>
+                    <button type="submit"
+                      className="btn btn-default"
+                      onClick={this.handleCreateUser}>
+                      Create
+                    </button>
                   </div>,
                   <br/>,
                   <br/>,
                   <TableSelectionView ref={(tsv) => {
                     this.tableSelectiveView = tsv;
-                  }} columns={columns}
+                  }}
+                    columns={columns}
                     users={this.state.users}
                     stage={this.state.newStage}
                     handleRowClick={this.handleRowClick}/>
                 ];
               }
-              return (<EmptyState hideTitle>
-                <div className="text-center">
-                  <h4>No users exist for the topology.</h4>
-                  <p>You must have at least one user defined to build your topology onto a stage.</p>
-                  <button type="submit" className="btn btn-default" onClick={this.handleCreateUser}>Create User</button>
-                </div>
-              </EmptyState>);
+              return (
+                <EmptyState hideTitle>
+                  <div className="text-center">
+                    <h4>No users exist for this stage.</h4>
+                    <p>
+                      You must have at least one user defined to build your infrastructurePipeline onto a stage.
+                    </p>
+                    <button type="submit"
+                      className="btn btn-default"
+                      onClick={this.handleCreateUser}>
+                      Create User
+                    </button>
+                  </div>
+                </EmptyState>
+              );
             })()}
           </div>
           <br/>
           <div className="form-group text-center">
-            <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
-              &nbsp;&nbsp;
-            <button type="submit" className="btn btn-default" onClick={this.handleCancel}>Cancel</button>
+            <button type="submit"
+              className="btn btn-primary"
+              onClick={this.handleSubmit}>
+              Submit
+            </button>
+            &nbsp;&nbsp;
+            <button type="submit"
+              className="btn btn-default"
+              onClick={this.handleCancel}>
+              Cancel
+            </button>
           </div>
         </form>
       );
@@ -226,26 +272,6 @@ class CreateStageForm extends React.Component {
     else if (this.state.createUserView) {
       return (
         <div>
-          <div className="page-header" key="define-stages-page-header">
-            <ol className="breadcrumb">
-              <li>
-                <Link to="/topologies">Topologies</Link>
-              </li>
-              <li>
-                <a href="#" onClick={this.handleCancel}>
-                  {this.props.topology.name}
-                </a>
-              </li>
-              <li>
-                <a href="#" onClick={this.handleCreateUserCancel}>
-                  Define Promotion Stage
-                </a>
-              </li>
-              <li className="active">
-                Create User
-              </li>
-            </ol>
-          </div>
           <CreateUserForm handleSubmit={this.handleCreateUserSubmit}
             handleCancel={this.handleCreateUserCancel}
             value={this.state.user}

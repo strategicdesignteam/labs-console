@@ -1,7 +1,8 @@
 var BuildService = require('./controllers/BuildService');
 var JobsService = require('./controllers/JobsService');
-var TopologyService = require('./controllers/TopologyService');
 var InfrastructureService = require('./controllers/InfrastructureService');
+var InfrastructurePipelineService = require('./controllers/InfrastructurePipelineService');
+var ProjectTemplateService = require('./controllers/ProjectTemplateService');
 var UserService = require('./controllers/UserService');
 var auth = require('./auth/AuthService');
 
@@ -19,6 +20,7 @@ module.exports = function (app) {
     JobsService.destroyInfrastructureJob
   );
   app.post('/api/jobs/project', JobsService.addProjectJob);
+  app.post('/api/jobs/insightsRemediate', JobsService.insightsRemediateJob);
   app.get('/api/jobs/:id', JobsService.jobsIdGET);
 
   // builds routes
@@ -54,13 +56,45 @@ module.exports = function (app) {
     InfrastructureService.deleteInfrastructure
   );
 
-  // topologies routes
-  app.all('/api/topologies*', auth.basicAuth);
-  app.post('/api/topologies', TopologyService.addTopology);
-  app.get('/api/topologies', TopologyService.topologiesGET);
-  app.get('/api/topologies/:id', TopologyService.topologiesIdGET);
-  app.put('/api/topologies/:id', TopologyService.updateTopology);
-  app.delete('/api/topologies/:id', TopologyService.deleteTopology);
+  // infrastructure pipeline routes
+  app.all('/api/infrastructurePipelines*', auth.basicAuth);
+  app.post(
+    '/api/infrastructurePipelines',
+    InfrastructurePipelineService.addInfrastructurePipeline
+  );
+  app.get(
+    '/api/infrastructurePipelines',
+    InfrastructurePipelineService.infrastructurePipelinesGET
+  );
+  app.get(
+    '/api/infrastructurePipelines/:id',
+    InfrastructurePipelineService.infrastructurePipelinesIdGET
+  );
+  app.put(
+    '/api/infrastructurePipelines/:id',
+    InfrastructurePipelineService.updateInfrastructurePipeline
+  );
+  app.delete(
+    '/api/infrastructurePipelines/:id',
+    InfrastructurePipelineService.deleteInfrastructurePipeline
+  );
+
+  // project templates routes
+  app.all('/api/projectTemplates*', auth.basicAuth);
+  app.post('/api/projectTemplates', ProjectTemplateService.addProjectTemplate);
+  app.get('/api/projectTemplates', ProjectTemplateService.projectTemplatesGET);
+  app.get(
+    '/api/projectTemplates/:id',
+    ProjectTemplateService.projectTemplatesIdGET
+  );
+  app.put(
+    '/api/projectTemplates/:id',
+    ProjectTemplateService.updateProjectTemplate
+  );
+  app.delete(
+    '/api/projectTemplates/:id',
+    ProjectTemplateService.deleteProjectTemplate
+  );
 
   // frontend routes =========================================================
   // route to handle all react requests

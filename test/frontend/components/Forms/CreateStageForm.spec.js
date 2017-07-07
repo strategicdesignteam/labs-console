@@ -16,14 +16,16 @@ describe('Create Stage Form test suite', () => {
   it('should set the stage name when a value is passed to the component', () => {
     const handleSubmit = () => {};
     const handleCancel = () => {};
-    const topology = {};
+    const infrastructurePipeline = {};
+    const infrastructures = [];
     const value = { name: 'Test Stage' };
 
     const wrapper = mount(
       <CreateStageForm handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         value={value}
-        topology={topology}/>
+        infrastructurePipeline={infrastructurePipeline}
+        infrastructures={infrastructures}/>
     );
 
     expect(wrapper.find('#input1').html()).toEqual(

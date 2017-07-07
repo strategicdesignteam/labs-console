@@ -1,4 +1,6 @@
 var Infrastructure = require('../models/Infrastructure');
+var RedHatInsightsService = require('./RedHatInsightsService');
+var constants = require('../../core/constants');
 var common = require('../common/common');
 
 exports.addInfrastructure = function (args, res, next) {
@@ -18,11 +20,8 @@ exports.addInfrastructure = function (args, res, next) {
   newInfrastructure.highly_available = args.body.highly_available;
   newInfrastructure.master_nodes = args.body.master_nodes;
   newInfrastructure.compute_nodes = args.body.compute_nodes;
-  newInfrastructure.ansible_tower_link = `https://tower.strategicdesign.io/#/workflows/${args.body.tower_job_id}#followAnchor`;
-  newInfrastructure.status = args.body.status;
-  newInfrastructure.tower_job_id = args.body.tower_job_id;
-  newInfrastructure.datetime_started = args.body.datetime_started;
-  newInfrastructure.datetime_completed = args.body.datetime_completed;
+  newInfrastructure.rh_insights_enabled = args.body.rh_insights_enabled;
+  newInfrastructure.rh_cloudforms_enabled = args.body.rh_cloudforms_enabled;
 
   newInfrastructure.save((err, infrastructure) => {
     if (err) return common.handleError(res, err);
@@ -59,16 +58,56 @@ exports.updateInfrastructure = function (args, res, next) {
       infrastructure.status = args.body.status;
       infrastructure.datetime_completed = args.body.datetime_completed;
       infrastructure.destroy_started = args.body.destroy_started;
-
-      infrastructure.save((err) => {
-        if (err) return validationError(res, err);
-        res.send(200);
-      });
+      infrastructure.ansible_tower_link = `https://tower.strategicdesign.io/#/workflows/${args.body.tower_job_id}#followAnchor`;
+      infrastructure.tower_job_id = args.body.tower_job_id;
+      infrastructure.rh_insights_status = args.body.rh_insights_status;
+      if (
+        infrastructure.rh_insights_enabled &&
+        infrastructure.status ===
+          constants.default.ANSIBLE_JOB_STATUS.SUCCESSFUL
+      ) {
+        // if insights job is running, just update and return the insights job link
+        if (
+          infrastructure.rh_insights_status ===
+            constants.default.ANSIBLE_JOB_STATUS.PENDING ||
+          infrastructure.rh_insights_status ===
+            constants.default.ANSIBLE_JOB_STATUS.RUNNING
+        ) {
+          infrastructure.rh_insights_tower_job_id =
+            args.body.rh_insights_tower_job_id;
+          infrastructure.rh_insights_tower_job_link = args.body
+            .rh_insights_tower_job_id
+            ? `https://tower.strategicdesign.io/#/workflows/${args.body.rh_insights_tower_job_id}#followAnchor`
+            : '';
+          saveInfra(infrastructure);
+        }
+        else {
+          // An insights job is not running, and the infrastructure is deployed successfully. Let's query the insights report
+          RedHatInsightsService.getInsightsReportForGroup(
+            infrastructure,
+            (err, report) => {
+              if (err) return common.handleError(res, err);
+              infrastructure.rh_insights_report = report;
+              saveInfra(infrastructure);
+            }
+          );
+        }
+      }
+      else {
+        saveInfra(infrastructure);
+      }
     }
     else {
       res.send(404);
     }
   });
+
+  function saveInfra(infrastructure) {
+    infrastructure.save((err) => {
+      if (err) return common.handleError(res, err);
+      res.send(200);
+    });
+  }
 };
 
 exports.infrastructuresGET = function (args, res, next) {

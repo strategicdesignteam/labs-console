@@ -72,29 +72,14 @@
     if (data) {
       obj = obj || new exports();
 
+      if (data.hasOwnProperty('id')) {
+        obj.id = ApiClient.convertToType(data.id, 'Integer');
+      }
       if (data.hasOwnProperty('name')) {
         obj.name = ApiClient.convertToType(data.name, 'String');
       }
       if (data.hasOwnProperty('display_name')) {
         obj.display_name = ApiClient.convertToType(data.display_name, 'String');
-      }
-      if (data.hasOwnProperty('infrastructure')) {
-        obj.infrastructure = ApiClient.convertToType(
-          data.infrastructure,
-          'Integer'
-        );
-      }
-      if (data.hasOwnProperty('infrastructureProvider')) {
-        obj.infrastructureProvider = ApiClient.convertToType(
-          data.infrastructureProvider,
-          'String'
-        );
-      }
-      if (data.hasOwnProperty('infrastructureName')) {
-        obj.infrastructureName = ApiClient.convertToType(
-          data.infrastructureName,
-          'String'
-        );
       }
       if (data.hasOwnProperty('apps')) {
         // I am overriding this to make the ApplicationTemplate more flexible for now...
@@ -112,6 +97,10 @@
   };
 
   /**
+   * @member {Integer} id
+   */
+  exports.prototype.id = undefined;
+  /**
    * @member {String} name
    */
   exports.prototype.name = undefined;
@@ -119,18 +108,6 @@
    * @member {String} display_name
    */
   exports.prototype.display_name = undefined;
-  /**
-   * @member {Integer} infrastructure
-   */
-  exports.prototype.infrastructure = undefined;
-  /**
-   * @member {String} display_name
-   */
-  exports.prototype.infrastructureProvider = undefined;
-  /**
-   * @member {String} display_name
-   */
-  exports.prototype.infrastructureName = undefined;
   /**
    * @member {Array.<module:model/ApplicationTemplate>} apps
    */

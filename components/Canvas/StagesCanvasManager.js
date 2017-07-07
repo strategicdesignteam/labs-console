@@ -3,9 +3,6 @@ import { DragDropContext } from 'react-dnd';
 import MouseBackEnd from 'react-dnd-mouse-backend';
 import update from 'immutability-helper';
 import { deepClone } from '../../core/helpers';
-import { infraImage } from './CanvasHelpers';
-import { emptyStageNode } from './EmptyStageNode';
-import { emptyProjectNode } from './EmptyProjectNode';
 import Canvas from './Canvas';
 import CanvasConstants from './CanvasConstants';
 import CanvasItemTypes from './CanvasItemTypes';
@@ -22,7 +19,7 @@ class StagesCanvasManager extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      toolboxOpen: props.projects.length > 0,
+      toolboxOpen: props.projectTemplates.length > 0,
       readOnly: false,
       inConnectingMode: false,
       canvasHeight: CanvasConstants.CANVAS_HEIGHT,
@@ -93,11 +90,11 @@ class StagesCanvasManager extends React.Component {
       // create an instance of the project with the specified type from the containerNodeItem (project template)
       // handle any "instantiation" logic associated with project template to --> stage project here.
       const project = deepClone(containerNodeItem.itemAttributes);
+      project.label = project.name;
       project.name += `-${this.state.nodes[index].name.toLowerCase()}`;
-      project.projectTemplateIndex = containerNodeItem.index;
-      project.image = infraImage(project.infrastructureProvider);
+      project.projectTemplate = containerNodeItem.id;
+      project.image = project.apps[0].image;
       project.backgroundColor = CanvasConstants.STAGE_BACKGROUND_COLOR;
-      project.label = project.infrastructureName;
 
       // again, i am intercepting this at the Stage Manager level to make the UI more responsive immediately
       this.setState(
@@ -163,48 +160,36 @@ class StagesCanvasManager extends React.Component {
   }
 
   componentWillMount() {
-    this.createNodesFromStages(this.props.stages, this.props.projects);
+    this.createNodesFromStages(this.props.stages, this.props.projectTemplates);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.createNodesFromStages(nextProps.stages, nextProps.projects);
+    this.createNodesFromStages(nextProps.stages, nextProps.projectTemplates);
   }
 
-  createNodesFromStages(stages, projects) {
+  createNodesFromStages(stages) {
     const additionalNodes = [];
     let extended = [];
-    if (!projects.length) {
-      additionalNodes.push(emptyProjectNode);
-    }
-    else if (stages.length < CanvasConstants.MAX_STAGES) {
-      const rows = Math.floor(
-        stages.length / CanvasConstants.MAX_STAGES_IN_ROW
-      );
-      const emptyNode = {
-        ...emptyStageNode,
-        x: stages.length %
-          CanvasConstants.MAX_STAGES_IN_ROW *
-          CanvasConstants.STAGE_WIDTH +
-          (stages.length % CanvasConstants.MAX_STAGES_IN_ROW + 1) *
-            CanvasConstants.STAGE_PADDING_X,
-        y: rows * CanvasConstants.STAGE_HEIGHT +
-          (rows + 1) * CanvasConstants.STAGE_PADDING_Y
-      };
-      additionalNodes.push(emptyNode);
-    }
 
-    if (projects.length) {
-      extended = stages.map(stage => ({
-        ...stage,
-        titleYOffset: CanvasConstants.STAGE_TITLE_Y_OFFSET,
-        width: CanvasConstants.STAGE_WIDTH,
-        height: CanvasConstants.STAGE_HEIGHT,
-        backgroundColor: CanvasConstants.STAGE_BACKGROUND_COLOR,
-        maxDisplayItems: CanvasConstants.STAGE_MAX_DISPLAY_ITEMS,
-        containerItems: stage.projects,
-        selected: false
-      }));
-    }
+    const rows = Math.floor(stages.length / CanvasConstants.MAX_STAGES_IN_ROW);
+    extended = stages.map((stage, i) => ({
+      ...stage,
+      titleYOffset: CanvasConstants.STAGE_TITLE_Y_OFFSET,
+      width: CanvasConstants.STAGE_WIDTH,
+      height: CanvasConstants.STAGE_HEIGHT,
+      backgroundColor: CanvasConstants.STAGE_BACKGROUND_COLOR,
+      maxDisplayItems: CanvasConstants.STAGE_MAX_DISPLAY_ITEMS,
+      containerItems: stage.projects,
+      selected: false,
+      x: i % CanvasConstants.MAX_STAGES_IN_ROW * CanvasConstants.STAGE_WIDTH +
+        (i % CanvasConstants.MAX_STAGES_IN_ROW + 1) *
+          CanvasConstants.STAGE_PADDING_X,
+      y: rows * CanvasConstants.STAGE_HEIGHT +
+        (rows + 1) * CanvasConstants.STAGE_PADDING_Y,
+      containerNode: true,
+      containerNodeDropItemTypes: [CanvasItemTypes.SCROLL_TOOLBOX_ITEM]
+    }));
+
     // extend stages with UI specific properties
     this.setState({
       nodes: [...extended, ...additionalNodes]
@@ -212,7 +197,11 @@ class StagesCanvasManager extends React.Component {
   }
 
   render() {
-    const { projects, handleProjectEdit, handleProjectDelete } = this.props;
+    const {
+      projectTemplates,
+      handleProjectEdit,
+      handleProjectDelete
+    } = this.props;
 
     return (
       <CanvasLayout>
@@ -233,16 +222,15 @@ class StagesCanvasManager extends React.Component {
         <CustomDragLayer canvasClass="stage-canvas"/>
         <CanvasScrollToolbox isOpen={this.state.toolboxOpen}>
           <ul className="toolbox-items-list">
-            {projects.length > 0 &&
-              projects.map((project, i) => (
-                <DraggableTopAlignedToolboxItem itemAttributes={project}
+            {projectTemplates.length > 0 &&
+              projectTemplates.map((projectTemplate, i) => (
+                <DraggableTopAlignedToolboxItem itemAttributes={projectTemplate}
                   canvasSourceItemType={CanvasItemTypes.SCROLL_TOOLBOX_ITEM}
                   key={`drag-item${i}`}
                   index={i}>
                   <div className="toolbox-item-container">
-                    <img src={infraImage(project.infrastructureProvider)}
-                      alt="provider"/>
-                    <span> {project.name} </span>
+                    <img src={projectTemplate.apps[0].image} alt="provider"/>
+                    <span> {projectTemplate.name} </span>
                     <button className="edit-btn icon"
                       onClick={(e) => {
                         handleProjectEdit(e, i);
@@ -275,9 +263,7 @@ class StagesCanvasManager extends React.Component {
           addContainerNodeItem={this.addContainerNodeItem}
           removeContainerNodeItem={this.removeContainerNodeItem}
           containerNodeItemClicked={this.containerNodeItemClicked}
-          canvasDropItemTypes={[CanvasItemTypes.CANVAS_NODE]}>
-          {/** <CanvasPanel panelClass='stages-panel canvas-panel' panelTitle='Promotion Stage' />**/}
-        </Canvas>
+          canvasDropItemTypes={[CanvasItemTypes.CANVAS_NODE]}/>
       </CanvasLayout>
     );
   }
