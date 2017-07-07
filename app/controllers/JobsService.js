@@ -6,8 +6,12 @@ var mockJobStatus = require('./mocks/mockJobStatus');
 exports.addInfrastructureJob = function (args, res, next) {
   if (process.env.TOWER_URL) {
     var url = `${process.env.TOWER_URL}api/v1/workflow_job_templates/${process.env.ADD_INFRA_WORKFLOW_ID}/launch/`;
-    args.body.infrastructure_id = args.body.id;
+    
+    //map args for infra to Tower expected values
+    args.body.infrastructure_id = parseInt(args.body.id);
     args.body.infrastructure_name = args.body.name;
+    
+    delete args.body._id;
     delete args.body.id;
     delete args.body.name;
     post(url, args, res, next);

@@ -82,15 +82,23 @@ exports.updateInfrastructure = function (args, res, next) {
           saveInfra(infrastructure);
         }
         else {
-          // An insights job is not running, and the infrastructure is deployed successfully. Let's query the insights report
-          RedHatInsightsService.getInsightsReportForGroup(
-            infrastructure,
-            (err, report) => {
-              if (err) return common.handleError(res, err);
-              infrastructure.rh_insights_report = report;
-              saveInfra(infrastructure);
-            }
-          );
+          try{
+            // An insights job is not running, and the infrastructure is deployed successfully. Let's query the insights report
+            RedHatInsightsService.getInsightsReportForGroup(
+              infrastructure,
+              (err, report) => {
+                if (err) return common.handleError(res, err);
+                infrastructure.rh_insights_report = report;
+                saveInfra(infrastructure);
+              }
+            );
+          } catch(err){
+            //log Insights errors to console
+            console.log(err);
+
+            //continue saving and move forward
+            saveInfra(infrastructure);
+          }
         }
       }
       else {

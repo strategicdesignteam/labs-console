@@ -14,7 +14,7 @@ exports.getInsightsReportForGroup = function (infrastructure, callback) {
       getSystemsReports,
       (systemReports, callback) => {
         if (systemReports && systemReports.length) {
-          for (let i = 0; i < systemReports.length; i++) {
+          for (var i = 0; i < systemReports.length; i++) {
             parseSystemReportCategories(systemReports[i], categories);
           }
         }
@@ -30,7 +30,7 @@ exports.getInsightsReportForGroup = function (infrastructure, callback) {
 function getInsightsGroupForInfrastructure(infrastructure, callback) {
   if (process.env.INSIGHTS_URL && process.env.INSIGHTS_AUTH) {
     get('groups', (err, groups) => {
-      let found = false;
+      var found = false;
       if (groups && groups.length) {
         groups.forEach((group) => {
           if (group.display_name.split('_')[1] == infrastructure.id) {
@@ -70,9 +70,9 @@ function getSystemsForGroup(groupId, callback) {
 }
 
 function getSystemsReports(systems, callback) {
-  let systemRequests = [];
-  for (let i = 0; i < systems.length; i++) {
-    let querySystem = async.apply(getSystem, systems[i].system_id);
+  var systemRequests = [];
+  for (var i = 0; i < systems.length; i++) {
+    var querySystem = async.apply(getSystem, systems[i].system_id);
     systemRequests.push(querySystem);
   }
   async.parallel(systemRequests, (err, results) => {
