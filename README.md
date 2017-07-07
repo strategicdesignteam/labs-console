@@ -76,6 +76,7 @@ cat << EOF > ~/labs-console-setvars.rc
 export ADMIN_USER=admin
 export ADMIN_PASS=password
 export TOWER_URL=https://username:password@tower.domain.com/
+export TOWER_HOSTNAME=tower.domain.com
 export ADD_INFRA_WORKFLOW_ID=89
 export DESTROY_INFRA_WORKFLOW_ID=171
 export ADD_PROJECT_WORKFLOW_ID=325
@@ -136,6 +137,7 @@ The following environment variables should be set in [OCP](https://www.openshift
 | ADMIN_USER | admin | Default admin login |
 | ADMIN_PASS | password | Default admin password |
 | TOWER_URL | https://`[user]`:`[password]`@`[tower.yourdomain.io]`/ | Ansible Tower instance |
+| TOWER_HOSTNAME | tower.yourdomain.io | Ansible Tower Hostname |
 | ADD_INFRA_WORKFLOW_ID | 0 | Tower Add Infra Workflow ID |
 | DESTROY_INFRA_WORKFLOW_ID | 0 | Tower Delete Infra Workflow ID |
 | ADD_PROJECT_WORKFLOW_ID | 0 | Tower Add Project Workflow ID |
